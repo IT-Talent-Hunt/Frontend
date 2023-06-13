@@ -9,8 +9,10 @@
   justify-content: center;
   align-items: center;
 
-  width: 646px;
-  height: 476px;
+  width: fit-content;
+  height: fit-content;
+
+  padding: 48px 148px 56px 148px;
 
   background-color: #F7F7F7;
 }
@@ -24,7 +26,7 @@
   // gap: 16px;
 
   .input:last-of-type {
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
 }
 
@@ -39,7 +41,7 @@
 
   padding: 15px 16px;
 
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 
   background-color: #fff;
 
@@ -86,6 +88,7 @@
 }
 
 .link {
+  cursor: pointer;
   font-weight: 500;
   font-size: 18px;
   color: #121212;
