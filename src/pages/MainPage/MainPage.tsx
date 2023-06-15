@@ -1,9 +1,11 @@
 import { FC } from 'react';
+import styles from './MainPage.module.scss';
+import { SideBar } from '../../components/SideBar/SideBar';
 
 export const MainPage: FC = () => {
   return (
-    <div className="mainPage">
-      Main Page
+    <div className={styles.main}>
+      <SideBar />
     </div>
   );
 };

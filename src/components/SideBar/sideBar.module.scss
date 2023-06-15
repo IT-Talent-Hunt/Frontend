@@ -1,0 +1,19 @@
+.main {
+  width: 20vw;
+  height: fit-content;
+
+  padding: 24px;
+
+  background-color: #F6F6F6;
+}
+
+.heading__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading {
+  font-weight: 500;
+  font-size: 20px;
+}
