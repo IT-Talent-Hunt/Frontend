@@ -9,6 +9,7 @@ module.exports = {
     'react/self-closing-comp': 0,
     'react/display-name': 0,
     'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 0,
     'jsx-a11y/label-has-associated-control': 0,
 
     // JavaScript
