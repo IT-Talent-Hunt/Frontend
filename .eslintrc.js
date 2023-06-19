@@ -16,6 +16,7 @@ module.exports = {
     semi: 0,
     'no-proto': 0,
     'no-unused-vars': 0,
+    'linebreak-style': 0,
 
     // TypeScript
     '@typescript-eslint/no-unused-vars': ['error'],
