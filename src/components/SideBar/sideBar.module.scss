@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  min-width: 320px;
+  width: fit-content;
+  height: fit-content;
+
+  padding: 24px;
+
+  background-color: #F6F6F6;
+}
+
+.heading {
+  font-weight: 500;
+  font-size: 20px;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #CDCDCD;
+  }
+}

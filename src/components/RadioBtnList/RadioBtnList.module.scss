@@ -1,0 +1,48 @@
+.heading {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__ul {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+  
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.radio {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  color: #343A40;
+
+  background-color: #CDCDCD;
+
+  transition: all ease-in-out 0.2s;
+
+  &::before {
+    content: attr(data-content);
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+  }
+
+  &:checked {
+    background-color: #495057;
+    color: #ffffff;
+  }
+}
