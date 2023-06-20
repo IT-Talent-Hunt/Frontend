@@ -1,7 +1,14 @@
 .main {
   display: flex;
+  gap: 20px;
 
   height: 100%;
 
   padding: 32px 64px;
+}
+
+.grid__container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }

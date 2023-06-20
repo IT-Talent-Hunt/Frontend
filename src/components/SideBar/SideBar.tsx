@@ -51,7 +51,7 @@ export const SideBar: FC = () => {
     <div className={styles.main}>
       <div className={styles.heading__container}>
         <h4 className={styles.heading}>Filters</h4>
-        <button type="button" onClick={handleClearAll}>
+        <button type="button" onClick={handleClearAll} className={styles.clearAll}>
           Clear all
         </button>
       </div>

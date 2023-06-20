@@ -21,9 +21,8 @@
   }
 }
 
-
-
 .checkbox {
+  cursor: pointer;
   width: 24px;
   height: 24px;
 
@@ -34,4 +33,8 @@
     background-repeat: no-repeat;
     background-image: url('../../svg/Vector.svg');
   }
+}
+
+.label {
+  cursor: pointer;
 }
