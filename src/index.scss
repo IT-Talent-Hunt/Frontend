@@ -1,3 +1,7 @@
+$grid-columns: 2;
+$grid-rows: 4;
+$grid-gap: 20px;
+
 // reset.scss
 
 // Box-sizing
@@ -73,4 +77,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat($grid-columns, 1fr);
+  grid-template-rows: repeat($grid-rows, 1fr);
+  grid-gap: $grid-gap;
+  
+  // Add additional styling if needed
+  // For example, to center the items within each cell
+  align-items: center;
+  justify-items: center;
 }
