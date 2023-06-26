@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import styles from './ProjectCard.module.scss';
 import favorite from '../../svg/heartEmpty.svg';
@@ -17,10 +17,22 @@ export const ProjectCard: FC<ProjectCardProps> = (
     isFavorite,
   },
 ) => {
+  const [showModal, setShowModal] = useState(false);
   const shortDescp = truncateText(description, 120);
 
+  const handleCardClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+    const target = evt.target as HTMLDivElement;
+    const hasCardClass = target.classList.contains(styles.card);
+
+    if (hasCardClass) {
+      setShowModal(true);
+    }
+  };
+
   return (
-    <div className={styles.card}>
+    /* The <div> element has a child <button> element that allows keyboard interaction */
+    /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
+    <div className={styles.card} onClick={handleCardClick} onKeyDown={() => {}}>
       <div className={styles.heading}>
         <div className={styles.heading__container}>
           <h2 className={styles.title}>{title}</h2>
