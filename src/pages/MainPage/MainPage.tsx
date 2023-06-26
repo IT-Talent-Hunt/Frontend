@@ -10,7 +10,7 @@ export const MainPage: FC = () => {
       id: 1,
       title: 'Taskify',
       status: 'In progress',
-      owner: 'Joe Biden',
+      owner: 'Vatalik',
       members: 4,
       maxMembers: 5,
       isFavorite: true,
