@@ -11,48 +11,34 @@ import
 // import classnames from 'classnames';
 import styles from './EditProject.module.scss';
 import { MemberItem } from './MemberItem';
+import { PositionItem } from './PositionItem';
 
 interface Person {
   name: string;
   role: string;
+  id: number;
 }
 
-interface Data {
-  [key: string]: Person;
-}
-
-const dataMembers: Data = {
-  1: { name: 'Vitalii Rudenko', role: 'UI/UX Designer' },
-  2: { name: 'Pavel Ohiiko', role: 'Front-end developer' },
-  3: { name: 'Oleh Ivanuk', role: 'Front-end developer' },
-  4: { name: 'Artem Rymarchuk', role: 'Back-end developer' },
-  5: { name: 'Ivan Kucher', role: 'QA engineer' },
-  6: { name: '', role: 'QA engineer' },
-};
-
-const dataMembersArray: {
-  id: string,
-  name: string,
-  role: string
-}[] = Object.keys(dataMembers).map(key => ({
-  id: key,
-  name: dataMembers[key].name,
-  role: dataMembers[key].role,
-}));
+const dataMembers: Person[] = [
+  { id: 1, name: 'Vitalii Rudenko', role: 'UI/UX Designer' },
+  { id: 2, name: 'Pavel Ohiiko', role: 'Front-end developer' },
+  { id: 3, name: 'Oleh Ivanuk', role: 'Front-end developer' },
+  { id: 4, name: 'Artem Rymarchuk', role: 'Back-end developer' },
+  { id: 5, name: 'Ivan Kucher', role: 'QA engineer' },
+  { id: 6, name: '', role: 'QA engineer' },
+];
 
 export const EditProject: FC = () => {
   const [name, setName] = useState('Taskify');
   const [description, setDescription] = useState('"Taskify" is a simple web application with a user-friendly interface for task management. Users can create, track, and update their tasks, assign priorities, and set deadlines. The application also allows for collaborative task management, where teams can communicate and share files. The project\'s goal is to create a straightforward, efficient, and intuitive solution for task management to enhance productivity and organization in the work environment.');
-  const [members, setMembers] = useState(dataMembersArray);
+  const [members, setMembers] = useState(dataMembers);
   const [messenger, setMessenger] = useState('Telegram');
   const [link, setLink] = useState('');
+  const [newPosition, setNewPosition] = useState(true);
 
-  const removeMember = async (memberId: string) => {
+  const removeMember = async (memberId: number) => {
     setMembers(prevMembers => prevMembers.filter(({ id }) => id !== memberId));
   };
-
-  // eslint-disable-next-line no-console
-  console.log(dataMembersArray);
 
   // const projectRole = ['UI/UX designer',
   // 'Front-end developer', 'Back-end developer',
@@ -83,6 +69,10 @@ export const EditProject: FC = () => {
 
   const handleCancel = async (event: React.FormEvent) => {
     event.preventDefault();
+  };
+
+  const handleClickPlus = () => {
+    setNewPosition(!newPosition);
   };
 
   const handleChangeMessenger = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -148,6 +138,25 @@ export const EditProject: FC = () => {
                   />
                 );
               })}
+              {newPosition && (
+                <PositionItem />
+              )}
+              <div className={styles.position}>
+                <label
+                  htmlFor="addPositionButton"
+                  className={styles.position__label}
+                >
+                  Add position
+                </label>
+                <button
+                  className={styles.position__button}
+                  id="addPositionButton"
+                  type="button"
+                  onClick={handleClickPlus}
+                >
+                  +
+                </button>
+              </div>
             </li>
             <li className={`${styles.list__item} ${styles.item} ${styles.communication}`}>
               <div className={styles.item__title}>Communication</div>

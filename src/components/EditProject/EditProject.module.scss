@@ -22,8 +22,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 
   &__header {
     font-size: 32px;
@@ -138,4 +136,23 @@
   width: 459px;
 }
 
+.position {
+  margin-top: 16px;
+  display: flex;
+  font-weight: 700;
+
+  &__label{
+    line-height: 24px;
+    cursor: pointer;
+  }
+
+  &__button {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+}
 

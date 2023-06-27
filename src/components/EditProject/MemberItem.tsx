@@ -4,12 +4,12 @@ import styles from './MemberItem.module.scss';
 interface Person {
   name: string;
   role: string;
-  id: string;
+  id: number;
 }
 
 type Props = {
   member: Person;
-  removeMember: (id: string) => Promise<void>,
+  removeMember: (id: number) => Promise<void>,
 };
 
 export const MemberItem: FC<Props> = ({ member, removeMember }) => {
@@ -21,8 +21,6 @@ export const MemberItem: FC<Props> = ({ member, removeMember }) => {
 
   const handleKick = () => {
     removeMember(id);
-    // eslint-disable-next-line no-console
-    console.log(id);
   };
 
   return (
