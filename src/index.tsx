@@ -8,6 +8,7 @@ import { App } from './App';
 import { SignInPage } from './pages/SignInPage/SignInPage';
 import { MainPage } from './pages/MainPage/MainPage';
 import { ProjectPage } from './components/ProjectPage/ProjectPage';
+import { EditProject } from './components/EditProject/EditProject';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.render(
           <Route path="main" element={<Navigate to="../" replace />} />
           <Route index element={<MainPage />} />
           <Route path="project" element={<ProjectPage />} />
+          <Route path="edit_project" element={<EditProject />} />
 
           <Route path="signIn" element={<SignInPage />} />
         </Route>
