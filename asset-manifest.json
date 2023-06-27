@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "./static/css/main.1932e697.chunk.css",
-    "main.js": "./static/js/main.e08ec74c.chunk.js",
-    "main.js.map": "./static/js/main.e08ec74c.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.b3a035d9.js",
-    "runtime-main.js.map": "./static/js/runtime-main.b3a035d9.js.map",
-    "static/js/2.a3e68732.chunk.js": "./static/js/2.a3e68732.chunk.js",
-    "static/js/2.a3e68732.chunk.js.map": "./static/js/2.a3e68732.chunk.js.map",
-    "index.html": "./index.html",
-    "static/css/main.1932e697.chunk.css.map": "./static/css/main.1932e697.chunk.css.map",
-    "static/js/2.a3e68732.chunk.js.LICENSE.txt": "./static/js/2.a3e68732.chunk.js.LICENSE.txt",
-    "static/media/CheckBoxList.module.scss": "./static/media/Vector.80ceb26c.svg",
-    "static/media/bell.da8ec108.svg": "./static/media/bell.da8ec108.svg",
-    "static/media/ProjectCard.module.scss": "./static/media/users.b69ad740.svg",
-    "static/media/heartEmpty.e5fc67d4.svg": "./static/media/heartEmpty.e5fc67d4.svg",
-    "static/media/profile.a25953c7.svg": "./static/media/profile.a25953c7.svg",
-    "static/media/search.f2a3f9f7.svg": "./static/media/search.f2a3f9f7.svg"
+    "main.css": "/Frontend/static/css/main.d92c622c.chunk.css",
+    "main.js": "/Frontend/static/js/main.e08ec74c.chunk.js",
+    "main.js.map": "/Frontend/static/js/main.e08ec74c.chunk.js.map",
+    "runtime-main.js": "/Frontend/static/js/runtime-main.47bb7098.js",
+    "runtime-main.js.map": "/Frontend/static/js/runtime-main.47bb7098.js.map",
+    "static/js/2.a3e68732.chunk.js": "/Frontend/static/js/2.a3e68732.chunk.js",
+    "static/js/2.a3e68732.chunk.js.map": "/Frontend/static/js/2.a3e68732.chunk.js.map",
+    "index.html": "/Frontend/index.html",
+    "static/css/main.d92c622c.chunk.css.map": "/Frontend/static/css/main.d92c622c.chunk.css.map",
+    "static/js/2.a3e68732.chunk.js.LICENSE.txt": "/Frontend/static/js/2.a3e68732.chunk.js.LICENSE.txt",
+    "static/media/CheckBoxList.module.scss": "/Frontend/static/media/Vector.80ceb26c.svg",
+    "static/media/bell.da8ec108.svg": "/Frontend/static/media/bell.da8ec108.svg",
+    "static/media/ProjectCard.module.scss": "/Frontend/static/media/users.b69ad740.svg",
+    "static/media/heartEmpty.e5fc67d4.svg": "/Frontend/static/media/heartEmpty.e5fc67d4.svg",
+    "static/media/profile.a25953c7.svg": "/Frontend/static/media/profile.a25953c7.svg",
+    "static/media/search.f2a3f9f7.svg": "/Frontend/static/media/search.f2a3f9f7.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.b3a035d9.js",
+    "static/js/runtime-main.47bb7098.js",
     "static/js/2.a3e68732.chunk.js",
-    "static/css/main.1932e697.chunk.css",
+    "static/css/main.d92c622c.chunk.css",
     "static/js/main.e08ec74c.chunk.js"
   ]
 }
