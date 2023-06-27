@@ -1,5 +1,5 @@
 {
-  "homepage": ".",
+  "homepage": "https://it-talent-hunt.github.io/Frontend/",
   "name": "it-talent-hunt",
   "version": "0.1.0",
   "dependencies": {
@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -b main -d build"
   },
   "eslintConfig": {
     "extends": [
