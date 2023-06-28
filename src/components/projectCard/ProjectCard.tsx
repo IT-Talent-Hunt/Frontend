@@ -6,10 +6,15 @@ import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import styles from './ProjectCard.module.scss';
 import favorite from '../../svg/heartEmpty.svg';
 import { truncateText } from '../../helpers/truncateText';
-import { ProjectModal } from '../ProjectModal/ProjectModal';
 
-export const ProjectCard: FC<ProjectCardProps> = (
+interface Props extends ProjectCardProps {
+  id: number;
+  onClick: (id: number) => void;
+}
+
+export const ProjectCard: FC<Props> = (
   {
+    id,
     title,
     owner,
     status,
@@ -18,14 +23,10 @@ export const ProjectCard: FC<ProjectCardProps> = (
     description,
     creationDate,
     isFavorite,
+    onClick,
   },
 ) => {
-  const [showModal, setShowModal] = useState(false);
   const shortDescp = truncateText(description, 120);
-
-  const handleCardClick = () => {
-    setShowModal(true);
-  };
 
   const handleApplyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation(); // Prevent click event from bubbling up to the card
@@ -38,20 +39,7 @@ export const ProjectCard: FC<ProjectCardProps> = (
   return (
     /* The <div> element has a child <button> element that allows keyboard interaction */
     /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
-    <div className={styles.card} onClick={handleCardClick} onKeyDown={() => { }}>
-      {showModal && (
-        <ProjectModal
-          title={title}
-          status={status}
-          owner={owner}
-          members={members}
-          maxMembers={maxMembers}
-          isFavorite={isFavorite}
-          creationDate={creationDate}
-          description={description}
-          setShowModal={setShowModal}
-        />
-      )}
+    <div className={styles.card} onClick={() => onClick(id)} onKeyDown={() => { }}>
       <div className={styles.heading}>
         <div className={styles.heading__container}>
           <h2 className={styles.title}>{title}</h2>

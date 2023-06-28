@@ -6,7 +6,7 @@ import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import favorite from '../../svg/heartEmpty.svg';
 
 interface Props extends ProjectCardProps {
-  setShowModal: (value: React.SetStateAction<boolean>) => void;
+  onClick: (value: React.SetStateAction<boolean>) => void;
 }
 
 export const ProjectModal: FC<Props> = ({
@@ -18,11 +18,12 @@ export const ProjectModal: FC<Props> = ({
   description,
   creationDate,
   isFavorite,
-  setShowModal,
+  onClick,
 }) => {
   return (
-    <div className={styles.modal}>
-      <div className={styles.background} onClick={() => setShowModal(false)}>
+    <div className={styles.container}>
+      <div className={styles.background} onClick={() => onClick(false)}></div>
+      <div className={styles.modal}>
         <div className={styles.heading}>
           <div className={styles.heading__container}>
             <h2 className={styles.title}>{title}</h2>
