@@ -2,13 +2,10 @@ import
 {
   ChangeEvent,
   FC,
-  // SetStateAction,
   useEffect,
   useRef,
   useState,
 } from 'react';
-// import Chips from 'react-chips';
-// import classnames from 'classnames';
 import styles from './EditProject.module.scss';
 import { MemberItem } from './MemberItem';
 import { PositionItem } from './PositionItem';
@@ -25,24 +22,15 @@ const dataMembers: Person[] = [
   { id: 3, name: 'Oleh Ivanuk', role: 'Front-end developer' },
   { id: 4, name: 'Artem Rymarchuk', role: 'Back-end developer' },
   { id: 5, name: 'Ivan Kucher', role: 'QA engineer' },
-  { id: 6, name: '', role: 'QA engineer' },
 ];
 
 export const EditProject: FC = () => {
   const [name, setName] = useState('Taskify');
   const [description, setDescription] = useState('"Taskify" is a simple web application with a user-friendly interface for task management. Users can create, track, and update their tasks, assign priorities, and set deadlines. The application also allows for collaborative task management, where teams can communicate and share files. The project\'s goal is to create a straightforward, efficient, and intuitive solution for task management to enhance productivity and organization in the work environment.');
-  const [members, setMembers] = useState(dataMembers);
+  const [members, setMembers] = useState<Person[]>(dataMembers);
   const [messenger, setMessenger] = useState('Telegram');
   const [link, setLink] = useState('');
-  const [newPosition, setNewPosition] = useState(true);
-
-  const removeMember = async (memberId: number) => {
-    setMembers(prevMembers => prevMembers.filter(({ id }) => id !== memberId));
-  };
-
-  // const projectRole = ['UI/UX designer',
-  // 'Front-end developer', 'Back-end developer',
-  // 'QA engineer', 'Project-manager', 'DevOps', 'Mentor'];
+  const [newPosition, setNewPosition] = useState<boolean>(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -54,6 +42,20 @@ export const EditProject: FC = () => {
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [description]);
+
+  const removeMember = async (memberId: number) => {
+    setMembers(prevMembers => prevMembers.filter(({ id }) => id !== memberId));
+  };
+
+  const updateMembers = async (position: string) => {
+    const newMember = {
+      name: '',
+      role: position,
+      id: (new Date()).getTime(),
+    };
+
+    setMembers([...members, newMember]);
+  };
 
   const cleareForm = () => {
     setName('');
@@ -94,6 +96,15 @@ export const EditProject: FC = () => {
   return (
     <div className={styles.newProject__wrapper}>
       <div className={styles.newProject__container}>
+        <span>
+          <button
+            type="button"
+            className={styles.newProject__BtnBack}
+            onClick={handleCancel}
+          >
+            &lt; Back
+          </button>
+        </span>
         <form
           className={`${styles.newProject__form} ${styles.form}`}
           onSubmit={handleSave}
@@ -139,7 +150,10 @@ export const EditProject: FC = () => {
                 );
               })}
               {newPosition && (
-                <PositionItem />
+                <PositionItem
+                  updateMembers={updateMembers}
+                  handleClickPlus={handleClickPlus}
+                />
               )}
               <div className={styles.position}>
                 <label

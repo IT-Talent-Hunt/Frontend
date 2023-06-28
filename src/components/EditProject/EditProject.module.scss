@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .newProject__container {
@@ -17,6 +18,17 @@
   padding: 32px 24px;
 
   background-color: #F7F7F7;
+  
+}
+
+.newProject__BtnBack {
+  color: #000;
+  text-align: center;
+  font-size: 18px;
+  font-family: Roboto;
+  position: absolute;
+  top: 0;
+  left: 2%;
 }
 
 .form {
