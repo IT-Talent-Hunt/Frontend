@@ -7,7 +7,7 @@ export const validation = (state: FormState): FormState => {
     confirmPassword: '',
   };
 
-  const email_pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
   if (state.email === '') {
@@ -25,6 +25,9 @@ export const validation = (state: FormState): FormState => {
   if (state.confirmPassword === '' || state.confirmPassword !== state.password) {
     errors.confirmPassword = 'Passwords aren`t matching';
   }
+
+  /* eslint-disable-next-line */
+  console.log('v', errors);
 
   return errors;
 };
