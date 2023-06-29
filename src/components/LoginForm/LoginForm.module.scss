@@ -22,12 +22,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 
   // gap: 16px;
 
-  .input:last-of-type {
-    margin-bottom: 28px;
-  }
+  // .input:last-of-type {
+  //   margin-bottom: 20px;
+  // }
 }
 
 .header {
@@ -41,22 +42,49 @@
 
   padding: 15px 16px;
 
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
 
   background-color: #fff;
 
   font-size: 18px;
 
+  border: 1px solid transparent;
+
   ::placeholder {
     color: #ADB5BD;
+  }
+
+  &__error {
+    border-color: red;
+
+    &_message {
+      color: red;
+      font-size: 10px;
+
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -13px;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+    }
   }
 }
 
 .label {
-  align-self: flex-start;
+  // align-self: flex-start;
 
   margin-bottom: 4px;
+
+  position: relative;
 }
+
+// #password {
+//   margin-bottom: 8px;
+// }
 
 .button {
   height: 43px;
