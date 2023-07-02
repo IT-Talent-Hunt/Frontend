@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/Frontend/static/css/main.bbdea895.chunk.css",
+    "main.css": "/Frontend/static/css/main.88313551.chunk.css",
     "main.js": "/Frontend/static/js/main.bbdad218.chunk.js",
     "main.js.map": "/Frontend/static/js/main.bbdad218.chunk.js.map",
     "runtime-main.js": "/Frontend/static/js/runtime-main.47bb7098.js",
@@ -8,7 +8,7 @@
     "static/js/2.6cd30419.chunk.js": "/Frontend/static/js/2.6cd30419.chunk.js",
     "static/js/2.6cd30419.chunk.js.map": "/Frontend/static/js/2.6cd30419.chunk.js.map",
     "index.html": "/Frontend/index.html",
-    "static/css/main.bbdea895.chunk.css.map": "/Frontend/static/css/main.bbdea895.chunk.css.map",
+    "static/css/main.88313551.chunk.css.map": "/Frontend/static/css/main.88313551.chunk.css.map",
     "static/js/2.6cd30419.chunk.js.LICENSE.txt": "/Frontend/static/js/2.6cd30419.chunk.js.LICENSE.txt",
     "static/media/CheckBoxList.module.scss": "/Frontend/static/media/Vector.80ceb26c.svg",
     "static/media/bell.da8ec108.svg": "/Frontend/static/media/bell.da8ec108.svg",
@@ -20,7 +20,7 @@
   "entrypoints": [
     "static/js/runtime-main.47bb7098.js",
     "static/js/2.6cd30419.chunk.js",
-    "static/css/main.bbdea895.chunk.css",
+    "static/css/main.88313551.chunk.css",
     "static/js/main.bbdad218.chunk.js"
   ]
 }
