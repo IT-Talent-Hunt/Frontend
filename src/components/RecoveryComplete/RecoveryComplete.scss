@@ -1,0 +1,32 @@
+@import '../../helpers/helpers.scss';
+
+.recoveryComplete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: calc(100vh - 60px);
+
+  &__wrapper {
+    background-color: #F7F7F7;
+    padding: 20px;
+    padding-bottom: 0;
+    width: 90%;
+
+    @include tablet() {
+      width: 60%;
+    }
+
+    @include desktop() {
+      width: 50%;
+    }
+  }
+
+  &__title {
+    &-sub {
+      margin-top: 10px;
+      color: #495057;
+      font-weight: 600;
+    }
+  }
+}

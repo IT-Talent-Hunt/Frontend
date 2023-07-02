@@ -8,6 +8,8 @@ import { App } from './App';
 import { SignInPage } from './pages/SignInPage/SignInPage';
 import { MainPage } from './pages/MainPage/MainPage';
 import { ProjectPage } from './components/ProjectPage/ProjectPage';
+import { PasswordRecovery } from './components/PasswordRecovery/PasswordRecovery';
+import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +21,8 @@ ReactDOM.render(
           <Route path="project" element={<ProjectPage />} />
 
           <Route path="signIn" element={<SignInPage />} />
+          <Route path="recovery" element={<PasswordRecovery />} />
+          <Route path="recoveryComplete" element={<RecoveryComplete />} />
         </Route>
       </Routes>
     </HashRouter>
