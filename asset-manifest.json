@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Frontend/static/css/main.4eecfd18.chunk.css",
-    "main.js": "/Frontend/static/js/main.1d5ee268.chunk.js",
-    "main.js.map": "/Frontend/static/js/main.1d5ee268.chunk.js.map",
+    "main.css": "/Frontend/static/css/main.250bb7be.chunk.css",
+    "main.js": "/Frontend/static/js/main.2a500b12.chunk.js",
+    "main.js.map": "/Frontend/static/js/main.2a500b12.chunk.js.map",
     "runtime-main.js": "/Frontend/static/js/runtime-main.47bb7098.js",
     "runtime-main.js.map": "/Frontend/static/js/runtime-main.47bb7098.js.map",
-    "static/js/2.a2def536.chunk.js": "/Frontend/static/js/2.a2def536.chunk.js",
-    "static/js/2.a2def536.chunk.js.map": "/Frontend/static/js/2.a2def536.chunk.js.map",
+    "static/js/2.3d1536e9.chunk.js": "/Frontend/static/js/2.3d1536e9.chunk.js",
+    "static/js/2.3d1536e9.chunk.js.map": "/Frontend/static/js/2.3d1536e9.chunk.js.map",
     "index.html": "/Frontend/index.html",
-    "static/css/main.4eecfd18.chunk.css.map": "/Frontend/static/css/main.4eecfd18.chunk.css.map",
-    "static/js/2.a2def536.chunk.js.LICENSE.txt": "/Frontend/static/js/2.a2def536.chunk.js.LICENSE.txt",
+    "static/css/main.250bb7be.chunk.css.map": "/Frontend/static/css/main.250bb7be.chunk.css.map",
+    "static/js/2.3d1536e9.chunk.js.LICENSE.txt": "/Frontend/static/js/2.3d1536e9.chunk.js.LICENSE.txt",
     "static/media/CheckBoxList.module.scss": "/Frontend/static/media/Vector.80ceb26c.svg",
     "static/media/arrow-left.dfa142d2.svg": "/Frontend/static/media/arrow-left.dfa142d2.svg",
     "static/media/bell.da8ec108.svg": "/Frontend/static/media/bell.da8ec108.svg",
@@ -22,8 +22,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.47bb7098.js",
-    "static/js/2.a2def536.chunk.js",
-    "static/css/main.4eecfd18.chunk.css",
-    "static/js/main.1d5ee268.chunk.js"
+    "static/js/2.3d1536e9.chunk.js",
+    "static/css/main.250bb7be.chunk.css",
+    "static/js/main.2a500b12.chunk.js"
   ]
 }
