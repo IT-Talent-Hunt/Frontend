@@ -6,6 +6,7 @@ import styles from './LoginForm.module.scss';
 import { InputField } from '../InputField/InputField';
 import { passwordValidate, confirmPasswordValidate, emailValidate } from '../../helpers/validation';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+import { Container } from '../Container/Container';
 
 import 'boxicons';
 
@@ -58,7 +59,11 @@ export const LoginForm: FC = () => {
     }
 
     if (isValidForms) {
-      navigate('/main');
+      if (isSigningUp) {
+        navigate('/profileCreate');
+      } else {
+        navigate('/main');
+      }
     }
   };
 
@@ -120,76 +125,72 @@ export const LoginForm: FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.shell}>
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <h1 className={styles.header}>Sign in</h1>
+    <section className={styles.container}>
+      <Container>
+        <form onSubmit={handleSubmit} className={styles.form} method="get">
+          <h1 className={styles.header}>Sign in</h1>
 
-            <InputField
-              input={inputEmail}
-              onBlur={onBlurHandler}
-              setValue={setEmail}
-              setIsValueDirty={setIsEmailDirty}
-            />
+          <InputField
+            input={inputEmail}
+            onBlur={onBlurHandler}
+            setValue={setEmail}
+            setIsValueDirty={setIsEmailDirty}
+          />
 
-            <InputField
-              input={inputPassword}
-              onBlur={onBlurHandler}
-              setValue={setPassword}
-              setIsValueDirty={setIsPasswordlDirty}
-              isSignedUp={isSigningUp}
-            />
+          <InputField
+            input={inputPassword}
+            onBlur={onBlurHandler}
+            setValue={setPassword}
+            setIsValueDirty={setIsPasswordlDirty}
+            isSignedUp={isSigningUp}
+          />
 
-            {isSigningUp && (
-              <>
-                <InputField
-                  input={inputConfirmPassword}
-                  onBlur={onBlurHandler}
-                  setValue={setConfirmPassword}
-                  setIsValueDirty={setIsConfirmPasswordDirty}
-                />
+          {isSigningUp && (
+            <>
+              <InputField
+                input={inputConfirmPassword}
+                onBlur={onBlurHandler}
+                setValue={setConfirmPassword}
+                setIsValueDirty={setIsConfirmPasswordDirty}
+              />
+            </>
+          )}
 
-              </>
-            )}
+          <CompleteButton
+            title={isSigningUp ? 'Sign up' : 'Sign in'}
+            isDisabled={isValidForms}
+          />
+        </form>
 
-            <CompleteButton
-              title={isSigningUp ? 'Sign up' : 'Sign in'}
-              isDisabled={isValidForms}
-            />
+        <p className={styles.p}>
+          {isSigningUp ? (
+            <span>Don&apos;t have an account yet?&nbsp;</span>
+          ) : (
+            <span>Have an account?&nbsp;</span>
+          )}
 
-          </form>
+          <span
+            className={styles.link}
+            onClick={() => {
+              if (isSigningUp) {
+                setIsSigningUp(false);
+              } else {
+                setIsSigningUp(true);
+              }
+            }}
+            onKeyDown={(evt) => handleKeyDown(evt)}
+            role="link"
+            tabIndex={0}
+          >
 
-          <span className={styles.span}>
             {isSigningUp ? (
-              <span>Don&apos;t have an account yet?&nbsp;</span>
+              <span>Sign in </span>
             ) : (
-              <span>Have an account?&nbsp;</span>
+              <span>Register now</span>
             )}
-
-            <span
-              className={styles.link}
-              onClick={() => {
-                if (isSigningUp) {
-                  setIsSigningUp(false);
-                } else {
-                  setIsSigningUp(true);
-                }
-              }}
-              onKeyDown={(evt) => handleKeyDown(evt)}
-              role="link"
-              tabIndex={0}
-            >
-
-              {isSigningUp ? (
-                <span>Sign in </span>
-              ) : (
-                <span>Register now</span>
-              )}
-            </span>
           </span>
-        </div>
-      </div>
-    </div>
+        </p>
+      </Container>
+    </section>
   );
 };

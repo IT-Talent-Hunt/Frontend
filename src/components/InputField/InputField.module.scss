@@ -1,0 +1,96 @@
+@import '../../helpers/helpers.scss';
+
+.input {
+  width: 100%;
+  height: 35px;
+  background-color: #fff;
+  font-size: 18px;
+  border: 1px solid transparent;
+  
+  ::placeholder {
+    color: #ADB5BD;
+  }
+  
+  @include tablet() {
+    height: 41px;
+  }
+  
+  @include desktop() {
+    height: 51px;
+  }
+  
+  &__error {
+    border-color: red;
+  
+    &_message {
+      color: red;
+      font-size: 10px;
+      width: 100%;
+      text-align: left;
+  
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -13px;
+  
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+}
+
+.label {
+  margin-bottom: 4px;
+
+  position: relative;
+  width: 100%;
+  // max-width: 400px;
+}
+
+.link {
+  &_recovery {
+      position: absolute;
+      right: 0;
+      bottom: -23px;
+      font-size: 12px;
+  
+      @include tablet() {
+        font-size: 14px;
+      }
+  
+      @include desktop() {
+        font-size: 16px;
+      }
+    }
+}
+
+.img {
+  &__eye {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+
+    transform: scale(.7);
+  
+    background-repeat: no-repeat;
+
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+
+    @include tablet() {
+      right: 12px;
+      bottom: 8px;
+      transform: scale(.8);
+
+    }
+
+    @include desktop() {
+      bottom: 12px;
+      right: 15px;
+      transform: scale(.9);
+    }
+  }
+}

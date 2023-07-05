@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
-import styles from '../LoginForm/LoginForm.module.scss';
+import styles from './InputField.module.scss';
 
 import eyeOpen from '../../svg/eye-open.svg';
 import eyeLock from '../../svg/eye-locked.svg';

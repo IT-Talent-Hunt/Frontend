@@ -5,6 +5,7 @@ import { BackTo } from '../BackTo/BackTo';
 import { emailValidate } from '../../helpers/validation';
 import { InputField } from '../InputField/InputField';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+import { Container } from '../Container/Container';
 
 export const PasswordRecovery = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +30,10 @@ export const PasswordRecovery = () => {
 
   const isValid = !isEmailDirty && !!email;
 
-  const onSubmit = () => {
+  const onSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    emailValidate(email, setIsEmailDirty, setEmailMessage);
+
     if (isValid) {
       navigation('/recoveryComplete');
     }
@@ -37,9 +41,11 @@ export const PasswordRecovery = () => {
 
   return (
     <section className="recovery">
-      <div className="recovery__wrapper">
-        <BackTo />
-        <div className="recovery__shell">
+      <Container>
+        <form action="" onSubmit={(event) => onSubmit(event)}>
+          <div className="recovery__back">
+            <BackTo />
+          </div>
           <h1 className="recovery__title">Password recovery</h1>
           <p className="recovery__title_sub">
             {
@@ -56,9 +62,9 @@ export const PasswordRecovery = () => {
             setIsValueDirty={setIsEmailDirty}
           />
 
-          <CompleteButton title="Send" isDisabled={isValid} onClick={onSubmit} />
-        </div>
-      </div>
+          <CompleteButton title="Send" isDisabled={isValid} />
+        </form>
+      </Container>
     </section>
   );
 };

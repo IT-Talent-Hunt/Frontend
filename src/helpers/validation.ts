@@ -80,3 +80,27 @@ export const confirmPasswordValidate = (
     setMessage('Passwords aren`t matching');
   }
 };
+
+export const nameValidation = (
+  nameData: string,
+  nameType: string,
+  setIsValueDirty: (value: boolean) => void,
+  setValueMessage: (value: string) => void,
+) => {
+  const preparetedName = nameType[0].toUpperCase() + nameType.slice(1);
+
+  if (nameType === 'position') {
+    if (nameData.trim() === '') {
+      setIsValueDirty(true);
+      setValueMessage(`${preparetedName} should be selected`);
+    }
+  } else if (nameData.trim() !== '') {
+    if (nameData[0] !== nameData[0].toUpperCase()) {
+      setIsValueDirty(true);
+      setValueMessage(`The ${nameType} should start with the upper case letter`);
+    }
+  } else {
+    setIsValueDirty(true);
+    setValueMessage(`${preparetedName} should not be empty`);
+  }
+};

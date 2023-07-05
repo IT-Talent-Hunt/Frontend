@@ -12,6 +12,7 @@
     padding: 20px;
     padding-bottom: 0;
     width: 90%;
+    max-width: 600px;
 
     @include tablet() {
       width: 60%;
