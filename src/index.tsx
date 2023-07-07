@@ -11,6 +11,7 @@ import { ProjectPage } from './components/ProjectPage/ProjectPage';
 import { PasswordRecovery } from './components/PasswordRecovery/PasswordRecovery';
 import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
 import { CreateProfile } from './components/CreateProfile/CreateProfile';
+import { SignUp } from './pages/SignUpPage/SignUp';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.render(
           <Route path="recovery" element={<PasswordRecovery />} />
           <Route path="recoveryComplete" element={<RecoveryComplete />} />
           <Route path="profileCreate" element={<CreateProfile />} />
+          <Route path="signUp" element={<SignUp />} />
         </Route>
       </Routes>
     </HashRouter>

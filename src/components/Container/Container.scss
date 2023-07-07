@@ -1,26 +1,31 @@
 @import '../../helpers/helpers.scss';
 
 .containerC {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(#7b69ed, #fcffd7);
 
-  height: calc(100vh - 60px);
-  margin: 0 auto;
-
-  width: 90%;
-
-  @include tablet() {
-    width: 70%;
-  }
+  &__suit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   
-  @include desktop() {
-    width: 50%;
+    height: calc(100vh - 60px);
+    margin: 0 auto;
+  
+    width: 90%;
+  
+    @include tablet() {
+      width: 70%;
+    }
+    
+    @include desktop() {
+      width: 50%;
+    }
   }
 
   &__wrapper {
-    background-color: #F7F7F7;
+    background-color: #fff;
+    border-radius: 10px;
     padding: 32px;
     width: 100%;
   }

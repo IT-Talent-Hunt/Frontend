@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './RecoveryComplete.scss';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+import { Container } from '../Container/Container';
 
 export const RecoveryComplete = () => {
   const navigation = useNavigate();
@@ -12,7 +13,7 @@ export const RecoveryComplete = () => {
 
   return (
     <section className="recoveryComplete">
-      <div className="recoveryComplete__wrapper">
+      <Container>
         <h1 className="recoveryComplete__title">
           Link send to your email!
         </h1>
@@ -22,7 +23,7 @@ export const RecoveryComplete = () => {
         </p>
 
         <CompleteButton title="Log in" onClick={onSubmit} />
-      </div>
+      </Container>
     </section>
   );
 };

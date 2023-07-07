@@ -8,9 +8,11 @@ type Props = {
 export const Container: React.FC<Props> = ({ children }) => {
   return (
     <div className="containerC">
-      <div className="containerC__wrapper">
-        <div className="containerC__shell">
-          {children}
+      <div className="containerC__suit">
+        <div className="containerC__wrapper">
+          <div className="containerC__shell">
+            {children}
+          </div>
         </div>
       </div>
     </div>

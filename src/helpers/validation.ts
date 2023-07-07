@@ -39,12 +39,16 @@ export const passwordValidate = (
 ) => {
   const PASS_REF = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
+  setDirty(true);
+
   if (pass.trim() === '') {
-    setDirty(true);
-    setMessage('Password should not be empty');
+    setMessage('The "Password" field is required. Please enter your password.');
+  } else if (pass.length < 8 || pass.length > 30) {
+    setMessage('The password must be 8-30 symbols long and contain only a-z Latin letters and digits.');
   } else if (!PASS_REF.test(pass)) {
-    setDirty(true);
-    setMessage('Should have capital, small letters and a number');
+    setMessage('"Password" field should contain upper, lower case letter and digits');
+  } else {
+    setDirty(false);
   }
 };
 
@@ -55,12 +59,16 @@ export const emailValidate = (
 ) => {
   const EMAIL_REF = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  setDirty(true);
+
   if (emailData.trim() === '') {
-    setDirty(true);
-    setMessage('Email should not be empty');
+    setMessage('The "Email" field is required');
+  } else if (emailData.length < 8 || emailData.length > 30) {
+    setMessage('The email must be 8-30 symbols long and contain only a-z Latin letters and digits.');
   } else if (!EMAIL_REF.test(emailData)) {
-    setDirty(true);
-    setMessage('Email is not valid');
+    setMessage('Please ensure that your email address is correctly formatted');
+  } else {
+    setDirty(false);
   }
 };
 
