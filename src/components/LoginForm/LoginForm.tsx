@@ -4,9 +4,6 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './LoginForm.module.scss';
-// import { FormState } from '../../Types/FormState';
-// import { validation } from '../../helpers/validation';
-// import 'boxicons';
 
 export const LoginForm: FC = () => {
   const [email, setEmail] = useState('');

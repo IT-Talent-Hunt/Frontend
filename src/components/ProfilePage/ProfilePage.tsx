@@ -12,10 +12,6 @@ export const ProfilePage = () => {
 
   const [about, setAbout] = useState('');
   const [isEditing, setIsEditing] = useState(true);
-  // const [progects, setProgects] = useState([]);
-  // const [history, setHistory] = useState([]);
-  // const [skills, setSlills] = useState([]);
-  // const [ongoing, setOngoing] = useState([]);
 
   const cleareForm = () => {
     setOwnerCurrent('');
