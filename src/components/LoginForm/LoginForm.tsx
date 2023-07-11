@@ -7,7 +7,6 @@ import { InputField } from '../InputField/InputField';
 import { passwordValidate, confirmPasswordValidate, emailValidate } from '../../helpers/validation';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 // import { Container } from '../Container/Container';
-
 import 'boxicons';
 
 type Props = {

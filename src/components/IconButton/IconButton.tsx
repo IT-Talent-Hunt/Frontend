@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import style from './IconButton.module.scss';
 
 type Props = {
@@ -7,12 +8,14 @@ type Props = {
 };
 
 export const IconButton: FC<Props> = ({ svg, submit = false }) => {
+  const navigate = useNavigate();
+
   return (
     <button
       type={submit ? 'submit' : 'button'}
       className={style.button}
       onClick={
-        submit ? () => {} : () => window.open('https://youtu.be/dQw4w9WgXcQ')
+        submit ? () => {} : () => navigate('profile')
       }
     >
       <div

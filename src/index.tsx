@@ -8,6 +8,7 @@ import { App } from './App';
 import { SignInPage } from './pages/SignInPage/SignInPage';
 import { MainPage } from './pages/MainPage/MainPage';
 import { ProjectPage } from './components/ProjectPage/ProjectPage';
+import { ProfilePage } from './components/ProfilePage/ProfilePage';
 import { EditProject } from './components/EditProject/EditProject';
 import { PasswordRecovery } from './components/PasswordRecovery/PasswordRecovery';
 import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
@@ -22,8 +23,8 @@ ReactDOM.render(
           <Route path="main" element={<Navigate to="../" replace />} />
           <Route index element={<MainPage />} />
           <Route path="project" element={<ProjectPage />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="edit_project" element={<EditProject />} />
-
           <Route path="signIn" element={<SignInPage />} />
           <Route path="recovery" element={<PasswordRecovery />} />
           <Route path="recoveryComplete" element={<RecoveryComplete />} />

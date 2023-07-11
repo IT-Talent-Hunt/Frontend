@@ -13,13 +13,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 45vw;
-  height: 40vh;
+  height: 47vh;
 
   z-index: 1;
 
   padding: 24px;
 
   background-color: #fff;
+  border-radius: 16px;
 }
 
 .background {
@@ -60,10 +61,10 @@
 
   padding: 0 10px;
 
-  color: #495057;
+  color:#1EB248;
   font-size: 14px;
-
-  border: 1px solid #ADB5BD;
+  
+  border: 1px solid #1EB248;
   border-radius: 50px;
 }
 
@@ -92,7 +93,7 @@
   justify-content: flex-start;
   align-items: center;
 
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 
   &__name {
     font-weight: 400;
@@ -125,6 +126,36 @@
 
     background-image: url('../../svg/users.svg');
   }
+
+  &__boxFase {
+    display: flex;
+    margin-bottom: 15px;
+  }
+
+  &__fase1 {
+    width:24px;
+    height: 24px;
+    margin-left: 3px;
+    background: url('../../svg/Icon.svg') no-repeat center, url('../../svg/Ellipse1.svg') no-repeat;
+  }
+  &__fase2 {
+    width:24px;
+    height: 24px;
+    margin-left: 3px;
+    background: url('../../svg/Icon.svg') no-repeat center, url('../../svg/Ellipse4.svg') no-repeat;
+  }
+  &__fase3 {
+    width:24px;
+    height: 24px;
+    margin-left: 3px;
+    background: url('../../svg/Icon.svg') no-repeat center, url('../../svg/Ellipse3.svg') no-repeat;
+  }
+  &__fase4 {
+    width:24px;
+    height: 24px;
+    margin-left: 3px;
+    background: url('../../svg/Icon.svg') no-repeat center, url('../../svg/Ellipse2.svg') no-repeat;
+  }
 }
 
 .description {
@@ -141,6 +172,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &__box {
+    display: flex;
+    gap: 16px;
+  }
 }
 
 .btn {
@@ -152,9 +188,8 @@
 
   width: 156px;
   height: 32px;
-
-  background-color: #343A40;
-
+  border-radius: 8px;
+  background-color:#7563ED;
   font-weight: 400;
   font-size: 16px;
   color: #fff;
@@ -187,4 +222,8 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+}
+
+.box {
+  padding: 5px 0 10px;
 }
