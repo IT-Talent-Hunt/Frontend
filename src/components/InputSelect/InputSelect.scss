@@ -1,6 +1,7 @@
 .inputSelect {
   &__list {
     // padding: 10px;
+    border-radius: 10px;
 
     width: 100%;
     display: flex;
@@ -10,7 +11,7 @@
     box-shadow: 0 4px 3px  #eee;
 
     position: absolute;
-    bottom: -80px;
+    bottom: -100px;
     max-height: 180px;
     overflow: auto;
 
@@ -34,16 +35,16 @@
 
     position: absolute;
 
-    bottom: 17px;
+    bottom: 13px;
     right: 15px;
 
-    transition: .2s;
-    transform: rotate(90deg);
+    transition: .5s;
+    transform: rotateX(0deg);
 
     &-move {
-      transition: .2s;
-      transform: rotate(0deg);
-      bottom: 13px;
+      transition: .5s;
+      transform: rotateX(180deg);
+      bottom: 20px;
     }
   }
 }

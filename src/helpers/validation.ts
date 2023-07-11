@@ -36,10 +36,12 @@ export const passwordValidate = (
   pass: string,
   setDirty: (value: boolean) => void,
   setMessage: (value: string) => void,
+  setIsSucces: (value: boolean) => void,
 ) => {
   const PASS_REF = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
   setDirty(true);
+  setIsSucces(false);
 
   if (pass.trim() === '') {
     setMessage('The "Password" field is required. Please enter your password.');
@@ -49,6 +51,7 @@ export const passwordValidate = (
     setMessage('"Password" field should contain upper, lower case letter and digits');
   } else {
     setDirty(false);
+    setIsSucces(true);
   }
 };
 
@@ -56,10 +59,13 @@ export const emailValidate = (
   emailData: string,
   setDirty: (value: boolean) => void,
   setMessage: (value: string) => void,
+  setIsSucces: (value: boolean) => void,
+
 ) => {
   const EMAIL_REF = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   setDirty(true);
+  setIsSucces(false);
 
   if (emailData.trim() === '') {
     setMessage('The "Email" field is required');
@@ -69,6 +75,7 @@ export const emailValidate = (
     setMessage('Please ensure that your email address is correctly formatted');
   } else {
     setDirty(false);
+    setIsSucces(true);
   }
 };
 
@@ -77,38 +84,59 @@ export const confirmPasswordValidate = (
   passwordData: string,
   setDirty: (value: boolean) => void,
   setMessage: (value: string) => void,
+  setIsSucces: (value: boolean) => void,
 ) => {
-  if (confirmPasswordData.trim() === '') {
-    setDirty(true);
-    setMessage('Password should not be empty');
-  }
+  setDirty(true);
+  setIsSucces(false);
 
-  if (confirmPasswordData !== passwordData) {
-    setDirty(true);
+  if (confirmPasswordData.trim() === '') {
+    setMessage('Password should not be empty');
+  } else if (confirmPasswordData !== passwordData) {
     setMessage('Passwords aren`t matching');
+  } else {
+    setDirty(false);
+    setIsSucces(true);
   }
 };
 
-export const nameValidation = (
-  nameData: string,
-  nameType: string,
+export const textValidation = (
+  textData: string,
+  textType: string,
   setIsValueDirty: (value: boolean) => void,
   setValueMessage: (value: string) => void,
+  setIsSucces: (value: boolean) => void,
 ) => {
-  const preparetedName = nameType[0].toUpperCase() + nameType.slice(1);
+  const preparetedName = textType[0].toUpperCase() + textType.slice(1);
 
-  if (nameType === 'position') {
-    if (nameData.trim() === '') {
-      setIsValueDirty(true);
-      setValueMessage(`${preparetedName} should be selected`);
-    }
-  } else if (nameData.trim() !== '') {
-    if (nameData[0] !== nameData[0].toUpperCase()) {
-      setIsValueDirty(true);
-      setValueMessage(`The ${nameType} should start with the upper case letter`);
-    }
+  setIsValueDirty(true);
+  setIsSucces(false);
+
+  if (textData.trim() === '') {
+    setValueMessage(`${preparetedName} should not empty`);
+  } else if (textData[0] !== textData[0].toUpperCase()) {
+    setValueMessage(`The ${textType} should start with the upper case letter`);
   } else {
-    setIsValueDirty(true);
-    setValueMessage(`${preparetedName} should not be empty`);
+    setIsValueDirty(false);
+    setIsSucces(true);
+  }
+};
+
+export const selectValidation = (
+  textData: string,
+  textType: string,
+  setIsValueDirty: (value: boolean) => void,
+  setValueMessage: (value: string) => void,
+  setIsSuccess: (value: boolean) => void,
+) => {
+  const preparetedName = textType[0].toUpperCase() + textType.slice(1);
+
+  setIsValueDirty(true);
+  setIsSuccess(false);
+
+  if (!textData) {
+    setValueMessage(`${preparetedName} should be selected`);
+  } else {
+    setIsValueDirty(false);
+    setIsSuccess(true);
   }
 };

@@ -3,13 +3,14 @@ export interface Select {
   name: string,
 };
 
-export interface InputField {
+export interface InputFieldType {
   id: number,
   type: string,
   name: string,
   value: string,
   message: string,
   isDirty: boolean,
+  isSuccess: boolean,
   text: string,
-  setlections?: Select[],
+  selections?: Select[],
 };

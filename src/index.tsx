@@ -20,7 +20,7 @@ ReactDOM.render(
     <HashRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="main" element={<Navigate to="../" replace />} />
+          <Route path="main" element={<Navigate to="/" replace />} />
           <Route index element={<MainPage />} />
           <Route path="project" element={<ProjectPage />} />
           <Route path="profile" element={<ProfilePage />} />

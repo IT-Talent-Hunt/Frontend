@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import { useState } from 'react';
 import styles from '../InputField/InputField.module.scss';
-import { InputField, Select } from '../../Types/InputField';
+import { InputFieldType } from '../../Types/InputField';
+import { List } from '../List/List';
 import './InputSelect.scss';
 import arrow from '../../svg/arrow-bottom.svg';
 
 type Props = {
-  input : InputField,
+  input : InputFieldType,
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void,
   setValue: (value: string) => void,
   setIsValueDirty: (value: boolean) => void,
@@ -28,8 +29,9 @@ export const InputSelect: React.FC<Props> = ({
     value,
     message,
     isDirty,
+    isSuccess,
     text,
-    setlections,
+    selections,
   } = input;
 
   const onPositionSelect = (selectName: string) => {
@@ -66,7 +68,9 @@ export const InputSelect: React.FC<Props> = ({
               name={name}
               value={value}
               onBlur={onBlur}
-              className={classNames(styles.input, { [styles.input__error]: isDirty })}
+              className={classNames(styles.input,
+                { [styles.input__error]: isDirty && !isSuccess },
+                { [styles.input__success]: !isDirty && isSuccess })}
               placeholder={hoveres}
               disabled={!!true}
               style={{ color: '#000' }}
@@ -81,6 +85,13 @@ export const InputSelect: React.FC<Props> = ({
           </span>
         )}
 
+        {isSuccess && (
+          <span className={styles.input__success_message}>
+            <i className="bx bx-check" />
+            <span>Success</span>
+          </span>
+        )}
+
         <button
           type="button"
         >
@@ -92,22 +103,7 @@ export const InputSelect: React.FC<Props> = ({
       </label>
 
       {isSeleted && (
-        <ul className="inputSelect__list">
-          {setlections?.map((selectEl: Select) => (
-            <button
-              type="button"
-              key={selectEl.id}
-              onClick={() => onPositionSelect(selectEl.name)}
-              className="inputSelect__item"
-              onMouseOver={() => onSelectHover(selectEl.name)}
-              onFocus={() => {}}
-            >
-              <li>
-                {selectEl.name}
-              </li>
-            </button>
-          ))}
-        </ul>
+        <List selections={selections || null} onSelect={onPositionSelect} onHover={onSelectHover} />
       )}
     </>
   );

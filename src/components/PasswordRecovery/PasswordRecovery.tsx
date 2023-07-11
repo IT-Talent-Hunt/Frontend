@@ -11,6 +11,7 @@ export const PasswordRecovery = () => {
   const [email, setEmail] = useState('');
   const [isEmailDirty, setIsEmailDirty] = useState(false);
   const [emailMessage, setEmailMessage] = useState('');
+  const [isEmailSuccess, setIsEmailSuccess] = useState(false);
 
   const navigation = useNavigate();
 
@@ -21,20 +22,21 @@ export const PasswordRecovery = () => {
     value: email,
     message: emailMessage,
     isDirty: isEmailDirty,
+    isSuccess: isEmailSuccess,
     text: 'Email',
   };
 
   const onBlurHandler = () => {
-    emailValidate(email, setIsEmailDirty, setEmailMessage);
+    emailValidate(email, setIsEmailDirty, setEmailMessage, setIsEmailSuccess);
   };
 
-  const isValid = !isEmailDirty && !!email;
+  // const isValid = !!isEmailSuccess;
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    emailValidate(email, setIsEmailDirty, setEmailMessage);
+    emailValidate(email, setIsEmailDirty, setEmailMessage, setIsEmailSuccess);
 
-    if (isValid) {
+    if (isEmailSuccess) {
       navigation('/recoveryComplete');
     }
   };
@@ -62,7 +64,7 @@ export const PasswordRecovery = () => {
             setIsValueDirty={setIsEmailDirty}
           />
 
-          <CompleteButton title="Send" isDisabled={isValid} />
+          <CompleteButton title="Send" isDisabled={isEmailSuccess} />
         </form>
       </Container>
     </section>

@@ -18,19 +18,24 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isEmailSucces, setIsEmailSucces] = useState(false);
 
   const [isEmailDirty, setIsEmailDirty] = useState(false);
   const [isPasswordlDirty, setIsPasswordlDirty] = useState(false);
   const [isConfirmPasswordDirty, setIsConfirmPasswordDirty] = useState(false);
+  const [isConfirmPasswordSucces, setIsConfirmPasswordSucces] = useState(false);
 
   const [emailMessage, setEmailMessage] = useState('');
   const [passwordMessage, setPasswordMessgae] = useState('');
   const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
+  const [isPasswordSucces, setIsPasswordSucces] = useState(false);
 
-  let isValidForms = isEmailDirty === false
-  && email.length > 0
-  && !!isPasswordlDirty === false
-  && password.length > 0;
+  // let isValidForms = isEmailDirty === false
+  // && email.length > 0
+  // && !!isPasswordlDirty === false
+  // && password.length > 0;
+
+  let isValidForms = !!isEmailSucces && !!isPasswordSucces;
 
   // const [isSigningUp, setIsSigningUp] = useState(false);
   const navigate = useNavigate();
@@ -44,22 +49,24 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
 
-    passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae);
-    emailValidate(email, setIsEmailDirty, setEmailMessage);
+    passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae, setIsPasswordSucces);
+    emailValidate(email, setIsEmailDirty, setEmailMessage, setIsEmailSucces);
     confirmPasswordValidate(
       confirmPassword,
       password,
       setIsConfirmPasswordDirty,
       setConfirmPasswordMessage,
+      setIsConfirmPasswordSucces,
     );
 
     if (isSigningUp) {
-      isValidForms = isEmailDirty === false
-      && email.length > 0
-      && isPasswordlDirty === false
-      && password.length > 0
-      && isConfirmPasswordDirty === false
-      && confirmPassword.length > 0;
+      // isValidForms = isEmailDirty === false
+      // && email.length > 0
+      // && isPasswordlDirty === false
+      // && password.length > 0
+      // && isConfirmPasswordDirty === false
+      // && confirmPassword.length > 0;
+      isValidForms = !!isEmailSucces && !!isPasswordSucces && !!isConfirmPasswordSucces;
     }
 
     if (isValidForms) {
@@ -76,12 +83,12 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
 
     switch (name) {
       case 'email':
-        emailValidate(email, setIsEmailDirty, setEmailMessage);
+        emailValidate(email, setIsEmailDirty, setEmailMessage, setIsEmailSucces);
 
         break;
 
       case 'password':
-        passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae);
+        passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae, setIsPasswordSucces);
 
         break;
 
@@ -91,6 +98,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
           password,
           setIsConfirmPasswordDirty,
           setConfirmPasswordMessage,
+          setIsConfirmPasswordSucces,
         );
         break;
       default:
@@ -105,6 +113,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     value: email,
     message: emailMessage,
     isDirty: isEmailDirty,
+    isSuccess: isEmailSucces,
     text: 'Email',
   };
 
@@ -115,6 +124,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     value: password,
     message: passwordMessage,
     isDirty: isPasswordlDirty,
+    isSuccess: isPasswordSucces,
     text: 'Password',
   };
 
@@ -125,6 +135,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     value: confirmPassword,
     message: confirmPasswordMessage,
     isDirty: isConfirmPasswordDirty,
+    isSuccess: isConfirmPasswordSucces,
     text: 'Confirm Password',
   };
 

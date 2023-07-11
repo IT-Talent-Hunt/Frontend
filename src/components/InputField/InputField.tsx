@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import styles from './InputField.module.scss';
+import { InputFieldType } from '../../Types/InputField';
 
 import eyeOpen from '../../svg/eye-open.svg';
 import eyeLock from '../../svg/eye-locked.svg';
 
-// Please, don`t forget to use TypeScript ;> 'input: any'
-
 type Props = {
-  input : any,
+  input : InputFieldType,
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void,
   setValue: (value: string) => void,
   setIsValueDirty: (value: boolean) => void,
@@ -29,6 +28,7 @@ export const InputField: React.FC<Props> = ({
     value,
     message,
     isDirty,
+    isSuccess,
     text,
   } = input;
 
@@ -51,7 +51,7 @@ export const InputField: React.FC<Props> = ({
       style={{ display: 'flex', alignItems: 'center' }}
     >
       <div style={{ width: '100%', textAlign: 'left' }}>
-        <p>{text}</p>
+        <p className={styles.input__name}>{text}</p>
         <input
           type={!isPasswordVisible && type === 'password' ? 'password' : 'text'}
           id={type}
@@ -61,7 +61,9 @@ export const InputField: React.FC<Props> = ({
           value={value}
           onChange={(evt) => handleInput(setValue, setIsValueDirty, evt)}
           onBlur={(event) => onBlur(event)}
-          className={classNames(styles.input, { [styles.input__error]: isDirty })}
+          className={classNames(styles.input,
+            { [styles.input__error]: isDirty && !isSuccess },
+            { [styles.input__success]: !isDirty && isSuccess })}
           placeholder={
             name === 'confirmPassword' ? text : `Enter ${name}`
           }
@@ -79,6 +81,13 @@ export const InputField: React.FC<Props> = ({
         <span className={styles.input__error_message}>
           <i className="bx bx-error" />
           <span>{message}</span>
+        </span>
+      )}
+
+      {isSuccess && (
+        <span className={styles.input__success_message}>
+          <i className="bx bx-check" />
+          <span>Success</span>
         </span>
       )}
 

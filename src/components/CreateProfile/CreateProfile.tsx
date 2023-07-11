@@ -5,20 +5,23 @@ import { InputField } from '../InputField/InputField';
 import './CreateProfile.scss';
 import { InputSelect } from '../InputSelect/InputSelect';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
-import { nameValidation } from '../../helpers/validation';
+import { textValidation, selectValidation } from '../../helpers/validation';
 
 export const CreateProfile = () => {
   const [name, setName] = useState('');
   const [isNameDirty, setIsNameDirty] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
+  const [isNameSuccess, setIsNameSuccess] = useState(false);
 
   const [surName, setSurName] = useState('');
   const [isSurNameDirty, setIsSurNameDirty] = useState(false);
   const [surNameMessage, setSurNameMessage] = useState('');
+  const [isSurNameSuccess, setIsSurNameSuccess] = useState(false);
 
   const [position, setPosition] = useState('');
   const [isPositionDirty, setIsPositionDirty] = useState(false);
   const [positionMessage, setPositionMessage] = useState('');
+  const [isPositionSuccess, setIsPositionSuccess] = useState(false);
 
   const [userProfile, setUserProfile] = useState({});
   const navigation = useNavigate();
@@ -37,6 +40,7 @@ export const CreateProfile = () => {
     value: name,
     message: nameMessage,
     isDirty: isNameDirty,
+    isSuccess: isNameSuccess,
     text: 'Name',
   };
 
@@ -47,6 +51,7 @@ export const CreateProfile = () => {
     value: surName,
     message: surNameMessage,
     isDirty: isSurNameDirty,
+    isSuccess: isSurNameSuccess,
     text: 'Surname',
   };
 
@@ -57,8 +62,9 @@ export const CreateProfile = () => {
     value: position,
     message: positionMessage,
     isDirty: isPositionDirty,
+    isSuccess: isPositionSuccess,
     text: 'Position',
-    setlections: [
+    selections: [
       { id: 0, name: 'UI/UX designer' },
       { id: 1, name: 'Front-end developer' },
       { id: 2, name: 'Back-end developer' },
@@ -70,9 +76,9 @@ export const CreateProfile = () => {
   };
 
   const onSubmitHandler = (event: React.FormEvent) => {
-    nameValidation(name, 'name', setIsNameDirty, setNameMessage);
-    nameValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage);
-    nameValidation(position, 'position', setIsPositionDirty, setPositionMessage);
+    textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess);
+    textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
+    selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
 
     if (isValid) {
       navigation('/signIn');
@@ -97,21 +103,21 @@ export const CreateProfile = () => {
           <h1>Profile</h1>
           <InputField
             input={nameFied}
-            onBlur={() => nameValidation(name, 'name', setIsNameDirty, setNameMessage)}
+            onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess)}
             setValue={setName}
             setIsValueDirty={setIsNameDirty}
           />
 
           <InputField
             input={surNameField}
-            onBlur={() => nameValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage)}
+            onBlur={() => textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess)}
             setValue={setSurName}
             setIsValueDirty={setIsSurNameDirty}
           />
 
           <InputSelect
             input={selectPositionField}
-            onBlur={() => nameValidation(position, 'position', setIsPositionDirty, setPositionMessage)}
+            onBlur={() => selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess)}
             setValue={setPosition}
             setIsValueDirty={setIsPositionDirty}
           />
