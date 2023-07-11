@@ -1,0 +1,27 @@
+.completeButton {
+  height: 43px;
+  width: 100%;
+  margin-top: 20px;
+
+  background-color: #7563ED;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 20px;
+  border: 1px solid transparent;
+
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    background-color: #fff;
+    color: #343A40;
+    border: 1px solid #343A40;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &-disable {
+    background-color: #9789EF;
+  }
+}

@@ -1,29 +1,40 @@
-import { FC, FormEvent, useState } from 'react';
+import React, {
+  FC, FormEvent, useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginForm.module.scss';
-import { FormState } from '../../Types/FormState';
-import { validation } from '../../helpers/validation';
+import { InputField } from '../InputField/InputField';
+import { passwordValidate, confirmPasswordValidate, emailValidate } from '../../helpers/validation';
+import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+// import { Container } from '../Container/Container';
 
-export const LoginForm: FC = () => {
-  // const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
-  // const [email, setEmail] = useState('');
-  const [state, setState] = useState<FormState>({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [errors, setErrors] = useState<FormState>({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [isSigningUp, setIsSigningUp] = useState(false);
+import 'boxicons';
+
+type Props = {
+  isSigningUp: boolean,
+  setIsSigningUp: (value: boolean) => void,
+};
+
+export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [isEmailDirty, setIsEmailDirty] = useState(false);
+  const [isPasswordlDirty, setIsPasswordlDirty] = useState(false);
+  const [isConfirmPasswordDirty, setIsConfirmPasswordDirty] = useState(false);
+
+  const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessgae] = useState('');
+  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
+
+  let isValidForms = isEmailDirty === false
+  && email.length > 0
+  && !!isPasswordlDirty === false
+  && password.length > 0;
+
+  // const [isSigningUp, setIsSigningUp] = useState(false);
   const navigate = useNavigate();
-
-  const handleInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [evt.target.name]: [evt.target.value] });
-  };
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLSpanElement>) => {
     if (evt.key === 'Enter') {
@@ -34,109 +45,155 @@ export const LoginForm: FC = () => {
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
 
-    // localStorage.setItem('isSignedIn', 'true');
-    setErrors(validation(state));
+    passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae);
+    emailValidate(email, setIsEmailDirty, setEmailMessage);
+    confirmPasswordValidate(
+      confirmPassword,
+      password,
+      setIsConfirmPasswordDirty,
+      setConfirmPasswordMessage,
+    );
 
-    if (!errors.email && !errors.password && !errors.confirmPassword) {
-      navigate('/main');
+    if (isSigningUp) {
+      isValidForms = isEmailDirty === false
+      && email.length > 0
+      && isPasswordlDirty === false
+      && password.length > 0
+      && isConfirmPasswordDirty === false
+      && confirmPassword.length > 0;
+    }
+
+    if (isValidForms) {
+      if (isSigningUp) {
+        navigate('/profileCreate');
+      } else {
+        navigate('/main');
+      }
     }
   };
 
+  const onBlurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = event.target;
+
+    switch (name) {
+      case 'email':
+        emailValidate(email, setIsEmailDirty, setEmailMessage);
+
+        break;
+
+      case 'password':
+        passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae);
+
+        break;
+
+      case 'confirmPassword':
+        confirmPasswordValidate(
+          confirmPassword,
+          password,
+          setIsConfirmPasswordDirty,
+          setConfirmPasswordMessage,
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
+  const inputEmail = {
+    id: 0,
+    type: 'email',
+    name: 'email',
+    value: email,
+    message: emailMessage,
+    isDirty: isEmailDirty,
+    text: 'Email',
+  };
+
+  const inputPassword = {
+    id: 1,
+    type: 'password',
+    name: 'password',
+    value: password,
+    message: passwordMessage,
+    isDirty: isPasswordlDirty,
+    text: 'Password',
+  };
+
+  const inputConfirmPassword = {
+    id: 2,
+    type: 'password',
+    name: 'confirmPassword',
+    value: confirmPassword,
+    message: confirmPasswordMessage,
+    isDirty: isConfirmPasswordDirty,
+    text: 'Confirm Password',
+  };
+
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles.form}>
+    <section style={{ width: '100%' }}>
+      <form onSubmit={handleSubmit} className={styles.form} method="get">
         <h1 className={styles.header}>Sign in</h1>
-        <label htmlFor="email" className={styles.label}>
-          Email
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          // required
-          value={state.email}
-          onChange={(evt) => handleInput(evt)}
-          className={styles.input}
-          placeholder="Enter email"
+
+        <InputField
+          input={inputEmail}
+          onBlur={onBlurHandler}
+          setValue={setEmail}
+          setIsValueDirty={setIsEmailDirty}
         />
-        {
-          errors.email && <span>{ errors.email }</span>
-        }
-        <label htmlFor="password" className={styles.label}>
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          // required
-          minLength={5}
-          value={state.password}
-          onChange={(evt) => handleInput(evt)}
-          className={styles.input}
-          placeholder="Enter password"
+
+        <InputField
+          input={inputPassword}
+          onBlur={onBlurHandler}
+          setValue={setPassword}
+          setIsValueDirty={setIsPasswordlDirty}
+          isSignedUp={isSigningUp}
         />
-        {
-          errors.password && <span>{ errors.password }</span>
-        }
+
         {isSigningUp && (
           <>
-            <label htmlFor="confirmPassword" className={styles.label}>
-              Confirm password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              // required
-              minLength={5}
-              value={state.confirmPassword}
-              onChange={(evt) => handleInput(evt)}
-              className={styles.input}
-              placeholder="Repeat password"
+            <InputField
+              input={inputConfirmPassword}
+              onBlur={onBlurHandler}
+              setValue={setConfirmPassword}
+              setIsValueDirty={setIsConfirmPasswordDirty}
             />
-            {
-              errors.confirmPassword && <span>{ errors.confirmPassword }</span>
-            }
           </>
         )}
-        {isSigningUp ? (
-          <button type="submit" className={styles.button}>
-            Sign up
-          </button>
-        ) : (
-          <button type="submit" className={styles.button}>
-            Sign in
-          </button>
-        )}
+
+        <CompleteButton
+          title={isSigningUp ? 'Sign up' : 'Sign in'}
+          isDisabled={isValidForms}
+        />
       </form>
-      {isSigningUp ? (
-        <span className={styles.span}>
-          Have an account?&nbsp;
-          <span
-            className={styles.link}
-            onClick={() => setIsSigningUp(false)}
-            onKeyDown={(evt) => handleKeyDown(evt)}
-            role="link"
-            tabIndex={0}
-          >
-            Sign in
-          </span>
+
+      <p className={styles.p}>
+        {isSigningUp ? (
+          <span>Don&apos;t have an account yet?&nbsp;</span>
+        ) : (
+          <span>Have an account?&nbsp;</span>
+        )}
+
+        <span
+          className={styles.link}
+          onClick={() => {
+            if (isSigningUp) {
+              navigate('/signIn');
+            } else {
+              navigate('/signUp');
+            }
+          }}
+          onKeyDown={(evt) => handleKeyDown(evt)}
+          role="link"
+          tabIndex={0}
+        >
+
+          {isSigningUp ? (
+            <span>Sign in </span>
+          ) : (
+            <span>Register now</span>
+          )}
         </span>
-      ) : (
-        <span className={styles.span}>
-          Don&apos;t have an account yet?&nbsp;
-          <span
-            className={styles.link}
-            onClick={() => setIsSigningUp(true)}
-            onKeyDown={(evt) => handleKeyDown(evt)}
-            role="link"
-            tabIndex={0}
-          >
-            Register now
-          </span>
-        </span>
-      )}
-    </div>
+      </p>
+    </section>
   );
 };

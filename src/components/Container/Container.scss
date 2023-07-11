@@ -1,0 +1,38 @@
+@import '../../helpers/helpers.scss';
+
+.containerC {
+  background: linear-gradient(#7b69ed, #fcffd7);
+
+  &__suit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    height: calc(100vh - 60px);
+    margin: 0 auto;
+  
+    width: 90%;
+  
+    @include tablet() {
+      width: 70%;
+    }
+    
+    @include desktop() {
+      width: 50%;
+    }
+  }
+
+  &__wrapper {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 32px;
+    width: 100%;
+  }
+
+  &__shell {
+    width: 70%;
+    margin: 0 auto;
+    // text-align: center;
+  }
+}

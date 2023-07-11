@@ -1,0 +1,75 @@
+@import '../../helpers/helpers.scss';
+
+.signUp {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 50px;
+  align-items: center;
+  position: relative;
+
+  height: calc(100vh - 60px);
+
+  @include tablet() {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+
+    @include tablet() {
+      width: 50%;
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height: 200px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding: 0 10px;
+
+    background-image: url('../../svg/bgc-signUp.png');
+    background-position: -450px;
+
+    @include tablet() {
+      width: 50%;
+      height: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 30px;
+    color: #fff;
+
+    @include desktop() {
+      font-size: 50px;
+      width: 500px;
+    }
+
+    &-sub {
+      color: #fff;
+      margin-top: 10px;
+
+      @include tablet() {
+        font-size: 14px;
+      }
+
+      @include desktop() {
+        font-size: 20px;
+      }
+    }
+  }
+}

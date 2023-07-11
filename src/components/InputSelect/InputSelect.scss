@@ -1,0 +1,49 @@
+.inputSelect {
+  &__list {
+    // padding: 10px;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #fff;
+    box-shadow: 0 4px 3px  #eee;
+
+    position: absolute;
+    bottom: -80px;
+    max-height: 180px;
+    overflow: auto;
+
+  }
+
+  &__item {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+
+    &:hover {
+      background-color: rgba($color: #eee, $alpha: .35);
+    }
+  }
+
+  &__arrow {
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+
+    position: absolute;
+
+    bottom: 17px;
+    right: 15px;
+
+    transition: .2s;
+    transform: rotate(90deg);
+
+    &-move {
+      transition: .2s;
+      transform: rotate(0deg);
+      bottom: 13px;
+    }
+  }
+}

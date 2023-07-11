@@ -9,6 +9,10 @@ import { SignInPage } from './pages/SignInPage/SignInPage';
 import { MainPage } from './pages/MainPage/MainPage';
 import { ProjectPage } from './components/ProjectPage/ProjectPage';
 import { EditProject } from './components/EditProject/EditProject';
+import { PasswordRecovery } from './components/PasswordRecovery/PasswordRecovery';
+import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
+import { CreateProfile } from './components/CreateProfile/CreateProfile';
+import { SignUp } from './pages/SignUpPage/SignUp';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,6 +25,10 @@ ReactDOM.render(
           <Route path="edit_project" element={<EditProject />} />
 
           <Route path="signIn" element={<SignInPage />} />
+          <Route path="recovery" element={<PasswordRecovery />} />
+          <Route path="recoveryComplete" element={<RecoveryComplete />} />
+          <Route path="profileCreate" element={<CreateProfile />} />
+          <Route path="signUp" element={<SignUp />} />
         </Route>
       </Routes>
     </HashRouter>
