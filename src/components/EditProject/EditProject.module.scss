@@ -1,0 +1,170 @@
+.newProject__wrapper {
+  margin: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.newProject__container {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  width: 646px;
+  min-height: 846px;
+  padding: 32px 24px;
+
+  background-color: #F7F7F7;
+  
+}
+
+.newProject__BtnBack {
+  color: #000;
+  text-align: center;
+  font-size: 18px;
+  font-family: Roboto;
+  position: absolute;
+  top: 0;
+  left: 2%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  &__button {
+    min-width: 289px;
+    padding: 16px 64px;
+  
+    margin-bottom: 18px;
+  
+    font-size: 20px;
+    border: 1px solid transparent;
+  
+    transition: all ease-in-out 0.2s;
+  
+    // &:hover {
+    //   background-color: #fff;
+    //   color: #495057;
+    //   border: 1px solid #495057;
+    // }
+    
+    &:focus {
+      transform: scale(0.95);
+    }
+  }
+
+  &__save {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  &__cancel {
+    background-color: #fff;
+    color: #495057;
+    border: 1px solid #495057;
+  }
+}
+
+
+.item {
+  margin-bottom: 24px;
+
+  &__title {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 16px;
+  }
+
+  &__label {
+    display: flex;
+    align-self: flex-start;
+    color: #495057;
+  
+    margin-bottom: 4px;
+  }
+
+  &__input {
+    width: 598px;
+    height: 51px;
+  
+    padding: 15px 16px;
+  
+    margin-bottom: 16px;
+  
+    background-color: #fff;
+  
+    font-size: 18px;
+
+  
+    &::placeholder {
+      color: #ADB5BD;
+    }
+  }
+
+  &__select{
+    display: flex;
+    flex-direction: row;
+    padding: 13px 0 13px 16px;
+    border: #CDCDCE solid 1px;
+    border-right-width: 16px;
+
+    font-size: 18px;
+    appearance: auto;
+
+    width: 139px;
+    height: 50px;
+    background-color: #CDCDCD;
+  }
+}
+
+.description {
+  margin-bottom: 0;
+  line-height: 24px;
+
+}
+
+.communication__item {
+  display: flex;
+  flex-direction: row;
+}
+
+.link{
+  width: 459px;
+}
+
+.position {
+  margin-top: 16px;
+  display: flex;
+  font-weight: 700;
+
+  &__label{
+    line-height: 24px;
+    cursor: pointer;
+  }
+
+  &__button {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+

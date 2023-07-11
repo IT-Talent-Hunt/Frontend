@@ -1,0 +1,46 @@
+.position {
+  display: flex;
+  margin-top: 16px;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  &__label{
+    font-size: 18px;
+    color: #495057;
+  }
+
+  &__select {
+    width: 296px;
+    display: flex;
+    padding: 15px 0 15px 16px;
+    border: transparent solid 1px;
+    border-right-width: 16px;
+    font-size: 18px;
+    font-family: Roboto;
+    line-height: 24px;
+    appearance: auto;
+    background-color: #fff;
+  }
+
+  &__button {
+    display: flex;
+    width: 119px;
+    height: 54px;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__buttonAdd {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  &__buttonCancel {
+    background-color: #fff;
+    color: #343A40;
+    border: 1px solid #343A40;
+  }
+}
