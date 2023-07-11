@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { React, ChangeEvent, useState } from 'react';
+// import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import classnames from 'classnames';
 import styles from './ProfilePage.module.scss';
 
