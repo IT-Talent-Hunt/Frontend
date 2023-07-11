@@ -1,10 +1,15 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { LoginForm } from '../../components/LoginForm/LoginForm';
+import { Container } from '../../components/Container/Container';
 
 export const SignInPage: FC = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
+
   return (
     <div className="container">
-      <LoginForm />
+      <Container>
+        <LoginForm isSigningUp={isSignUp} setIsSigningUp={setIsSignUp} />
+      </Container>
     </div>
   );
 };

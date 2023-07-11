@@ -1,0 +1,11 @@
+@import '../../helpers/helpers.scss';
+
+.recoveryComplete {
+  &__title {
+    &-sub {
+      margin-top: 10px;
+      color: #495057;
+      font-weight: 600;
+    }
+  }
+}
