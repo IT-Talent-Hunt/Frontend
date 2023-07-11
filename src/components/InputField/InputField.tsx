@@ -6,6 +6,8 @@ import styles from './InputField.module.scss';
 import eyeOpen from '../../svg/eye-open.svg';
 import eyeLock from '../../svg/eye-locked.svg';
 
+// Please, don`t forget to use TypeScript ;> 'input: any'
+
 type Props = {
   input : any,
   onBlur: (event: React.FocusEvent<HTMLInputElement>) => void,
