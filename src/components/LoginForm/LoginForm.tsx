@@ -1,12 +1,12 @@
 import React, {
-  FC, FormEvent, useState,
+  FC, FormEvent, useEffect, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { postData } from '../../helpers/helpers';
 import styles from './LoginForm.module.scss';
 import { InputField } from '../InputField/InputField';
 import { passwordValidate, confirmPasswordValidate, emailValidate } from '../../helpers/validation';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
-// import { Container } from '../Container/Container';
 import 'boxicons';
 
 type Props = {
@@ -30,14 +30,10 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
   const [isPasswordSucces, setIsPasswordSucces] = useState(false);
 
-  // let isValidForms = isEmailDirty === false
-  // && email.length > 0
-  // && !!isPasswordlDirty === false
-  // && password.length > 0;
+  const [isServer, setIsServer] = useState('');
 
   let isValidForms = !!isEmailSucces && !!isPasswordSucces;
 
-  // const [isSigningUp, setIsSigningUp] = useState(false);
   const navigate = useNavigate();
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLSpanElement>) => {
@@ -46,7 +42,26 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     }
   };
 
-  const handleSubmit = (evt: FormEvent) => {
+  async function getLoginData() {
+    try {
+      const answear: any = await postData('https://68a136cc687f54.lhr.life/auth/signUp', {
+        email,
+        password,
+        confirmPassword,
+      });
+
+      if (answear.message !== undefined) {
+        setIsServer(answear.message.split(': ')[0].trim());
+      } else {
+        setIsServer('success');
+      }
+    } finally {
+      /* eslint-disable-next-line */
+      console.log(isServer);
+    }
+  }
+
+  const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
 
     passwordValidate(password, setIsPasswordlDirty, setPasswordMessgae, setIsPasswordSucces);
@@ -60,23 +75,29 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     );
 
     if (isSigningUp) {
-      // isValidForms = isEmailDirty === false
-      // && email.length > 0
-      // && isPasswordlDirty === false
-      // && password.length > 0
-      // && isConfirmPasswordDirty === false
-      // && confirmPassword.length > 0;
-      isValidForms = !!isEmailSucces && !!isPasswordSucces && !!isConfirmPasswordSucces;
+      isValidForms = !!isEmailSucces
+      && !!isPasswordSucces && !!isConfirmPasswordSucces;
     }
 
     if (isValidForms) {
       if (isSigningUp) {
-        navigate('/profileCreate');
-      } else {
-        navigate('/main');
+        getLoginData();
       }
     }
   };
+
+  /* eslint-disable-next-line */
+  console.log(isServer);
+
+  useEffect(() => {
+    if (isServer === 'Email is already registered') {
+      setIsEmailSucces(false);
+      setIsEmailDirty(true);
+      setEmailMessage(isServer);
+    } else if (isServer === 'success') {
+      navigate('/profileCreate');
+    }
+  }, [isServer]);
 
   const onBlurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
     const { name } = event.target;

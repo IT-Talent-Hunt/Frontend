@@ -1,8 +1,8 @@
-function wait(delay: number) {
-  return new Promise(resolve => {
-    setTimeout(resolve, delay);
-  });
-}
+// function wait(delay: number) {
+//   return new Promise(resolve => {
+//     setTimeout(resolve, delay);
+//   });
+// }
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
@@ -16,16 +16,15 @@ function request<T>(
   if (data) {
     options.body = JSON.stringify(data);
     options.headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
     };
   }
 
-  return wait(300)
-    .then(() => fetch(`${url}`, options))
+  return fetch(`${url}`, options)
     .then(response => {
-      if (!response.ok) {
-        throw new Error(`${response.status} - ${response.statusText}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`${response.status} - ${response.statusText}`);
+      // }
 
       return response.json();
     });
