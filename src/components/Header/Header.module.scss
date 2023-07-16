@@ -7,7 +7,7 @@
 
   padding: 12px 64px;
 
-  background-color: #F6F6F6;
+  background-color: #000;
 }
 
 .logo {
@@ -31,29 +31,6 @@
   }
 }
 
-.form {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  padding: 0 0 0 1%;
-
-  background-color: #fff;
-  border-radius: 2% 4% 4% 2% / 50%;
-}
-
-.input {
-  color: #000;
-  font-size: 16px;
-  width: 30vw;
-  border-radius: 10%;
-  background-color: #fff;
-
-  &::placeholder {
-    color: #ADB5BD;
-  }
-}
-
 .controls {
   display: flex;
   gap: 16px;
@@ -63,9 +40,15 @@
   width: 135px;
   height: 40px;
 
-  color: #fff;
+  color: #000;
+  font-weight: 500;
 
-  border-radius: 10% 10% 10% 10% / 50%;
+  border-radius: 30px;
 
-  background-color: #495057;
+  background-color: #fff;
+}
+
+.shell {
+  background-color: #fff;
+  border-radius: 50%;
 }

@@ -7,3 +7,7 @@ export const getData = (url: string) => {
 export const postData = (url: string, data: any) => {
   return client.post(url, data);
 };
+
+export const patchData = (url: string, data: any) => {
+  return client.patch(url, data);
+};

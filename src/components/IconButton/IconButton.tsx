@@ -1,22 +1,17 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import style from './IconButton.module.scss';
 
 type Props = {
   svg: string;
-  submit?: boolean;
+  onClick?: (value: any) => void,
 };
 
-export const IconButton: FC<Props> = ({ svg, submit = false }) => {
-  const navigate = useNavigate();
-
+export const IconButton: FC<Props> = ({ svg, onClick }) => {
   return (
     <button
-      type={submit ? 'submit' : 'button'}
+      type="button"
       className={style.button}
-      onClick={
-        submit ? () => {} : () => navigate('profile')
-      }
+      onClick={onClick}
     >
       <div
         style={{ backgroundImage: `url(${svg})` }}
