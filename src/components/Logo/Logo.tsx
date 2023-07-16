@@ -1,8 +1,18 @@
+import { NavLink, useLocation } from 'react-router-dom';
 import logo from '../../svg/logo.svg';
 import './Logo.scss';
 
 export const Logo = () => {
+  const location = useLocation();
+
   return (
-    <div className="logo" style={{ backgroundImage: `url('${logo}')` }} />
+    <NavLink
+      to={{
+        pathname: '/main',
+        search: location.search,
+      }}
+    >
+      <div className="logo" style={{ backgroundImage: `url('${logo}')` }} />
+    </NavLink>
   );
 };

@@ -1,59 +1,37 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss';
-import { IconButton } from '../IconButton/IconButton';
-import search from '../../svg/search.svg';
 import bell from '../../svg/bell.svg';
 import profile from '../../svg/profile.svg';
-import { useDebounce } from '../../hooks/useDebounce';
+import { Logo } from '../Logo/Logo';
+import { PageNavLink } from '../PageNavLink/PageNavLink';
+import { SearchInput } from '../SearchInput/SearchInput';
 
 export const Header: FC = () => {
-  const [query, setQuery] = useState('');
-
-  const debouncedValue = useDebounce(query, 500);
-
-  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    setQuery('');
-
-    // do other *important* stuff before submit
-  };
-
-  useEffect(() => {
-    // search the api
-
-    async function fetchData() {
-      // fetch data from db
-      // you may set loading here as well or smth like that
-    }
-
-    // do request only if debounced value is present
-    if (debouncedValue) {
-      fetchData();
-    }
-  }, [debouncedValue]);
+  const navigation = useNavigate();
 
   return (
     <div className={styles.header}>
-      <div className={styles.logo} />
+      <Logo />
 
       <div className={styles.controls}>
-        <form className={styles.form} onSubmit={(evt) => handleSubmit(evt)}>
-          <input
-            className={styles.input}
-            placeholder="Try 'Coffee shop project'..."
-            value={query}
-            onChange={(evt) => setQuery(evt.target.value)}
-          />
-          <IconButton svg={search} submit />
-        </form>
+        <SearchInput />
 
-        <button type="button" className={styles.create_button}>
-          Create +
+        <button
+          type="button"
+          className={styles.create_button}
+          onClick={() => navigation('edit_project')}
+        >
+          Create
         </button>
 
-        <IconButton svg={bell} />
+        <div className={styles.shell}>
+          <PageNavLink to="" img={bell} />
+        </div>
 
-        <IconButton svg={profile} />
+        <div className={styles.shell}>
+          <PageNavLink to="profile" img={profile} />
+        </div>
       </div>
     </div>
   );

@@ -8,12 +8,18 @@
   min-width: 40px;
   height: 40px;
 
-  background-color: #ADB5BD;
-  border-radius: 50%;
+  background-color: transparent;
+  // color: #000;
+  // border-radius: 50%;
 }
 
 .icon {
   display: inline-block;
-  min-width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  color: #fff;
 }

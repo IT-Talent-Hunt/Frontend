@@ -1,0 +1,46 @@
+.search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    &__label {
+        width: 300px;
+        overflow: hidden;
+    }
+
+  &__input {
+    color: #000;
+    font-size: 16px;
+    height: 40px;
+    width: 100%;
+    background-color: #fff;
+    padding: 0 10px;
+    border-radius: 10px;
+    transform: translateX(300px);
+    transition: 1s;
+
+    &-move {
+      transform: translateX(0);
+      transition: 1s;
+    }
+  
+    &::placeholder {
+      color: #ADB5BD;
+    }
+
+    &-icon {
+      background-color: #000;
+      color: #fff;
+
+      >i {
+        font-size: 25px;
+      }
+    }
+  }
+
+  &__cross {
+    background-color: #fff;
+    border-radius: 50%;
+  }
+}
