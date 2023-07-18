@@ -4,6 +4,8 @@
 //   });
 // }
 
+const BASE_URL = 'https://e8e2ef6c970670.lhr.life';
+
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 function request<T>(
@@ -20,7 +22,7 @@ function request<T>(
     };
   }
 
-  return fetch(`${url}`, options)
+  return fetch(`${BASE_URL}/${url}`, options)
     .then(response => {
       // if (!response.ok) {
       //   throw new Error(`${response.status} - ${response.statusText}`);
@@ -34,5 +36,6 @@ export const client = {
   get: <T>(url: string) => request<T>(url),
   post: <T>(url: string, data: any) => request<T>(url, 'POST', data),
   patch: <T>(url: string, data: any) => request<T>(url, 'PATCH', data),
+  // put: <T>(url: string, data: any) => request<T>(url, 'PUT', data),
   delete: (url: string) => request(url, 'DELETE'),
 };
