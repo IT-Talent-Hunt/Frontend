@@ -4,7 +4,7 @@
 //   });
 // }
 
-const BASE_URL = 'https://e8e2ef6c970670.lhr.life';
+const BASE_URL = 'https://582b43b5b7cd74.lhr.life';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
@@ -24,9 +24,9 @@ function request<T>(
 
   return fetch(`${BASE_URL}/${url}`, options)
     .then(response => {
-      // if (!response.ok) {
-      //   throw new Error(`${response.status} - ${response.statusText}`);
-      // }
+      if (!response.ok) {
+        throw new Error(`${response.status} - ${response.statusText}`);
+      }
 
       return response.json();
     });

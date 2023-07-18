@@ -1,7 +1,13 @@
-import { FC, useCallback, useState } from 'react';
+import {
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import styles from './sideBar.module.scss';
 import { CheckBoxList } from '../CheckBoxList/CheckBoxList';
 import { RadioBtnList } from '../RadioBtnList/RadioBtnList';
+import { FilterByList } from '../FilterByList/FilterByList';
 
 export const SideBar: FC = () => {
   const [positions, setPositions] = useState<string[]>([]);
@@ -15,8 +21,28 @@ export const SideBar: FC = () => {
   const teamSizes = ['2', '3', '4', '5', '6+'];
   const displayProjectsArr = ['8', '16', '24', '32'];
 
+  const [allFilters, setAllFilters] = useState<string[]>([]);
+
+  const onFilterHandler = (val: string) => {
+    if (val.includes('members')) {
+      setTeamSize('4');
+    }
+
+    if (val.includes('displayed')) {
+      setDisplayProjects('16');
+    }
+
+    setAllFilters((current) => [...current].filter((filter) => filter !== val));
+  };
+
   const handleCheckbox = useCallback((evt: React.ChangeEvent<HTMLInputElement>, stateType: 'position' | 'status' | 'technologies') => {
     const val = evt.target.name;
+
+    if (allFilters.includes(val)) {
+      onFilterHandler(val);
+    } else {
+      setAllFilters((current) => [...current, val]);
+    }
 
     if (stateType === 'position') {
       if (positions.includes(val)) {
@@ -39,35 +65,70 @@ export const SideBar: FC = () => {
     }
   }, [statuses, positions, technologies]);
 
+  /* eslint-disable-next-line */
+  console.log(allFilters);
+
   const handleClearAll = () => {
     setPositions([]);
     setStatuses([]);
     setTechnologies([]);
     setTeamSize('4');
     setDisplayProjects('16');
+    setAllFilters([]);
   };
+
+  useEffect(() => {
+    setAllFilters((current) => {
+      return [
+        ...current.filter((el) => !el.includes('members')),
+        `${teamSize} members`,
+      ];
+    });
+  }, [teamSize]);
+
+  useEffect(() => {
+    setAllFilters((current) => {
+      return [
+        ...current.filter((el) => !el.includes('displayed')),
+        `${displayProjects} displayed`,
+      ];
+    });
+  }, [displayProjects]);
 
   return (
     <div className={styles.main}>
       <div className={styles.heading__container}>
-        <h4 className={styles.heading}>Filters</h4>
-        <button type="button" onClick={handleClearAll} className={styles.clearAll}>
-          Clear all
-        </button>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          <h4 className={styles.heading}>Filters</h4>
+
+          <button type="button" onClick={handleClearAll} className={styles.clearAll}>
+            Clear all
+          </button>
+        </div>
+
+        {allFilters && (
+          <FilterByList list={allFilters} onFilter={onFilterHandler} />
+        )}
       </div>
       <CheckBoxList
         list={preMadePositions}
         callbackFn={handleCheckbox}
         stateType="position"
         heading="Position"
-        state={positions}
+        state={allFilters}
       />
       <CheckBoxList
         list={preMadeStatuses}
         callbackFn={handleCheckbox}
         stateType="status"
         heading="Status"
-        state={statuses}
+        state={allFilters}
       />
       <RadioBtnList
         list={teamSizes}
@@ -81,7 +142,7 @@ export const SideBar: FC = () => {
         callbackFn={handleCheckbox}
         stateType="technologies"
         heading="Technologies"
-        state={technologies}
+        state={allFilters}
       />
       <RadioBtnList
         list={displayProjectsArr}

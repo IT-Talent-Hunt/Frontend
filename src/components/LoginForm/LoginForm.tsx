@@ -45,25 +45,6 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     }
   };
 
-  // async function getLoginData() {
-  //   try {
-  //     const answear: any = await postData('auth/signUp', {
-  //       email,
-  //       password,
-  //       confirmPassword,
-  //     });
-
-  //     if (answear.message !== undefined) {
-  //       setIsServer(answear.message.split(': ')[0].trim());
-  //     } else {
-  //       setIsServer('success');
-  //     }
-  //   } finally {
-  //     /* eslint-disable-next-line */
-  //     console.log(isServer);
-  //   }
-  // }
-
   async function getLoginData() {
     let answear: any;
 
@@ -90,9 +71,18 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
         setUser(answear);
         setIsServer('success');
       }
-    } finally {
-      /* eslint-disable-next-line */
-      console.log(isServer);
+    } catch (error) {
+      if (isSigningUp) {
+        /* eslint-disable-next-line */
+        console.warn('ERROR abowed: ', error);
+        // setIsEmailSucces(false);
+        // setIsEmailDirty(true);
+        // setEmailMessage('Email already registered');
+      } else {
+        setIsEmailSucces(false);
+        setIsEmailDirty(true);
+        setEmailMessage('Email is not registered yet');
+      }
     }
   }
 
@@ -134,11 +124,6 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       } else if (isServer === 'success') {
         navigate('/profileCreate');
       }
-    } else if (!isSigningUp && isServer === 'javax.mail.AuthenticationFailedException') {
-      setIsEmailSucces(false);
-      setIsEmailDirty(true);
-      setEmailMessage('Email is not registered yet');
-      setUser(isServer);
     } else if (user.email) {
       navigate('/main');
     }
