@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 import { Container } from '../Container/Container';
 import { InputField } from '../InputField/InputField';
 import './CreateProfile.scss';
 import { InputSelect } from '../InputSelect/InputSelect';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { textValidation, selectValidation } from '../../helpers/validation';
+import { User } from '../../Types/User';
+import { patchData } from '../../helpers/helpers';
 
 export const CreateProfile = () => {
   const [name, setName] = useState('');
@@ -24,6 +27,7 @@ export const CreateProfile = () => {
   const [isPositionSuccess, setIsPositionSuccess] = useState(false);
 
   const [userProfile, setUserProfile] = useState({});
+  const [user, setUser] = useLocalStorage<User | any>('user', {});
   const navigation = useNavigate();
 
   const isValid = isPositionDirty === false
@@ -75,16 +79,31 @@ export const CreateProfile = () => {
     ],
   };
 
+  function upLoadUserData(userId: number) {
+    const chagedUserKeys = {
+      firstName: name,
+      lastName: surName,
+      specialities: [{ specialityName: 'QA' }],
+    };
+
+    return patchData(`users/${userId}`, chagedUserKeys)
+    /* eslint-disable-next-line */
+    .then((res) => setUser(res))
+  }
+
   const onSubmitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
     textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess);
     textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
     selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
+
+    upLoadUserData(user.id);
 
     if (isValid) {
       navigation('/signIn');
     }
 
-    event.preventDefault();
     setUserProfile({
       name,
       surName,

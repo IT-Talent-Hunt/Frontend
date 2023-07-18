@@ -46,7 +46,7 @@ export const passwordValidate = (
   if (pass.trim() === '') {
     setMessage('The "Password" field is required. Please enter your password.');
   } else if (pass.length < 8 || pass.length > 30) {
-    setMessage('The password must be 8-30 symbols long and contain only a-z Latin letters and digits.');
+    setMessage('The password must be 8-30 symbols long and contain only a-Z Latin letters and digits.');
   } else if (!PASS_REF.test(pass)) {
     setMessage('"Password" field should contain upper, lower case letter and digits');
   } else {
@@ -62,17 +62,17 @@ export const emailValidate = (
   setIsSucces: (value: boolean) => void,
 
 ) => {
-  const EMAIL_REF = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const EMAIL_REF = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   setDirty(true);
   setIsSucces(false);
 
   if (emailData.trim() === '') {
-    setMessage('The "Email" field is required');
+    setMessage('The "Email" field is required. Please enter your password.');
   } else if (emailData.length < 8 || emailData.length > 30) {
     setMessage('The email must be 8-30 symbols long and contain only a-z Latin letters and digits.');
   } else if (!EMAIL_REF.test(emailData)) {
-    setMessage('Please ensure that your email address is correctly formatted');
+    setMessage('Please ensure that your email address is correctly formatted (e.g., example@example.com)');
   } else {
     setDirty(false);
     setIsSucces(true);

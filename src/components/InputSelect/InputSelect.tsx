@@ -50,9 +50,8 @@ export const InputSelect: React.FC<Props> = ({
         htmlFor={type}
         className={styles.label}
         id={type}
-        style={{ display: 'flex', alignItems: 'center' }}
       >
-        <div style={{ width: '100%' }}>
+        <div>
           <p>{text}</p>
           <button
             type="button"
@@ -60,7 +59,7 @@ export const InputSelect: React.FC<Props> = ({
               setIsSelected(!isSeleted);
               setHovered('Choose');
             }}
-            style={{ width: '100%', textAlign: 'left' }}
+            className="inputSelect__button"
           >
             <input
               type={type}
@@ -73,7 +72,6 @@ export const InputSelect: React.FC<Props> = ({
                 { [styles.input__success]: !isDirty && isSuccess })}
               placeholder={hoveres}
               disabled={!!true}
-              style={{ color: '#000' }}
             />
           </button>
         </div>

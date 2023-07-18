@@ -2,12 +2,14 @@ import React, {
   FC, FormEvent, useEffect, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 import { postData } from '../../helpers/helpers';
 import styles from './LoginForm.module.scss';
 import { InputField } from '../InputField/InputField';
 import { passwordValidate, confirmPasswordValidate, emailValidate } from '../../helpers/validation';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import 'boxicons';
+import { User } from '../../Types/User';
 
 type Props = {
   isSigningUp: boolean,
@@ -16,21 +18,22 @@ type Props = {
 
 export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isEmailDirty, setIsEmailDirty] = useState(false);
+  const [emailMessage, setEmailMessage] = useState('');
   const [isEmailSucces, setIsEmailSucces] = useState(false);
 
-  const [isEmailDirty, setIsEmailDirty] = useState(false);
+  const [password, setPassword] = useState('');
   const [isPasswordlDirty, setIsPasswordlDirty] = useState(false);
-  const [isConfirmPasswordDirty, setIsConfirmPasswordDirty] = useState(false);
-  const [isConfirmPasswordSucces, setIsConfirmPasswordSucces] = useState(false);
-
-  const [emailMessage, setEmailMessage] = useState('');
   const [passwordMessage, setPasswordMessgae] = useState('');
-  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
   const [isPasswordSucces, setIsPasswordSucces] = useState(false);
 
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isConfirmPasswordDirty, setIsConfirmPasswordDirty] = useState(false);
+  const [isConfirmPasswordSucces, setIsConfirmPasswordSucces] = useState(false);
+  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
+
   const [isServer, setIsServer] = useState('');
+  const [user, setUser] = useLocalStorage<User | any>('user', {});
 
   let isValidForms = !!isEmailSucces && !!isPasswordSucces;
 
@@ -42,17 +45,49 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     }
   };
 
+  // async function getLoginData() {
+  //   try {
+  //     const answear: any = await postData('auth/signUp', {
+  //       email,
+  //       password,
+  //       confirmPassword,
+  //     });
+
+  //     if (answear.message !== undefined) {
+  //       setIsServer(answear.message.split(': ')[0].trim());
+  //     } else {
+  //       setIsServer('success');
+  //     }
+  //   } finally {
+  //     /* eslint-disable-next-line */
+  //     console.log(isServer);
+  //   }
+  // }
+
   async function getLoginData() {
+    let answear: any;
+
     try {
-      const answear: any = await postData('https://68a136cc687f54.lhr.life/auth/signUp', {
-        email,
-        password,
-        confirmPassword,
-      });
+      if (isSigningUp) {
+        answear = await postData('auth/signUp', {
+          email,
+          password,
+          confirmPassword,
+        });
+      } else {
+        answear = await postData('auth/signIn', {
+          email,
+          password,
+        });
+      }
+
+      /* eslint-disable-next-line */
+      console.log('a', answear);
 
       if (answear.message !== undefined) {
         setIsServer(answear.message.split(': ')[0].trim());
       } else {
+        setUser(answear);
         setIsServer('success');
       }
     } finally {
@@ -80,9 +115,10 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     }
 
     if (isValidForms) {
-      if (isSigningUp) {
-        getLoginData();
-      }
+      getLoginData();
+      // if (isSigningUp) {
+      //   getLoginData();
+      // }
     }
   };
 
@@ -90,12 +126,21 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   console.log(isServer);
 
   useEffect(() => {
-    if (isServer === 'Email is already registered') {
+    if (isSigningUp) {
+      if (isServer === 'Email is already registered') {
+        setIsEmailSucces(false);
+        setIsEmailDirty(true);
+        setEmailMessage(isServer);
+      } else if (isServer === 'success') {
+        navigate('/profileCreate');
+      }
+    } else if (!isSigningUp && isServer === 'javax.mail.AuthenticationFailedException') {
       setIsEmailSucces(false);
       setIsEmailDirty(true);
-      setEmailMessage(isServer);
-    } else if (isServer === 'success') {
-      navigate('/profileCreate');
+      setEmailMessage('Email is not registered yet');
+      setUser(isServer);
+    } else if (user.email) {
+      navigate('/main');
     }
   }, [isServer]);
 
@@ -161,7 +206,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   };
 
   return (
-    <section style={{ width: '100%' }}>
+    <section className={styles.login}>
       <form onSubmit={handleSubmit} className={styles.form} method="get">
         <h1 className={styles.header}>Sign in</h1>
 

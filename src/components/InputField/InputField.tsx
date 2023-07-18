@@ -45,19 +45,18 @@ export const InputField: React.FC<Props> = ({
 
   return (
     <label
-      htmlFor={type}
+      htmlFor={text}
       className={styles.label}
       id={type}
-      style={{ display: 'flex', alignItems: 'center' }}
     >
-      <div style={{ width: '100%', textAlign: 'left' }}>
+      <div>
         <p className={styles.input__name}>{text}</p>
         <input
           type={!isPasswordVisible && type === 'password' ? 'password' : 'text'}
-          id={type}
+          id={text}
           name={name}
           // required
-          minLength={type === 'password' ? 5 : 0}
+          minLength={type === 'password' ? 8 : 0}
           value={value}
           onChange={(evt) => handleInput(setValue, setIsValueDirty, evt)}
           onBlur={(event) => onBlur(event)}

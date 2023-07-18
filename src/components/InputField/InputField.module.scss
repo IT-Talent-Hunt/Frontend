@@ -8,6 +8,7 @@
   font-size: 14px;
   border: 1px solid transparent;
   padding-left: 10px;
+  color: #000;
   
   ::placeholder {
     color: #ADB5BD;
@@ -74,14 +75,20 @@
 
   position: relative;
   width: 100%;
-  // max-width: 400px;
+
+  display: flex;
+  align-items: center;
+
+  >div {
+    width: 100%;
+  }
 }
 
 .link {
   &_recovery {
       position: absolute;
       right: 0;
-      bottom: -24px;
+      bottom: -29px;
       font-size: 12px;
   
       @include tablet() {
