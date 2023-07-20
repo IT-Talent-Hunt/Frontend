@@ -1,0 +1,20 @@
+.filterByItem {
+  font-size: 14px;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 8px;
+
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &__cross {
+    &-img {
+      width: 13px;
+      height: 13px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  }
+}

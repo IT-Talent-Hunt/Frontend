@@ -23,8 +23,8 @@ export const CheckBoxList: FC<Props> = ({
           <li key={el} className={styles.list__item}>
             <input
               type="checkbox"
-              checked={state.includes(el.toLowerCase())}
-              name={el.toLowerCase()}
+              checked={state.includes(el)}
+              name={el}
               id={el.toLowerCase()}
               className={styles.checkbox}
               onChange={(evt) => callbackFn(evt, stateType)}

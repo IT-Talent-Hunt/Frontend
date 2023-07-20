@@ -8,7 +8,7 @@ type Props = {
   onClick?: () => void,
 };
 
-export const CompleteButton: React.FC<Props> = ({ title, isDisabled = true, onClick }) => {
+export const CompleteButton: React.FC<Props> = ({ title, isDisabled = false, onClick }) => {
   return (
     <button
       type="submit"
@@ -16,6 +16,7 @@ export const CompleteButton: React.FC<Props> = ({ title, isDisabled = true, onCl
         'completeButton',
         { 'completeButton-disable': !isDisabled },
       )}
+      disabled={!isDisabled}
       onClick={onClick}
     >
       {title}
