@@ -1,0 +1,30 @@
+.profileTools {
+  background-color: #fff;
+  overflow: hidden;
+
+  border: 1px solid #eee;
+  box-shadow: 0 4px 3px  #eee;
+
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 120px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    height: min-content;
+    // justify-content: center;
+
+    &-title {
+      font-size: 15px;
+    }
+
+    &:hover {
+        background-color: #eee;
+    }
+  }
+}

@@ -34,6 +34,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
 
   const [isServer, setIsServer] = useState('');
   const [user, setUser] = useLocalStorage<User | any>('user', {});
+  const [isLoader, setIsLoader] = useState(false);
 
   const isValidForms = !!isEmailSucces
   && isSigningUp ? !!isConfirmPasswordSucces && !!isPasswordSucces : !!isPasswordSucces;
@@ -53,6 +54,8 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     let answear: any;
 
     try {
+      setIsLoader(true);
+
       if (isSigningUp) {
         answear = await postData('auth/signUp', {
           email,
@@ -84,12 +87,14 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       if (isSigningUp) {
         setIsEmailSucces(false);
         setIsEmailDirty(true);
-        setEmailMessage('Email already registered');
+        setEmailMessage('Email is already registered');
       } else {
         setIsEmailSucces(false);
         setIsEmailDirty(true);
-        setEmailMessage('Invalid "Email" or "Password field."');
+        setEmailMessage('The email address you provided is already in use. Please choose a different email.');
       }
+    } finally {
+      setIsLoader(false);
     }
   }
 
@@ -233,6 +238,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
         <CompleteButton
           title={isSigningUp ? 'Sign up' : 'Sign in'}
           isDisabled={isValidForms && isButtonDisabled}
+          isLoader={isLoader}
         />
       </form>
 

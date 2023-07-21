@@ -21,7 +21,7 @@ function debounce(callBack: Function, delay: number) {
 
 export const SearchInput = () => {
   const [query, setQuery] = useState('');
-  const [appliedQuery, setAppliedQuery] = useState<string | null>('');
+  const [appliedQuery, setAppliedQuery] = useState<string | null>(null);
 
   const [isMove, setIsMove] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();

@@ -122,14 +122,14 @@ export const CreateProfile = () => {
           <h1>Profile</h1>
           <InputField
             input={nameFied}
-            onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess)}
+            onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}
             setValue={setName}
             setIsValueDirty={setIsNameDirty}
           />
 
           <InputField
             input={surNameField}
-            onBlur={() => textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess)}
+            onBlur={() => textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess, setSurName)}
             setValue={setSurName}
             setIsValueDirty={setIsSurNameDirty}
           />

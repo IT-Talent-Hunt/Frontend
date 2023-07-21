@@ -3,25 +3,31 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { IconButton } from '../IconButton/IconButton';
 
 type Props = {
-  to: string,
+  to?: string,
   text?: string,
   img?: string,
+  onClick?: (value: any) => void,
 };
 
-export const PageNavLink: React.FC<Props> = ({ to, text = false, img = false }) => {
+export const PageNavLink: React.FC<Props> = ({
+  to,
+  text = false,
+  img = false,
+  onClick,
+}) => {
   const location = useLocation();
 
   return (
     <NavLink
       to={{
-        pathname: `/${to}`,
+        pathname: to ? `/${to}` : location.pathname,
         search: location.search,
       }}
       style={{ cursor: 'pointer' }}
     >
 
       {typeof img === 'string' && (
-        <IconButton svg={img} />
+        <IconButton svg={img} onClick={onClick} />
       )}
 
       {text && (

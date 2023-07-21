@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import styles from './Header.module.scss';
@@ -10,10 +10,13 @@ import { User } from '../../Types/User';
 import { PageNavLink } from '../PageNavLink/PageNavLink';
 import { SearchInput } from '../SearchInput/SearchInput';
 import { TransparentButton } from '../Buttons/TransparentButton/TransparentButton';
+import { ProfileTools } from '../ProfileTools/ProfileTools';
 
 export const Header: FC = () => {
   const navigation = useNavigate();
   const [user] = useLocalStorage<User | any>('user', {});
+
+  const [isTools, setIsTools] = useState(false);
 
   return (
     <div className={styles.header}>
@@ -35,8 +38,15 @@ export const Header: FC = () => {
           </div>
 
           <div className={styles.shell}>
-            <PageNavLink to="profile" img={profile} />
+            <PageNavLink img={profile} onClick={() => setIsTools(!isTools)} />
           </div>
+
+          {isTools && (
+            <div className={styles.tools}>
+              <ProfileTools />
+            </div>
+          )}
+
         </div>
       ) : (
         <TransparentButton title="Sign In" onClick={() => navigation('/signIn')} />

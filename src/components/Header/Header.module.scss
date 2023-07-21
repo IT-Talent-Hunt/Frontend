@@ -8,6 +8,8 @@
   padding: 12px 64px;
 
   background-color: #000;
+
+  position: relative;
 }
 
 .logo {
@@ -51,4 +53,11 @@
 .shell {
   background-color: #fff;
   border-radius: 50%;
+}
+
+.tools {
+  position: absolute;
+  right: 40px;
+  top: 55px;
+  z-index: 1;
 }

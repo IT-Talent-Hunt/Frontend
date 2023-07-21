@@ -90,9 +90,11 @@ export const confirmPasswordValidate = (
   setIsSucces(false);
 
   if (confirmPasswordData.trim() === '') {
-    setMessage('Password should not be empty');
+    setMessage('The "Repeat password" field is required. Please enter your password.');
+  } else if (confirmPasswordData.length < 8 || confirmPasswordData.length > 30) {
+    setMessage('The password must be 8-30 symbols long and contain only a-Z Latin letters, digits, and special symbols.');
   } else if (confirmPasswordData !== passwordData) {
-    setMessage('Passwords aren`t matching');
+    setMessage('Passwords must match. Please verify that you entered the same password as before.');
   } else {
     setDirty(false);
     setIsSucces(true);
@@ -105,16 +107,21 @@ export const textValidation = (
   setIsValueDirty: (value: boolean) => void,
   setValueMessage: (value: string) => void,
   setIsSucces: (value: boolean) => void,
+  setValue?: (value: string) => void,
 ) => {
   const preparetedName = textType[0].toUpperCase() + textType.slice(1);
+
+  if (setValue && textData.length) {
+    const preparetedValue = textData[0].toUpperCase() + textData.slice(1);
+
+    setValue(preparetedValue);
+  }
 
   setIsValueDirty(true);
   setIsSucces(false);
 
   if (textData.trim() === '') {
     setValueMessage(`${preparetedName} should not empty`);
-  } else if (textData[0] !== textData[0].toUpperCase()) {
-    setValueMessage(`The ${textType} should start with the upper case letter`);
   } else {
     setIsValueDirty(false);
     setIsSucces(true);

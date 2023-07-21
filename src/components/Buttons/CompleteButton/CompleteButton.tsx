@@ -1,14 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
+import { LoaderSmall } from '../../Loader/LoaderSmall';
 import './CompleteButton.scss';
 
 type Props = {
   title: string,
   isDisabled?: boolean,
   onClick?: () => void,
+  isLoader?: boolean,
 };
 
-export const CompleteButton: React.FC<Props> = ({ title, isDisabled = false, onClick }) => {
+export const CompleteButton: React.FC<Props> = ({
+  title,
+  isDisabled = true,
+  onClick,
+  isLoader = false,
+}) => {
   return (
     <button
       type="submit"
@@ -19,7 +26,12 @@ export const CompleteButton: React.FC<Props> = ({ title, isDisabled = false, onC
       disabled={!isDisabled}
       onClick={onClick}
     >
-      {title}
+
+      {isLoader ? (
+        <LoaderSmall />
+      ) : (
+        <span>{title}</span>
+      )}
     </button>
   );
 };
