@@ -4,7 +4,7 @@
 //   });
 // }
 
-const BASE_URL = 'https://582b43b5b7cd74.lhr.life';
+const BASE_URL = 'https://36488326f4a70d.lhr.life';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 

@@ -35,7 +35,11 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   const [isServer, setIsServer] = useState('');
   const [user, setUser] = useLocalStorage<User | any>('user', {});
 
-  let isValidForms = !!isEmailSucces && !!isPasswordSucces;
+  const isValidForms = !!isEmailSucces
+  && isSigningUp ? !!isConfirmPasswordSucces && !!isPasswordSucces : !!isPasswordSucces;
+
+  const isButtonDisabled = !!email.length
+  && isSigningUp ? !!confirmPassword.length && !!password.length : !!password.length;
 
   const navigate = useNavigate();
 
@@ -65,6 +69,8 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       /* eslint-disable-next-line */
       console.log('a', answear);
 
+      setIsServer(answear);
+
       if (answear.message !== undefined) {
         setIsServer(answear.message.split(': ')[0].trim());
       } else {
@@ -72,16 +78,17 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
         setIsServer('success');
       }
     } catch (error) {
+      /* eslint-disable-next-line */
+      console.warn('ERROR abowed: ', error);
+
       if (isSigningUp) {
-        /* eslint-disable-next-line */
-        console.warn('ERROR abowed: ', error);
-        // setIsEmailSucces(false);
-        // setIsEmailDirty(true);
-        // setEmailMessage('Email already registered');
+        setIsEmailSucces(false);
+        setIsEmailDirty(true);
+        setEmailMessage('Email already registered');
       } else {
         setIsEmailSucces(false);
         setIsEmailDirty(true);
-        setEmailMessage('Email is not registered yet');
+        setEmailMessage('Invalid "Email" or "Password field."');
       }
     }
   }
@@ -100,8 +107,10 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
     );
 
     if (isSigningUp) {
-      isValidForms = !!isEmailSucces
-      && !!isPasswordSucces && !!isConfirmPasswordSucces;
+      // isValidForms = isEmailSucces
+      // && isPasswordSucces && isConfirmPasswordSucces;
+
+      // isButtonDisabled = !!email.length && !!password.length && !!confirmPassword.length;
     }
 
     if (isValidForms) {
@@ -113,7 +122,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   };
 
   /* eslint-disable-next-line */
-  console.log(isServer);
+  console.log('server', isValidForms, isSigningUp);
 
   useEffect(() => {
     if (isSigningUp) {
@@ -223,7 +232,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
 
         <CompleteButton
           title={isSigningUp ? 'Sign up' : 'Sign in'}
-          isDisabled={isValidForms}
+          isDisabled={isValidForms && isButtonDisabled}
         />
       </form>
 
