@@ -1,44 +1,50 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React from 'react';
+// import { Outlet } from 'react-router-dom';
 import './App.scss';
+import { Navigate, Route, Routes } from 'react-router-dom';
+// import classNames from 'classnames';
 import { Header } from './components/Header/Header';
-import { Footer } from './components/Footer/Footer';
+// import { Footer } from './components/Footer/Footer';
+import { MainPage } from './pages/MainPage/MainPage';
+import { ProjectPage } from './components/ProjectPage/ProjectPage';
+import { ProfilePage } from './components/ProfilePage/ProfilePage';
+import { EditProject } from './components/EditProject/EditProject';
+import { SignInPage } from './pages/SignInPage/SignInPage';
+import { PasswordRecovery } from './components/PasswordRecovery/PasswordRecovery';
+import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
+import { CreateProfile } from './components/CreateProfile/CreateProfile';
+import { SignUp } from './pages/SignUpPage/SignUp';
+import { ModalProvider } from './Providers/ModalProvider';
 
 export const App: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   // const isLoggedIn = localStorage.getItem('isSignedIn');
-
-  //   // if (isLoggedIn === 'true') {
-  //   //   setIsSignedIn(true);
-  //   //   navigate('/main');
-  //   // } else {
-  //   //   setIsSignedIn(false);
-  //   //   navigate('/signIn');
-  //   // }
-
-  //   // return () => {
-  //   //   localStorage.setItem('isSignedIn', 'false');
-  //   // };
-  //   navigate('/signIn');
-  // }, []);
+  // const [isSignedIn, setIsSignedIn] = useState(false);
 
   return (
-    <div className="starter">
-      <header>
-        <Header />
-      </header>
-      <main>
-        <Outlet />
-      </main>
-      { isSignedIn && (
-        <footer>
-          <Footer />
-        </footer>
-      )}
-    </div>
+    <ModalProvider>
+      <div className="starter">
+        <header>
+          <Header />
+        </header>
+        <main>
+          <Routes>
+            <Route path="main" element={<Navigate to="/" replace />} />
+            <Route index element={<MainPage />} />
+            <Route path="project" element={<ProjectPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="edit_project" element={<EditProject />} />
+            <Route path="signIn" element={<SignInPage />} />
+            <Route path="recovery" element={<PasswordRecovery />} />
+            <Route path="recoveryComplete" element={<RecoveryComplete />} />
+            <Route path="profileCreate" element={<CreateProfile />} />
+            <Route path="signUp" element={<SignUp />} />
+          </Routes>
+        </main>
+        {/* { isSignedIn && (
+          <footer>
+            <Footer />
+          </footer>
+        )} */}
+      </div>
+    </ModalProvider>
   );
 };

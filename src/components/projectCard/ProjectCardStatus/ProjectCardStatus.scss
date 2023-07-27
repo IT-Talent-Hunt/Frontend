@@ -1,0 +1,21 @@
+@import '../../../helpers/helpers.scss';
+
+.projectStatus {
+    padding: 3px 10px;
+
+    color: #495057;
+    font-size: 14px;
+  
+    border: 1px solid #ADB5BD;
+    border-radius: 50px;
+
+    &--green {
+      border-color: $color-green;
+      color: $color-green;
+    }
+
+    &--orange {
+      border-color: $color-orange;
+      color: $color-orange;
+    }
+}

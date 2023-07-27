@@ -1,0 +1,45 @@
+.projectModal {
+  background-color: #fff;
+  padding: 20px;
+  max-width: 550px;
+  border-radius: 10px;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+    margin-bottom: 20px;
+  }
+
+  &__list {
+    display: flex;
+    margin-top: 10px;
+  }
+
+  &__container {
+    margin-top: 10px;
+
+    >h2 {
+      font-size: 20px;
+    }
+  }
+
+  &__bottom {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 20px;
+
+    >div {
+      display: flex;
+    }
+  }
+}

@@ -1,3 +1,5 @@
+@import '../../helpers/helpers.scss';
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -6,23 +8,39 @@
   width: 100%;
   min-width: calc(75vw - 64px);
   height: fit-content;
-  min-height: 64px;
+  max-height: 64px;
 
   padding: 20px 16px;
 
-  background-color: #F6F6F6;
+  background-color: #fff;
+  border-radius: 15px;
 }
 
 .heading {
   display: inline;
   font-weight: 400;
   font-size: 16px;
+
+  display: flex;
+
+
+  width: 100%;
+  max-height: 30px;
+  overflow: scroll;
 }
 
 .accented_text {
   display: inline;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
+
+  color: $color-purple;
+
+  width: 300px;
+  height: 20px;
+  overflow: auto;
+  overflow-y: hidden;
+
 }
 
 .list__container {
@@ -50,9 +68,11 @@
   padding: 4px 16px;
 
   text-align: center;
-  color: #343A40;
+  color: $color-grey--dark;
+  border: 2px solid $color-grey--lite;
+  border-radius: 8px;
 
-  background-color: #CDCDCD;
+  background-color: #fff;
 
   transition: all ease-in-out 0.2s;
 
@@ -64,7 +84,11 @@
   }
 
   &:checked {
-    background-color: #495057;
-    color: #ffffff;
+    background-color: #eee;
+    color: $color-purple;
+
+    &::before {  
+      font-weight: 600;
+    }
   }
 }

@@ -3,10 +3,10 @@ import styles from './GridHeader.module.scss';
 
 type Props = {
   n: number;
-  position: string;
+  positions: string[];
 };
 
-export const GridHeader: FC<Props> = ({ n = 0, position }) => {
+export const GridHeader: FC<Props> = ({ n = 0, positions }) => {
   const [filter, setFilter] = useState('all');
   const filters = ['All', 'New', 'Favorites'];
 
@@ -14,9 +14,17 @@ export const GridHeader: FC<Props> = ({ n = 0, position }) => {
     <div className={styles.header}>
       <h5 className={styles.heading}>
         {`${n} projects was found for`}
-        <p className={styles.accented_text}>
-          {position || ' your filters'}
-        </p>
+        &nbsp;
+
+        {positions.length ? (
+          <p className={styles.accented_text}>
+            {positions}
+          </p>
+        ) : (
+          <p className={styles.accented_text}>
+            your filters
+          </p>
+        )}
       </h5>
       <ul className={styles.list__container}>
         {filters.map((el) => (

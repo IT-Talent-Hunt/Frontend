@@ -1,0 +1,30 @@
+.projectMember {
+  background-color: #ccc;
+  border-radius: 50%;
+
+  margin: -4px;
+
+  transform: scale(.7);
+
+  &-1 {
+    background-color: #74C0FC;
+
+  }
+  
+  &-2 {
+    background-color: #E599F7;
+  }
+
+  &-3 {
+    background-color: #63E6BE
+    ;
+  }
+
+  &-4 {
+    background-color: #FFE066;
+  }
+
+  &-5 {
+    background-color: blue;
+  }
+}

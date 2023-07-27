@@ -1,6 +1,9 @@
+@import '../../helpers/helpers.scss';
+
 .heading {
   font-weight: 500;
   font-size: 20px;
+  font-weight: 600;
 }
 
 .list {
@@ -26,9 +29,11 @@
   width: 32px;
   height: 32px;
   text-align: center;
-  color: #343A40;
+  color: $color-grey--dark;
+  font-size: 14px;
+  border-radius: 5px;
 
-  background-color: #CDCDCD;
+  background-color: #eee;
 
   transition: all ease-in-out 0.2s;
 
@@ -43,7 +48,7 @@
   }
 
   &:checked {
-    background-color: #495057;
+    background-color: $color-purple;
     color: #ffffff;
   }
 }

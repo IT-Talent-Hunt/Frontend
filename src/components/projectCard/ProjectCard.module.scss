@@ -1,10 +1,11 @@
 .card {
   width: 0.5fr;
-  height: 233px;
+  // height: 233px;
   
   padding: 16px;
 
-  background-color: #F6F6F6;
+  background-color: #fff;
+  border-radius: 10px;
 }
 
 .heading {
@@ -27,20 +28,6 @@
   font-size: 24px;
 }
 
-.status {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 0 10px;
-
-  color: #495057;
-  font-size: 14px;
-
-  border: 1px solid #ADB5BD;
-  border-radius: 50px;
-}
-
 .favorite {
   cursor: pointer;
 
@@ -61,60 +48,16 @@
   }
 }
 
-.owner {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  margin-bottom: 8px;
-
-  &__name {
-    font-weight: 400;
-    font-size: 16px;
-
-    &::after {
-      content: 'Owner';
-
-      margin-left: 8px;
-
-      color: #868E96;
-      font-size: 14px;
-    }
-  }
-}
-
-.members {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 4px;
-
-  margin-bottom: 8px;
-
-  font-size: 16px;
-
-  &__icon {
-    width: 16px;
-    height: 16px;
-
-    background-image: url('../../svg/users.svg');
-  }
-}
-
-.description {
-  padding-right: 8px;
-  margin-bottom: 30px;
-
-  text-align: start;
-  font-weight: 400;
-  font-size: 16px;
-  color: #495057;
-}
-
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  margin-top: 20px;
+
+  // position: relative;
+  // top: -10px;
+
 }
 
 .btn {
@@ -141,24 +84,30 @@
   }
 }
 
-.date__container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  // optional, makes date be as low as possible
-  align-self:last baseline;
-  gap: 4px;
+.button {
+  width: 150px;
+  // height: 20px;
 
-  font-weight: 400;
-  font-size: 14px;
-}
+  // position: relative;
+  // top: -3px;
 
-.calendar__icon {
-  width: 16px;
-  height: 16px;
+  // >* {
+  //   margin: 0;
+  //   height: 30px;
+  //   font-size: 14px;
+  //   font-weight: 600;
+  // }
 
-  background-image: url('../../svg/calendar.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  // height: 30px;
+
+  // position: relative;
+  // top: -20px;
+
+
+  >* {
+    margin: 0;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 600;
+  }
 }

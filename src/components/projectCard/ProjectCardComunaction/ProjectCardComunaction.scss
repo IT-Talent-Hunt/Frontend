@@ -1,0 +1,26 @@
+.projectComunacation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #495057;
+  margin-top: 10px;
+
+  &__communication {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__icon {
+    font-size: 20px;
+  }
+
+  &__link {
+    color: #000;
+
+    &:hover {
+        text-decoration: underline;
+    }
+  }
+}

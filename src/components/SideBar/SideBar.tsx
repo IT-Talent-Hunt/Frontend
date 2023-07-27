@@ -9,8 +9,13 @@ import { CheckBoxList } from '../CheckBoxList/CheckBoxList';
 import { RadioBtnList } from '../RadioBtnList/RadioBtnList';
 import { FilterByList } from '../FilterByList/FilterByList';
 
-export const SideBar: FC = () => {
-  const [positions, setPositions] = useState<string[]>([]);
+type Props = {
+  positions: string[],
+  setPositions: (prev: string[]) => void,
+}
+;
+export const SideBar: FC<Props> = ({ positions, setPositions }) => {
+  // const [positions, setPositions] = useState<string[]>([]);
   const [statuses, setStatuses] = useState<string[]>([]);
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [teamSize, setTeamSize] = useState('4');
@@ -38,23 +43,23 @@ export const SideBar: FC = () => {
   const handleCheckbox = useCallback((evt: React.ChangeEvent<HTMLInputElement>, stateType: 'position' | 'status' | 'technologies') => {
     const val = evt.target.name;
 
-    if (allFilters.includes(val)) {
-      onFilterHandler(val);
-    } else {
-      setAllFilters((current) => [...current, val]);
-    }
-
     if (stateType === 'position') {
-      if (positions.includes(val)) {
-        setPositions(positions.filter((el) => el !== val));
+      setAllFilters((current) => [...current].filter((el) => !preMadePositions.includes(el)));
+
+      if (allFilters.includes(val)) {
+        setAllFilters((current) => [...current].filter((el) => el !== val));
+        setPositions([]);
       } else {
-        setPositions([...positions, val]);
+        setPositions([val]);
       }
     } else if (stateType === 'status') {
-      if (statuses.includes(val)) {
-        setStatuses(statuses.filter((el) => el !== val));
+      setAllFilters((current) => [...current].filter((el) => !preMadeStatuses.includes(el)));
+
+      if (allFilters.includes(val)) {
+        setAllFilters((current) => [...current].filter((el) => el !== val));
+        setStatuses([]);
       } else {
-        setStatuses([...statuses, val]);
+        setStatuses([val]);
       }
     } else if (stateType === 'technologies') {
       if (technologies.includes(val)) {
@@ -63,10 +68,13 @@ export const SideBar: FC = () => {
         setTechnologies([...technologies, val]);
       }
     }
-  }, [statuses, positions, technologies]);
 
-  /* eslint-disable-next-line */
-  console.log(allFilters);
+    if (allFilters.includes(val)) {
+      onFilterHandler(val);
+    } else {
+      setAllFilters((current) => [...current, val]);
+    }
+  }, [statuses, positions, technologies]);
 
   const handleClearAll = () => {
     setPositions([]);

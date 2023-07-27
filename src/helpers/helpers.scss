@@ -1,3 +1,9 @@
+$color-green: #1EB248;
+$color-orange: #EF8C00;
+$color-grey--dark: #343A40;
+$color-grey--lite: #F6F6F6;
+$color-purple: #7563ED;
+
 @mixin tablet {
   @media (min-width: 640px) {
     @content;

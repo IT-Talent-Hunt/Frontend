@@ -1,7 +1,10 @@
+@import '../../helpers/helpers.scss';
+
 .main {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  border-radius: 15px;
 
   min-width: 320px;
   width: calc(25vw - 64px);
@@ -9,17 +12,17 @@
 
   padding: 24px;
 
-  background-color: #F6F6F6;
+  background-color: #fff;
 }
 
 .clearAll {
   font-weight: 400;
   font-size: 18px;
-  color: #495057;
+  color: $color-purple;
 }
 
 .heading {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 20px;
 
   &__container {
