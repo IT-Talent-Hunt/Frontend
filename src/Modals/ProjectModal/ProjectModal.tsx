@@ -13,6 +13,8 @@ import cross from '../../svg/cross-icon.svg';
 import './ProjectModal.scss';
 import { IconButton } from '../../components/IconButton/IconButton';
 import { ProjectCardDate } from '../../components/projectCard/ProjectCardDate/ProjectCardDate';
+import { communications } from '../../helpers/Variables';
+import { formatDate } from '../../helpers/helpers';
 
 type Props = {
   project: ProjectCardProps,
@@ -20,38 +22,55 @@ type Props = {
 
 export const ProjectModal: React.FC<Props> = ({ project }) => {
   const {
-    title,
-    owner,
+    name,
+    ownerId,
     status,
-    members,
-    maxMembers,
+    teamResponseDto,
     description,
     creationDate,
-    // isFavorite,
-    comunication,
+    socialLink,
   } = project;
 
+  const { userResponseDtos, maxMembers } = teamResponseDto;
+
+  const projectOwner = userResponseDtos
+    .find((user) => user.id === ownerId)
+    || userResponseDtos[0];
+
   const { setIsModal } = useContext(ModalContext);
+
+  // const selectedSocialLink = socialLinks.filter((socialLink) => socialLink.url.length > 0)[0];
+
+  const communication = communications
+    .find((com) => com.name === socialLink.platform)
+    || communications[0];
+
+  communication.link = socialLink.url;
+
+  const formatedDate = formatDate(creationDate);
+
+  /* eslint-disable-next-line */
+  console.log(communication);
 
   return (
     <div className="projectModal">
       <div className="projectModal__top">
         <div className="projectModal__wrapper">
-          <h1>{title}</h1>
+          <h1>{name}</h1>
           <ProjectCardStatus status={status} />
         </div>
 
         <IconButton svg={cross} onClick={() => setIsModal(false)} />
       </div>
 
-      <ProjectCardOwner owner={owner} />
-      <ProjectCardMembers members={members.length} maxMembers={maxMembers} />
+      <ProjectCardOwner owner={projectOwner} />
+      <ProjectCardMembers members={userResponseDtos.length} maxMembers={maxMembers} />
 
       <ul className="projectModal__list">
-        {members.map((member) => (
+        {userResponseDtos.map((member) => (
           <ProjectCardMemberItem
             key={member.id}
-            member={member.id}
+            member={member}
           />
         ))}
       </ul>
@@ -63,7 +82,7 @@ export const ProjectModal: React.FC<Props> = ({ project }) => {
 
       <p className="projectModal__container">
         <h2>Comunication</h2>
-        <ProjectCardComunaction comunication={comunication} />
+        <ProjectCardComunaction comunication={communication} />
       </p>
 
       <div className="projectModal__bottom">
@@ -72,7 +91,7 @@ export const ProjectModal: React.FC<Props> = ({ project }) => {
           <IconButton svg={favorite} />
         </div>
 
-        <ProjectCardDate date={creationDate} />
+        <ProjectCardDate date={formatedDate} />
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { ProfileTool } from '../../../Types/ProfileTool';
-import { IconButton } from '../../IconButton/IconButton';
 
 import '../ProfileTools.scss';
 
@@ -14,7 +13,10 @@ export const ProfileToolsItem: React.FC<Props> = ({ tool, onClick }) => {
   return (
     <button type="button" onClick={() => onClick()}>
       <li className="profileTools__item">
-        <IconButton svg={img} />
+        <div
+          style={{ backgroundImage: `url('${img}')` }}
+          className="profileTools__item-img"
+        />
 
         <span className="profileTools__item-title">{title}</span>
       </li>

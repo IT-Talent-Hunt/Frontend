@@ -1,15 +1,78 @@
+@import '../../helpers/helpers.scss';
+
 .main {
+  width: 100%;
   display: flex;
+  // justify-content: center;
   gap: 20px;
   background-color: #F6F6F6;
 
-  height: 100%;
+  min-height: 100vh;
 
-  padding: 32px 64px;
+  // padding: 32px 64px;
+  padding: 10px;
+  position: relative;
+
+
+}
+
+.bar {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+
+  z-index: 1;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: .5s;
+
+  @include desktop() {
+    width: max-content;
+    background-color: transparent;
+    opacity: 1;
+    transform: translateX(0);
+    position: static;
+  }
+}
+
+.bar__move {
+  opacity: 1;
+  transition: .5s;
+  transform: translateX(0);
 }
 
 .grid__container {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  @include tablet() {
+    gap: 18px;
+  }
+
+  @include desktop() {
+    gap: 24px;
+  }
+}
+
+.grid__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @include tablet() {
+    display: grid;
+    grid-template-columns: repeat($grid-columns, 1fr);
+    grid-template-rows: repeat($grid-rows, 1fr);
+    grid-gap: $grid-gap;
+    
+    // Add additional styling if needed
+    // For example, to center the items within each cell
+    align-items: center;
+    justify-items: center;
+  }
 }

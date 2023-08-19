@@ -1,8 +1,18 @@
+@import '../../../helpers/helpers.scss';
+
 .filterByItem {
-  font-size: 14px;
+  font-size: 8px;
   background-color: #eee;
   padding: 5px;
   border-radius: 8px;
+
+  @include tablet() {
+    font-size: 10px;
+  }
+
+  @include tablet() {
+    font-size: 12px;
+  }
 
 
   display: flex;
@@ -11,10 +21,21 @@
 
   &__cross {
     &-img {
-      width: 13px;
-      height: 13px;
+      width: 8px;
+      height: 8px;
       background-size: contain;
       background-repeat: no-repeat;
+
+      @include tablet() {
+        width: 10px;
+        height: 10px;
+      }
+    
+      @include tablet() {
+        width: 13px;
+        height: 13px;
+      }
+    
     }
   }
 }

@@ -1,140 +1,199 @@
-import {
-  ChangeEvent,
-  FC,
-  SetStateAction,
-  useState,
-} from 'react';
-import Chips from 'react-chips';
-import classnames from 'classnames';
-import styles from './ProjectPage.module.scss';
+import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
+import { InputField } from '../InputField/InputField';
+import { textValidation } from '../../helpers/validation';
+import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
+import { ProjectPositions } from './ProjectPositions/ProjectPositions';
+import { ContactItem } from '../ContactsList/ContactItem/ContactItem';
+import { Contact } from '../../Types/Contact';
+import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+import { existContacts } from '../../helpers/Variables';
+// import { postData } from '../../helpers/helpers';
+import './ProjectPage.scss';
+import { User } from '../../Types/User';
+import { Select } from '../../Types/InputField';
+import { ShineMessage } from '../ShineMessage/ShineMessage';
+import { Error } from '../Error/Error';
+// import { Container } from '../Container/Container';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import * as projectsActions from '../../redux/features/projects/projects';
+import { CreateComplete } from '../CreateComplete/CreateComplete';
 
-export const ProjectPage: FC = () => {
+export const ProjectPage = () => {
   const [name, setName] = useState('');
+  const [isNameDirty, setIsNameDirty] = useState(false);
+  const [nameMessage, setNameMessage] = useState('');
+  const [isNameSuccess, setIsNameSuccess] = useState(false);
+  const [user] = useLocalStorage<User | any>('user', {});
+
+  const [selectedPositions, setSelectedPositions] = useState<Select[]>([]);
+  const preparetedPositions = selectedPositions.map((position) => position.name);
+
   const [description, setDescription] = useState('');
-  const [members, setMembers] = useState([]);
-  const [messenger, setMessenger] = useState('Telegram');
-  const [link, setLink] = useState('');
+  const [contacts, setContacts] = useState<Contact[]>(existContacts);
+  const [currentContact, setCurrentContact] = useState<Contact>(contacts[1]);
 
-  const projectRole = ['UI/UX designer', 'Front-end developer', 'Back-end developer', 'QA engineer', 'Project-manager', 'DevOps', 'Mentor'];
+  // const [isLoader, setIsLoader] = useState(false);
+  // const [isError, setIsError] = useState(false);
+  const [isUpLoad, setIsUpLoad] = useState(false);
 
-  const cleareForm = () => {
-    setName('');
-    setDescription('');
-    setMembers([]);
-    setMessenger('Telegram');
-    setLink('');
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector(state => state.projects);
+
+  const restList = [...contacts]
+    .filter((contact) => contact.platform !== currentContact.platform);
+
+  const nameFied = {
+    id: 0,
+    type: 'text',
+    name: 'name',
+    value: name,
+    message: nameMessage,
+    isDirty: isNameDirty,
+    isSuccess: isNameSuccess,
+    text: 'Project name',
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    cleareForm();
+  // const loadNewProject = async () => {
+  //   try {
+  //     setIsLoader(true);
+
+  //     const newProject = {
+  //       name,
+  //       ownerId: user.id,
+  //       description,
+  //       teamRequestDto: {
+  //         userIds: [user.id],
+  //         requiredSpecialities: preparetedPositions,
+  //       },
+  //       socialLink: currentContact,
+  //       status: 'RECRUITMENT',
+  //     };
+
+  //     await postData('projects', newProject);
+  //     setIsSuccess(true);
+  //   } catch (error) {
+  //     setIsError('f');
+
+  //     setTimeout(() => {
+  //       setIsError('');
+  //     }, 4000);
+  //   } finally {
+  //     setTimeout(() => {
+  //       setIsLoader(false);
+  //     }, 4000);
+  //   }
+  // };
+
+  const loadNewProject = async () => {
+    const newProject = {
+      name,
+      ownerId: user.id,
+      description,
+      teamRequestDto: { //
+        userIds: [user.id],
+        requiredSpecialities: preparetedPositions,
+      },
+      socialLink: currentContact,
+      status: 'Recruitment',
+    };
+
+    await dispatch(projectsActions.push(newProject));
+    setIsUpLoad(true);
+
+    setTimeout(() => {
+      setIsUpLoad(false);
+    }, 3900);
   };
 
-  const handleChangeMessenger = (event: ChangeEvent<HTMLSelectElement>) => {
-    setMessenger(event.target.value);
-  };
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleDescriptiChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
-  };
-
-  const handleMembersChange = (newChips: SetStateAction<never[]>) => {
-    setMembers(newChips);
-  };
-
-  const handleLinkChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLink(event.target.value);
-  };
+  const isValid = name.length > 0
+  && description.length > 0
+  && selectedPositions.length > 0
+  && currentContact.url.length > 0;
 
   return (
-    <div className={styles.newProject__wrapper}>
-      <div className={styles.newProject__container}>
-        <form
-          className={`${styles.newProject__form} ${styles.form}`}
-          onSubmit={handleSubmit}
-        >
-          <h1 className={styles.form__header}>Create your own project with a team!</h1>
-          <ul className={`${styles.form__list} ${styles.list}`}>
-            <li className={`${styles.list__item} ${styles.item} ${styles.descriptions}`}>
-              <div className={styles.item__title}>Name and description</div>
-              <label htmlFor="name" className={styles.item__label}>
-                Project name
-              </label>
-              <input
-                type="text"
-                required
-                id="name"
-                value={name}
-                onChange={handleNameChange}
-                className={styles.item__input}
-                placeholder="Enter the name of the project"
+    <>
+      {isUpLoad && typeof error === 'boolean' && !loading ? (
+        <CreateComplete projectName={name} />
+      ) : (
+        <section className="createProject">
+          <form method="GET" onSubmit={(event) => event.preventDefault()} className="createProject__container">
+            <h1 className="createProject__title-main">
+              Create your own project with a team!
+            </h1>
+
+            {isUpLoad && typeof error === 'string' && (
+              <ShineMessage>
+                <Error message={error} />
+              </ShineMessage>
+            )}
+
+            <h4 className="createProject__title">
+              Name and description
+            </h4>
+
+            <div className="createProject__field">
+              <InputField
+                input={nameFied}
+                onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}
+                setValue={setName}
+                setIsValueDirty={setIsNameDirty}
               />
-              <label htmlFor="description" className={styles.item__label}>
-                Project description
-              </label>
-              <textarea
-                required
-                id="description"
-                value={description}
-                onChange={handleDescriptiChange}
-                className={`${styles.item__input} ${styles.description}`}
-                placeholder="Enter the description of the project"
-              />
-            </li>
-            <li className={`${styles.list__item} ${styles.item} ${styles.members}`}>
-              <div className="item__title">Project members</div>
-              <Chips
-                value={members}
-                onChange={handleMembersChange}
-                suggestions={projectRole}
-                uniqueChips={false}
-              />
-            </li>
-            <li className={`${styles.list__item} ${styles.item} ${styles.communication}`}>
-              <div className={styles.item__title}>Communication</div>
-              <label htmlFor="communication" className={styles.item__label}>
-                Link for communication
-              </label>
-              <div className={styles.communication__item} id="communication">
-                <select
-                  name="select"
-                  className={styles.item__select}
-                  value={messenger}
-                  onChange={handleChangeMessenger}
-                >
-                  <option value="Telegram">Telegram</option>
-                  <option value="Discord">Discord</option>
-                  <option value="Slack">Slack</option>
-                </select>
-                <input
-                  type="link"
-                  required
-                  value={link}
-                  onChange={handleLinkChange}
-                  className={`${styles.item__input} ${styles.link}`}
-                  placeholder={`Enter ${messenger} link`}
+
+              <div>
+                <h6 className="createProject__title-sub">Project description</h6>
+
+                <ProfileInputField
+                  value={description}
+                  setValue={setDescription}
+                  name="description"
                 />
               </div>
-            </li>
-          </ul>
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className={classnames(
-              ((name.length && description.length && members.length && link.length) !== 0)
-                ? `${styles.form__button}`
-                : `${styles.button__inactive}`,
-            )}
-          >
-            Create
-          </button>
-        </form>
-      </div>
-    </div>
+            </div>
 
+            <div className="createProject__field">
+              <h4 className="createProject__title">
+                Project members
+              </h4>
+
+              <div className="createProject__positions">
+                <h6 className="createProject__title-sub">Positions</h6>
+                <ProjectPositions
+                  selectedPositions={selectedPositions}
+                  setSelectedPositions={setSelectedPositions}
+                />
+              </div>
+
+            </div>
+
+            <div className="createProject__field">
+              <h4 className="createProject__title">
+                Communication
+              </h4>
+
+              <div>
+                <h6 className="createProject__title-sub">Link for communication</h6>
+
+                <ContactItem
+                  key={currentContact.platform}
+                  contact={currentContact}
+                  restList={restList}
+                  setContact={setCurrentContact}
+                  setContacts={setContacts}
+                  isEdit={!!true}
+                />
+              </div>
+            </div>
+
+            <CompleteButton
+              title="Create"
+              onClick={loadNewProject}
+              isLoader={loading}
+              isDisabled={isValid}
+            />
+          </form>
+        </section>
+      )}
+    </>
   );
 };

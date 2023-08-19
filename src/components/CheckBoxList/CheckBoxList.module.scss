@@ -2,42 +2,95 @@
 
 .heading {
   font-weight: 600;
-  font-size: 20px;
+  font-size: 14px;
+
+  @include tablet() {
+    font-size: 16px;
+  }
+
+  @include desktop() {
+    font-size: 18px;
+  }
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+
+  @include tablet() {
+    gap: 12px;
+  }
+
+  @include desktop() {
+    gap: 14px;
+  }
 
   &__ul {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
+
+    @include tablet() {
+      gap: 4px;
+    }
+  
+    @include desktop() {
+      gap: 6px;
+    }
   }
   
   &__item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 2px;
   }
 }
 
 .checkbox {
   cursor: pointer;
-  width: 24px;
-  height: 24px;
-  border-radius: 5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
 
   background-color: #eee;
 
+  @include tablet() {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+  }
+
+  @include desktop() {
+    width: 24px;
+    height: 24px;
+  }
+
   &:checked {
+    background-size: 8px;
     background-position: center;
     background-repeat: no-repeat;
     background-image: url('../../svg/checked.svg');
+
+    @include tablet() {
+      background-size: 10px;
+    }
+  
+    @include desktop() {
+      background-size: 12px;
+    }
   }
 }
 
 .label {
   cursor: pointer;
+  font-size: 10px;
+
+  @include tablet() {
+    font-size: 12px;
+  }
+
+  @include desktop() {
+    font-size: 14px;
+  }
 }

@@ -1,11 +1,30 @@
+@import '../../../helpers/helpers.scss';
+
 .transparentButton {
+  height: 30px;
+  font-size: 12px;
   border: 1px solid #fff;
   border-radius: 8px;
 
   width: 100%;
-  max-width: 160px;
+  max-width: 100px;
 
   color: #fff;
   font-weight: 500;
-  padding: 10px 0;
+  padding: 4px 0;
+
+
+  @include tablet() {
+    font-size: 16px;
+    height: 40px;
+    max-width: 130px;
+    padding: 6px 0;
+  }
+
+  @include desktop() {
+    font-size: 18px;
+    height: 43px;
+    max-width: 160px;
+    padding: 8px 0;
+  }
 }

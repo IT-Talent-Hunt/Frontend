@@ -1,0 +1,39 @@
+@import '../../../helpers/helpers.scss';
+
+.completeReverseButton {
+  height: 35px;
+  width: 100%;
+  margin-top: 20px;
+
+  background-color: transparent;
+  border-radius: 10px;
+  color: $color-purple;
+  font-size: 14px;
+  border: 1px solid $color-purple;
+
+  transition: all ease-in-out 0.2s;
+
+  @include tablet() {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  @include desktop() {
+    font-size: 18px;
+    height: 43px;
+  }
+
+  &:hover {
+    background-color: $color-grey--dark;
+    color: #fff;
+    border: 1px solid #fff;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &-disable {
+    background-color: $color-purple;
+  }
+}

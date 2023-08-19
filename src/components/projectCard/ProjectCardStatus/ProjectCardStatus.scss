@@ -1,13 +1,22 @@
 @import '../../../helpers/helpers.scss';
 
 .projectStatus {
-    padding: 3px 10px;
+    padding: 4px 10px;
 
     color: #495057;
-    font-size: 14px;
+    font-size: 10px;
   
     border: 1px solid #ADB5BD;
     border-radius: 50px;
+
+    @include tablet() {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    @include desktop() {
+      font-size: 14px;
+    }
 
     &--green {
       border-color: $color-green;

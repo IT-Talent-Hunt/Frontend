@@ -30,10 +30,30 @@
 }
 
 .p {
-  font-size: 18px;
+  font-size: 14px;
   color: #495057;
   margin-top: 20px;
   text-align: center;
+
+  @include tablet() {
+    font-size: 16px;
+  }
+
+  @include desktop() {
+    font-size: 18px;
+  }
+
+  >span {
+    font-size: 14px;
+    
+    @include tablet() {
+      font-size: 16px;
+    }
+  
+    @include desktop() {
+      font-size: 18px;
+    }
+  }
 }
 
 .link {

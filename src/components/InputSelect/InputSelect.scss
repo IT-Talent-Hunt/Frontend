@@ -1,3 +1,5 @@
+@import '../../helpers/helpers.scss';
+
 .inputSelect {
   &__list {
     // padding: 10px;
@@ -11,17 +13,38 @@
     box-shadow: 0 4px 3px  #eee;
 
     position: absolute;
-    bottom: -100px;
+    bottom: -104px;
     max-height: 180px;
     overflow: auto;
+  }
 
+  &__title {
+    font-size: 10px;
+    font-weight: 300;
+
+    @include tablet() {
+      font-size: 12px;
+    }
+
+    @include desktop() {
+      font-size: 14px;
+    }
   }
 
   &__item {
-    font-size: 14px;
-    padding: 10px;
+    font-size: 10px;
+    padding: 10px 5px;
     width: 100%;
     text-align: left;
+
+    @include tablet() {
+      font-size: 12px;
+    }
+
+    @include desktop() {
+      font-size: 14px;
+      padding: 10px;
+    }
 
     &:hover {
       background-color: rgba($color: #eee, $alpha: .35);
@@ -29,22 +52,47 @@
   }
 
   &__arrow {
-    width: 15px;
-    height: 15px;
+    width: 8px;
+    height: 8px;
     background-repeat: no-repeat;
+    background-size: contain;
 
     position: absolute;
 
-    bottom: 13px;
+    bottom: 9px;
     right: 15px;
 
     transition: .5s;
     transform: rotateX(0deg);
 
+
+    @include tablet() {
+      width: 11px;
+      height: 11px;
+
+      bottom: 11px;
+    }
+
+    @include desktop() {
+      width: 13px;
+      height: 13px;
+
+      bottom: 14px;
+    }
+
     &-move {
       transition: .5s;
       transform: rotateX(180deg);
-      bottom: 20px;
+      bottom: 12px;
+
+      @include tablet() {
+        bottom: 16px;
+      }
+
+
+      @include desktop() {
+        bottom: 20px;
+      }
     }
   }
 

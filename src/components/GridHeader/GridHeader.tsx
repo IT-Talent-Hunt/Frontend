@@ -1,14 +1,22 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { FiltersEnumTypes } from '../../Types/FilterEnumTypes';
 import styles from './GridHeader.module.scss';
 
 type Props = {
   n: number;
-  positions: string[];
+  position: string;
+  filter: string,
+  setFilter: (value: FiltersEnumTypes) => void,
 };
 
-export const GridHeader: FC<Props> = ({ n = 0, positions }) => {
-  const [filter, setFilter] = useState('all');
-  const filters = ['All', 'New', 'Favorites'];
+export const GridHeader: FC<Props> = ({
+  n = 0,
+  position,
+  filter,
+  setFilter,
+}) => {
+  // const [filter, setFilter] = useState('all');
+  // const filters = ['All', 'New', 'Favorites'];
 
   return (
     <div className={styles.header}>
@@ -16,9 +24,9 @@ export const GridHeader: FC<Props> = ({ n = 0, positions }) => {
         {`${n} projects was found for`}
         &nbsp;
 
-        {positions.length ? (
+        {position.length ? (
           <p className={styles.accented_text}>
-            {positions}
+            {position}
           </p>
         ) : (
           <p className={styles.accented_text}>
@@ -27,20 +35,44 @@ export const GridHeader: FC<Props> = ({ n = 0, positions }) => {
         )}
       </h5>
       <ul className={styles.list__container}>
-        {filters.map((el) => (
-          <li key={el} className={styles.list__item}>
-            <input
-              type="radio"
-              name="filterOptions"
-              id={el.toLowerCase()}
-              value={el.toLowerCase()}
-              checked={filter === el.toLowerCase()}
-              onChange={(evt) => setFilter(evt.target.value)}
-              className={styles.radio}
-              data-content={el}
-            />
-          </li>
-        ))}
+        <li className={styles.list__item}>
+          <input
+            type="radio"
+            name="filterOptions"
+            id={FiltersEnumTypes.ALL}
+            value={FiltersEnumTypes.ALL}
+            checked={filter === FiltersEnumTypes.ALL}
+            onChange={() => setFilter(FiltersEnumTypes.ALL)}
+            className={styles.radio}
+            data-content="All"
+          />
+        </li>
+
+        <li className={styles.list__item}>
+          <input
+            type="radio"
+            name="filterOptions"
+            id={FiltersEnumTypes.NEW}
+            value={FiltersEnumTypes.NEW}
+            checked={filter === FiltersEnumTypes.NEW}
+            onChange={() => setFilter(FiltersEnumTypes.NEW)}
+            className={styles.radio}
+            data-content="New"
+          />
+        </li>
+
+        <li className={styles.list__item}>
+          <input
+            type="radio"
+            name="filterOptions"
+            id={FiltersEnumTypes.FAVORITES}
+            value={FiltersEnumTypes.FAVORITES}
+            checked={filter === FiltersEnumTypes.FAVORITES}
+            onChange={() => setFilter(FiltersEnumTypes.FAVORITES)}
+            className={styles.radio}
+            data-content="Favorites"
+          />
+        </li>
       </ul>
     </div>
   );

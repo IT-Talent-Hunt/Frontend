@@ -34,6 +34,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
 
   const [isServer, setIsServer] = useState('');
   const [user, setUser] = useLocalStorage<User | any>('user', {});
+  const [token, setToken] = useLocalStorage<string>('tokenId', '');
   const [isLoader, setIsLoader] = useState(false);
 
   const isValidForms = !!isEmailSucces
@@ -77,8 +78,12 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       if (answear.message !== undefined) {
         setIsServer(answear.message.split(': ')[0].trim());
       } else {
-        setUser(answear);
+        setUser(answear.userResponseDto);
+        setToken(answear.token);
         setIsServer('success');
+        /* eslint-disable-next-line */
+         console.log('t', token);
+
       }
     } catch (error) {
       /* eslint-disable-next-line */
@@ -207,7 +212,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   return (
     <section className={styles.login}>
       <form onSubmit={handleSubmit} className={styles.form} method="get">
-        <h1 className={styles.header}>Sign in</h1>
+        <h1 className={styles.header}>{`Sign ${isSigningUp ? 'up' : 'in'}`}</h1>
 
         <InputField
           input={inputEmail}

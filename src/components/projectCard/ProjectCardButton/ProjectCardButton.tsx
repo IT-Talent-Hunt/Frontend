@@ -6,7 +6,7 @@ import './ProjectCardButton.scss';
 type Props = {
   title: string,
   isDisabled?: boolean,
-  onClick?: () => void,
+  onClick?: (value: any) => void,
   isLoader?: boolean,
 };
 

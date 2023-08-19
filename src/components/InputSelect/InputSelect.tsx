@@ -52,7 +52,7 @@ export const InputSelect: React.FC<Props> = ({
         id={type}
       >
         <div>
-          <p>{text}</p>
+          <h4 className="inputSelect__title">{text}</h4>
           <button
             type="button"
             onClick={() => {

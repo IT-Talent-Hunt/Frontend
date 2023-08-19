@@ -1,0 +1,96 @@
+@import '../../helpers/helpers.scss';
+
+.createProject {
+  display: block;
+  padding: 10px;
+  background: linear-gradient(#7b69ed, #fcffd7);
+  min-height: calc(100vh - 60px);
+
+  display: flex;
+  align-items: center;
+
+  @include tablet() {
+    padding: 30px;
+  }
+
+  @include desktop() {
+    padding: 40px;
+  }
+
+  &__container {
+    width: 100%;
+    // height: 600px; //
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    position: relative;
+
+    @include tablet() {
+      max-width: 500px;
+    }
+
+    @include desktop() {
+      max-width: 600px;
+    }
+  }
+
+  &__field {
+    margin-top: 10px;
+
+
+    @include desktop() {
+      margin-top: 15px;
+    }
+  }
+
+  &__title {
+    color: $color-grey--dark;
+    margin-top: 15px;
+    font-size: 12px;
+
+    @include tablet() {
+      font-size: 14px;
+    }
+
+    @include desktop() {
+      font-size: 16px;
+    }
+
+    &-sub {
+      font-weight: 300;
+      font-size: 10px;
+
+      margin-top: 10px;
+      margin-bottom: 3px;
+
+      @include tablet() {
+        font-size: 12px;
+      }
+
+      @include desktop() {
+        font-size: 14px;
+        margin-top: 15px;
+      }
+    }
+
+    &-main {
+      color: $color-grey--dark;
+      font-size: 14px;
+      text-align: center;
+
+      @include tablet() {
+        font-size: 18px;
+      }
+
+      @include desktop() {
+        font-size: 20px;
+      }
+    }
+  }
+
+  &__contact {
+    // margin-top: 100px;
+  }
+}

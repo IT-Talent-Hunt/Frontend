@@ -6,7 +6,7 @@ type Props = {
   state: string;
   heading: string;
   groupName: string;
-  setState: React.Dispatch<React.SetStateAction<string>>;
+  setState: (value: string) => void,
 };
 
 export const RadioBtnList: FC<Props> = ({

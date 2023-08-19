@@ -1,6 +1,10 @@
+@import '../../helpers/helpers.scss';
+
 .card {
-  width: 0.5fr;
+  // width: 0.5fr;
   // height: 233px;
+  width: 100%;
+  // min-height: 233px;
   
   padding: 16px;
 
@@ -25,7 +29,15 @@
 
 .title {
   font-weight: 500;
-  font-size: 24px;
+  font-size: 18px;
+
+  @include tablet() {
+    font-size: 22px;
+  }
+
+  @include desktop() {
+    font-size: 24px;
+  }
 }
 
 .favorite {

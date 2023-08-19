@@ -1,22 +1,31 @@
+import { User } from "./User";
+import { Contact } from '../Types/Contact';
+
 export interface Member {
   id: number,
   name: string,
 }
 
-export interface Comunaction {
+export interface Communication {
   name: string,
   img: string,
   link: string,
 }
 
+export interface TeamResponse {
+  id: number,
+  maxMembers: number,
+  requiredSpecialities: string[],
+  userResponseDtos: User[],
+}
+
 export interface ProjectCardProps {
-  title: string;
-  owner: string;
+  id: number;
+  name: string;
+  ownerId: number;
   status: string;
-  members: Member[];
-  maxMembers: number;
+  teamResponseDto: TeamResponse;
   description: string;
   creationDate: string;
-  isFavorite: boolean;
-  comunication: Comunaction;
+  socialLink: Contact;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { Outlet } from 'react-router-dom';
 import './App.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -15,23 +15,29 @@ import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete
 import { CreateProfile } from './components/CreateProfile/CreateProfile';
 import { SignUp } from './pages/SignUpPage/SignUp';
 import { ModalProvider } from './Providers/ModalProvider';
+import { useAppSelector } from './redux/hooks';
 
 export const App: React.FC = () => {
   // const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSideBar, setIsSideBar] = useState(false);
+
+  const { projects } = useAppSelector(state => state.projects);
+
+  const project = projects[3];
 
   return (
     <ModalProvider>
       <div className="starter">
         <header>
-          <Header />
+          <Header isSideBar={isSideBar} setIsSideBar={setIsSideBar} />
         </header>
         <main>
           <Routes>
             <Route path="main" element={<Navigate to="/" replace />} />
-            <Route index element={<MainPage />} />
-            <Route path="project" element={<ProjectPage />} />
+            <Route index element={<MainPage isSideBar={isSideBar} />} />
+            <Route path="createProject" element={<ProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="edit_project" element={<EditProject />} />
+            <Route path="edit_project" element={<EditProject project={project} />} />
             <Route path="signIn" element={<SignInPage />} />
             <Route path="recovery" element={<PasswordRecovery />} />
             <Route path="recoveryComplete" element={<RecoveryComplete />} />

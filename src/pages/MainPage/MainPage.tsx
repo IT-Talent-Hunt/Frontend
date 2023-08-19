@@ -1,331 +1,133 @@
+/* eslint-disable import/no-duplicates, no-shadow */
+
 import {
   FC,
   useCallback,
   useState,
   useContext,
+  useEffect,
 } from 'react';
 import classNames from 'classnames';
 import styles from './MainPage.module.scss';
 import { SideBar } from '../../components/SideBar/SideBar';
 import { GridHeader } from '../../components/GridHeader/GridHeader';
-import { ProjectCard } from '../../components/projectCard/ProjectCard';
+// import { ProjectCard } from '../../components/projectCard/ProjectCard';
 import { ModalContext } from '../../Providers/ModalProvider';
 import { ProjectModal } from '../../Modals/ProjectModal/ProjectModal';
 import { Modal } from '../../components/Modal/Modal';
+// import { getData } from '../../helpers/helpers';
+// import { ProjectCardProps } from '../../Types/ProjectCardProps';
+// import { Empty } from '../../components/Empty/Empty';
+// import { Error } from '../../components/Error/Error';
+// import { LoaderBig } from '../../components/Loader/LoaderBig';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+// import { init } from '../../redux/features/projects/projects';
+import * as projectsActions from '../../redux/features/projects/projects';
+import * as favoritesActions from '../../redux/features/favorites/favorites';
+// import { getData } from '../../helpers/helpers';
+// import { ProjectCardProps } from '../../Types/ProjectCardProps';
+// import { deleteData } from '../../helpers/helpers';
+import { ProjectsField } from '../../components/ProjectsField/ProjectsFiled';
+import { FiltersEnumTypes } from '../../Types/FilterEnumTypes';
 
-export const MainPage: FC = () => {
+type Props = {
+  isSideBar: boolean,
+};
+
+export const MainPage: FC<Props> = ({ isSideBar }) => {
   const [currentId, setCurrentId] = useState(0);
-  const [positions, setPositions] = useState<string[]>([]);
+
+  const [position, setPosition] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
+  const [filter, setFilter] = useState(FiltersEnumTypes.ALL);
+  const [teamSize, setTeamSize] = useState('');
 
   const { isModal, setIsModal } = useContext(ModalContext);
+
+  const dispatch = useAppDispatch();
+  const { projects, loading, error } = useAppSelector(state => state.projects);
+  const { favorites, favoritesLoading, favoritesError } = useAppSelector(state => state.favorites);
 
   const handleCardClick = useCallback((id: number) => {
     setIsModal(true);
     setCurrentId(id);
   }, []);
 
-  const preMadeCards = [
-    {
-      id: 1,
-      title: 'Taskify',
-      status: 'In progress',
-      owner: 'Vatalik',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-        { id: 3, name: 'Denys Bokov' },
-        { id: 4, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
-    },
-    {
-      id: 2,
-      title: 'Taskify',
-      status: 'In progress',
-      owner: 'Biden Prime',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-        { id: 3, name: 'Denys Bokov' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Telegram', img: 'telegram', link: 'https://web.telegram.org/a/' },
+  function generateSpecialitiesLink(position?: string, teamSize?: string, status?: string): string {
+    let link = 'projects/search';
 
-    },
-    {
-      id: 3,
-      title: 'Taskify',
-      status: 'In progress',
-      owner: 'Geralt',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-        { id: 3, name: 'Denys Bokov' },
-        { id: 4, name: 'Kolya' },
-        { id: 5, name: 'Denys Bokov' },
+    const professionsMap: Record<string, string> = {
+      'UI/UX Designer': 'UI_UX_DESIGNER',
+      'Front-end developer': 'FRONTEND_DEVELOPER',
+      'Back-end developer': 'BACKEND_DEVELOPER',
+      'Full-stack developer': 'FULLSTACK_DEVELOPER',
+      DevOps: 'DEVOPS',
+      'Project Manager': 'PROJECT_MANAGER',
+      QA: 'QA_ENGINEER',
+      Mentor: 'MENTOR',
+    };
 
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Discrod', img: 'discord', link: 'https://discord.com/' },
+    const statusesMap: Record<string, string> = {
+      Recruitment: 'RECRUITMENT',
+      'In progress': 'IN_PROGRESS',
+      Finished: 'FINISHED',
+    };
 
-    },
-    {
-      id: 4,
-      title: 'Taskify',
-      status: 'In progress',
-      owner: 'Mario',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-        { id: 3, name: 'Kolya' },
+    if (position) {
+      const professionCode = professionsMap[position];
 
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Discrod', img: 'discord', link: 'https://discord.com/' },
+      if (professionCode) {
+        link += `?specialities=${professionCode}`;
+      }
+    }
 
-    },
-    {
-      id: 5,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Vigil',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Telegram', img: 'telegram', link: 'https://web.telegram.org/a/' },
+    if (teamSize) {
+      link += `${position ? '&' : '?'}teamSize=${teamSize}`;
+    }
 
-    },
-    {
-      id: 6,
-      title: 'Taskify',
-      status: 'Recruitment',
-      owner: 'Dante',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Telegram', img: 'telegram', link: 'https://web.telegram.org/a/' },
+    if (status && status !== 'All') {
+      const statusCode = statusesMap[status];
 
-    },
-    {
-      id: 7,
-      title: 'Taskify',
-      status: 'In progress',
-      owner: 'Trump Prime',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+      link += `${(position || teamSize) ? '&' : '?'}status=${statusCode}`;
+    }
 
-    },
-    {
-      id: 8,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+    return link;
+  }
 
-    },
-    {
-      id: 9,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+  /* eslint-disable-next-line */
+  console.log(generateSpecialitiesLink(position, teamSize, status));
 
-    },
-    {
-      id: 10,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+  const getProjects = () => {
+    // const professionsMap: Record<string, string> = {
+    //   'UI/UX designer': 'UI_UX_DESIGNER',
+    //   'Front-end developer': 'FRONTEND_DEVELOPER',
+    //   'Back-end developer': 'BACKEND_DEVELOPER',
+    //   DevOps: 'DEVOPS',
+    //   'Project manager': 'PROJECT_MANAGER',
+    //   'QA Engineer': 'QA_ENGINEER',
+    //   Mentor: 'MENTOR',
+    // };
 
-    },
-    {
-      id: 11,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+    // const url = `projects/search${position
+    //   ? `?specialities=${professionsMap[position]}`
+    //   : ''} ${status ? `&status=${status.toUpperCase()}` : ''}`;
 
-    },
-    {
-      id: 12,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+    const url = generateSpecialitiesLink(position, teamSize, status);
 
-    },
-    {
-      id: 13,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+    dispatch(projectsActions.init(url));
+  };
 
-    },
-    {
-      id: 14,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+  const getFavoritesPojects = () => {
+    dispatch(favoritesActions.init());
+  };
 
-    },
-    {
-      id: 15,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
+  useEffect(() => {
+    getProjects();
+    getFavoritesPojects();
+  }, [filter, position, status, teamSize]);
 
-    },
-    {
-      id: 16,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
-
-    },
-    {
-      id: 17,
-      title: 'Taskify',
-      status: 'Finished',
-      owner: 'Druttut',
-      members: [
-        { id: 1, name: 'Denys Bokov' },
-        { id: 2, name: 'Kolya' },
-      ],
-      maxMembers: 5,
-      isFavorite: true,
-      creationDate: '26.06.2023',
-      description:
-        '"Taskify" is a simple web application for task management with collaboration. The goal is to provide organization and productivity in the work environment.',
-      comunication: { name: 'Slack', img: 'slack', link: 'https://slack.com/' },
-
-    },
-  ];
-
-  const currentProject = preMadeCards
-    .find((project) => project.id === currentId) || preMadeCards[1];
+  const currentProject = projects
+    .find((project) => project.id === currentId) || projects[1];
 
   return (
     <div className={classNames(styles.main, { [styles.main__block]: isModal })}>
@@ -335,27 +137,47 @@ export const MainPage: FC = () => {
         </Modal>
       )}
 
-      <SideBar positions={positions} setPositions={setPositions} />
+      <div
+        className={classNames(
+          styles.bar,
+          { [styles.bar__move]: isSideBar },
+        )}
+      >
+        <SideBar
+          position={position}
+          setPosition={setPosition}
+          status={status}
+          setStatus={setStatus}
+          teamSize={teamSize}
+          setTeamSize={setTeamSize}
+        />
+      </div>
+
       <div className={styles.grid__container}>
-        <GridHeader n={24} positions={positions} />
-        <div className="grid">
-          {preMadeCards.map((el) => (
-            <ProjectCard
-              key={el.id}
-              id={el.id}
-              title={el.title}
-              status={el.status}
-              owner={el.owner}
-              members={el.members}
-              maxMembers={el.maxMembers}
-              isFavorite={el.isFavorite}
-              creationDate={el.creationDate}
-              description={el.description}
-              comunication={el.comunication}
-              onClick={handleCardClick}
-            />
-          ))}
-        </div>
+        <GridHeader
+          n={0}
+          position={position}
+          filter={filter}
+          setFilter={setFilter}
+        />
+
+        {filter === 'all' && (
+          <ProjectsField
+            projects={projects}
+            error={error}
+            loader={loading}
+            onCardClick={handleCardClick}
+          />
+        )}
+
+        {filter === 'favorites' && (
+          <ProjectsField
+            projects={favorites}
+            error={favoritesError}
+            loader={favoritesLoading}
+            onCardClick={handleCardClick}
+          />
+        )}
       </div>
     </div>
   );

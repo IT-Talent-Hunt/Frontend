@@ -35,7 +35,7 @@
     align-items: center;
     justify-content: center;
 
-    height: 200px;
+    height: 150px;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -51,8 +51,12 @@
   }
 
   &__title {
-    font-size: 30px;
+    font-size: 20px;
     color: #fff;
+
+    @include tablet() {
+      font-size: 30px;
+    }
 
     @include desktop() {
       font-size: 50px;
@@ -62,6 +66,8 @@
     &-sub {
       color: #fff;
       margin-top: 10px;
+    
+      font-size: 10px;
 
       @include tablet() {
         font-size: 14px;

@@ -1,0 +1,44 @@
+@import '../../helpers/helpers.scss';
+
+.success {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    color:  $color-green;
+    font-weight: 500;
+
+    &-img {
+      margin: 0 auto;
+      background-image: url('../../svg/icon-success.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 100px;
+      height: 100px;
+
+      @include tablet() {
+        width: 100px;
+        height: 100px;
+      }
+
+      @include tablet() {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    &__message {
+        margin: 0 auto;
+        margin-top: 20px;
+        // max-width: 300px;
+
+        font-size: 14px;
+
+        @include tablet() {
+          font-size: 16px;
+        }
+    
+        @include tablet() {
+          font-size: 18px;
+        }
+    }
+  }

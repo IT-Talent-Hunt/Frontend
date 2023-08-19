@@ -1,0 +1,17 @@
+.shineMessage {
+    position: absolute;
+    padding: 10px;
+    top: 50px;
+    left: 10px;
+    right: 10px;
+    bottom: 60px;
+    background-color: #fff;
+    z-index: 2;
+    animation: leave 4s linear;
+    
+    &__wrapper {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+}

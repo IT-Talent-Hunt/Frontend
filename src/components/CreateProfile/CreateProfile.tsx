@@ -9,6 +9,7 @@ import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { textValidation, selectValidation } from '../../helpers/validation';
 import { User } from '../../Types/User';
 import { patchData } from '../../helpers/helpers';
+import { socialities } from '../../helpers/Variables';
 
 export const CreateProfile = () => {
   const [name, setName] = useState('');
@@ -26,9 +27,11 @@ export const CreateProfile = () => {
   const [positionMessage, setPositionMessage] = useState('');
   const [isPositionSuccess, setIsPositionSuccess] = useState(false);
 
-  const [userProfile, setUserProfile] = useState({});
   const [user, setUser] = useLocalStorage<User | any>('user', {});
   const navigation = useNavigate();
+
+  // const visiblePosition = socialities
+  //   .find((sociality) => sociality.name === user.specialities[0].specialityName);
 
   const isValid = isPositionDirty === false
   && isNameDirty === false
@@ -68,58 +71,43 @@ export const CreateProfile = () => {
     isDirty: isPositionDirty,
     isSuccess: isPositionSuccess,
     text: 'Position',
-    selections: [
-      { id: 0, name: 'UI/UX designer' },
-      { id: 1, name: 'Front-end developer' },
-      { id: 2, name: 'Back-end developer' },
-      { id: 3, name: 'DevOps' },
-      { id: 4, name: 'Project manager' },
-      { id: 5, name: 'QA Engineer' },
-      { id: 6, name: 'Mentor' },
-    ],
+    selections: socialities,
   };
 
   function upLoadUserData(userId: number) {
     const chagedUserKeys = {
       firstName: name,
       lastName: surName,
-      specialities: [{ specialityName: 'QA' }],
+      speciality: position,
     };
 
     return patchData(`users/${userId}`, chagedUserKeys)
     /* eslint-disable-next-line */
-    .then((res) => setUser(res))
+    .then((returnedUser) => returnedUser)
   }
 
-  const onSubmitHandler = (event: React.FormEvent) => {
+  const onSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess);
     textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
     selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
 
-    upLoadUserData(user.id);
+    const updatedUser = await upLoadUserData(user.id);
+
+    setUser(updatedUser);
 
     if (isValid) {
       navigation('/signIn');
     }
-
-    setUserProfile({
-      name,
-      surName,
-      position,
-    });
-
-    /* eslint-disable-next-line */
-    console.log(userProfile);
   };
 
   return (
     <section className="profileCreate">
       <Container>
 
-        <form method="get" onSubmit={onSubmitHandler} className="profileCreate__shell">
-          <h1>Profile</h1>
+        <form method="GET" onSubmit={onSubmitHandler} className="profileCreate__shell">
+          <h1 className="profileCreate__title">Profile</h1>
           <InputField
             input={nameFied}
             onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}

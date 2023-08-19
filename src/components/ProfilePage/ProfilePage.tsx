@@ -1,281 +1,276 @@
-/* eslint-disable max-len */
-// import React from 'react';
-import React, { ChangeEvent, useState } from 'react';
-import classnames from 'classnames';
-import styles from './ProfilePage.module.scss';
+/* eslint-disable quote-props */
+/* eslint-disable */
+import { useState, useContext, useEffect } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
+import { BackTo } from '../BackTo/BackTo';
+import { IconButton } from '../IconButton/IconButton';
+import { ProfileTextField } from '../ProfileTextField/ProfileTextField';
+import { ProfileProject } from '../ProfileProject/ProfileProject';
+import { Modal } from '../Modal/Modal';
+import { ProjectModal } from '../../Modals/ProjectModal/ProjectModal';
+import { ModalContext } from '../../Providers/ModalProvider';
+import { ProjectCardProps } from '../../Types/ProjectCardProps';
+import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
+import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+import pen from '../../svg/edit-pen--icon.svg';
+import profile from '../../svg/profile.svg';
+import './ProfilePage.scss';
+import { CompleteReverseButton } from '../Buttons/CompleteReverseButton/CompleteReverseButton';
+import { ContactsList } from '../ContactsList/ContactsList';
+import { putData, getData } from '../../helpers/helpers';
+import { LoaderBig } from '../Loader/LoaderBig';
+import { Error } from '../Error/Error';
+import { Success } from '../Success/Success';
+import { Empty } from '../Empty/Empty';
+import { ShineMessage } from '../ShineMessage/ShineMessage';
+// import { patchData } from '../../helpers/helpers';
 
 export const ProfilePage = () => {
-  const [ownerCurrent, setOwnerCurrent] = useState('Vitalii Rudenko');
-  const [skills, setSlills] = useState('');
-  const [linkEmail, setLinkEmail] = useState('');
-  const [linkLinkedin, setLinkLinkedin] = useState('');
-  const [linkTelegram, setLinkTelegram] = useState('');
+  const { isModal, setIsModal } = useContext(ModalContext);
+  const [projectModal, setProjectModal] = useState<ProjectCardProps | null>(null);
+  const [user, setUser] = useLocalStorage<any>('user', {});
 
-  const [about, setAbout] = useState('');
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
-  const cleareForm = () => {
-    setOwnerCurrent('');
-    setSlills('');
-    setLinkEmail('');
-    setLinkLinkedin('');
-    setLinkTelegram('');
-    setAbout('');
+  const [userSkills, setUserSkills] = useState<string>(user.skills);
+  const [userAbout, setUserAbout] = useState(user.description);
+  const [userContacts, setUserContacts] = useState([...user.socialLinks]);
+
+  const [userOwnedProjects, setUserOwneProjects] = useState<any>([]);
+  const [userArhivedProjects, setUserArhivedProjects] = useState<any>([]);
+  const [userOnGoingProjects, setUserOnGoingProjects] = useState<any>([]);
+
+  const [isUpdateLoad, setIsUpdateLoad] = useState(false);
+  const [isUpdateError, setIsUpdateError] = useState('');
+
+  const [isProjectsLoad, setIsProjectsLoad] = useState(false);
+  const [isProjectsError, setIsProjectsError] = useState('');
+
+  const [isSuccessUpdate, setIsSuccesUpdate] = useState('');
+
+  const onProjectHandler = (project: ProjectCardProps) => {
+    setProjectModal(project);
+    setIsModal(true);
   };
-
-  const handleSubmit = async (event: React.FormEvent) => {
+  
+  const userDataUpdate = async(userId: number, event: React.FormEvent) => {
     event.preventDefault();
-    cleareForm();
+
+    try {
+      setIsUpdateLoad(true);
+
+      const chagedUserKeys = {
+        ...user,
+        description: userAbout,
+        skills: userSkills,
+        socialLinks: userContacts,
+      };
+
+      const updatedUser = await putData(`users/${userId}`, chagedUserKeys)
+
+      setUser(updatedUser);
+      setIsSuccesUpdate("The requested updates to the user's information have been applied without any issues. The user's data has been successfully modified in the system.\nThank you for using our services!");
+
+      setTimeout(() => {
+        setIsSuccesUpdate('');
+        setIsUpdateLoad(false);
+      }, 4000)
+    } catch (error) {
+      setIsUpdateError('An error occurred while attempting to update user data. The requested resource was not found on the server. Please ensure that you are using a correct user identifier and try again.If the error persists, please contact the system administrator for further assistance. This error can occur due to an incorrect URL or the user being deleted from the database. Please double-check your data and retry the operation.');
+
+      setTimeout(() => {
+        setIsUpdateError('');
+        setIsUpdateLoad(false);
+      }, 4000)
+    }
   };
 
-  const handleSkillsChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setSlills(event.target.value);
-  };
+  const loadUserProjectsData = async() => {
+    try {
+      setIsProjectsLoad(true);
+      const ownedProjectData = await getData(`projects/by-user/${user.id}`);
+      setUserOwneProjects(ownedProjectData);
 
-  const handleAboutChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setAbout(event.target.value);
-  };
+      const arhivedProjects =await getData(
+        `projects/by-user/${user.id}/status?projectStatus=FINISHED`
+      );
+      console.log(arhivedProjects);
+      setUserArhivedProjects(arhivedProjects);
 
-  const handleLinkEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLinkEmail(event.target.value);
-  };
+      const onGoingProjects = await getData(
+        `projects/by-user/${user.id}/status?projectStatus=IN_PROGRESS`
+      );
+      setUserOnGoingProjects(onGoingProjects);
 
-  const handleLinkLinkedinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLinkLinkedin(event.target.value);
-  };
+    } catch (error) {
+      setIsProjectsError('An error occurred while attempting to load data from the server. An internal server error may be caused by technical glitches or issues within the system. Our experts have already been notified of this problem and are actively working to resolve it.We apologize for any inconvenience caused. Please try to load the data again later.If the issue persists, please contact our support team for further assistance.Thank you for your understanding.');
+    } finally {
+      setIsProjectsLoad(false);
+    }
+  }
 
-  const handleLinkTelegramChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLinkTelegram(event.target.value);
-  };
-
-  const handleBackClick = () => {
-    window.history.back();
-  };
+  useEffect(() => {
+    loadUserProjectsData();
+  }, []);
 
   return (
-    isEditing
-      ? (
-        <div className={styles.profilePage__wrapper}>
-          <div className={styles.profilePage__container}>
-            <div className={`${styles.box__item}`}>
-              <button
-                type="submit"
-                onClick={handleBackClick}
-                className={styles.profilePage__back}
-              >
-                &#60; Back
-              </button>
-              <button
-                type="submit"
-                onClick={() => setIsEditing(false)}
-                className={styles.profilePage__edit}
-              >
-                Edit
-              </button>
+    <section className="profile">
+      <div className="profile__container">
+        <div className="profile__top">
+          {isEdit ? (
+            <BackTo onClick={setIsEdit} />
+          ) : (
+            <BackTo />
+          )}
 
+          <IconButton svg={pen} onClick={() => setIsEdit((current) => !current)} />
+        </div>
+        {isSuccessUpdate && (
+          <ShineMessage>
+            <Success message={isSuccessUpdate} />
+          </ShineMessage>
+        )}
+
+        {isUpdateError && (
+          <ShineMessage>
+            <Error message={isUpdateError} />
+          </ShineMessage>
+        )}
+
+        <div className="profile__data">
+          <div className="profile__profile">
+            <div>
+              <IconButton svg={profile} />
             </div>
-            <div className={styles.profilePage__foto}></div>
-            <form
-              className={`${styles.form}`}
-              onSubmit={handleSubmit}
-            >
-              <h1 className={styles.form__header}>
-                Hi,
-                {ownerCurrent}
-                !
-              </h1>
-
-              <ul className={`${styles.form__list}`}>
-                <li className={`${styles.list__item} ${styles.item} ${styles.skills}`}>
-                  <div className={`${styles.boxSkills__item}`}>
-                    <label htmlFor="skills" className={styles.item__label}>
-                      Skills
-                    </label>
-                    <div className={styles.item__textarea}>
-                      UX research: Surveys,Heuristic Interface Analysis, Analyzing competitors, In-depth interviewingm Job stories & User stories, User persona, Product hypotheses, CJM & Kano model. Information Architecture Mapping, User flow, Prototyping , Usability testing, UI design & UI kit, HTML & CSS, Figma, Adobe Photoshop, Adobe Illustrator.
-                    </div>
-                  </div>
-                </li>
-
-                <li className={`${styles.list__item} ${styles.item}`}>
-                  <div className={`${styles.box__item}`}>
-                    <label className={`${styles.title__label}`}>Contactd</label>
-
-                    <div className={`${styles.boxRight__item}`}>
-                      <div className={styles.contacts__item} id="contacts">
-                        <h5>Email:</h5>
-                      </div>
-
-                      <div className={styles.contacts__item} id="contacts">
-                        <h5>Linkedin:</h5>
-                      </div>
-
-                      <div className={styles.contacts__item} id="contacts">
-                        <h5>Telegram:</h5>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-
-                <li className={`${styles.list__item}`}>
-                  <label htmlFor="about" className={`${styles.item__label} ${styles.about}`}>
-                    About
-                  </label>
-                  <div className={styles.about__item} id="about">
-                    <div className={`${styles.item__textarea}`}>
-                      I am a UI/UX designer with a passion for creativity and professional development. I have completed UI/UX design courses and completed two projects. Additionally, I have a bachelor’s degree in software engineering, specialising in front-end development. I have experience working with graphic design software and in a team during an internship. I am seeking a role to continue growing my skills and collaborate with talented designers.
-                    </div>
-                  </div>
-                </li>
-
-                <li className={`${styles.list__item}`}>
-                  <label htmlFor="about" className={`${styles.item__label} ${styles.about}`}>
-                    Your projects
-                  </label>
-                  <div className={styles.about__item} id="about">
-                    <div className={`${styles.item__textarea}`}>
-                    </div>
-                  </div>
-                </li>
-
-                <li className={`${styles.list__item}`}>
-                  <label htmlFor="about" className={`${styles.item__label} ${styles.about}`}>
-                    Project history
-                  </label>
-                  <div className={styles.about__item} id="about">
-                    <div className={`${styles.item__textarea}`}>
-                    </div>
-                  </div>
-                </li>
-
-                <li className={`${styles.list__item}`}>
-                  <label htmlFor="about" className={`${styles.item__label} ${styles.about}`}>
-                    Ongoing project
-                  </label>
-                  <div className={styles.about__item} id="about">
-                    <div className={`${styles.item__textarea}`}>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </form>
           </div>
+
+          <p className="profile__name">
+            Hi,
+            <strong>{` ${user.firstName} ${user.lastName}!`}</strong>
+          </p>
+          <strong className="profile__position">{user.speciality}</strong>
         </div>
-      )
-      : (
-        <div className={styles.profilePage__wrapper}>
-          <div className={styles.profilePage__container}>
-            <button
-              type="submit"
-              onClick={() => setIsEditing(true)}
-              className={styles.profilePage__back}
-            >
-              &#60; Back
-            </button>
-            <div className={styles.profilePage__foto}></div>
-            <form
-              className={`${styles.form}`}
-              onSubmit={handleSubmit}
-            >
-              <h1 className={styles.form__header}>
-                Hi,
-                {ownerCurrent}
-                !
-              </h1>
 
-              <ul className={`${styles.form__list}`}>
-                <li className={`${styles.list__item} ${styles.item} ${styles.skills}`}>
-                  <div className={`${styles.boxSkills__item}`}>
-                    <label htmlFor="skills" className={styles.item__label}>
-                      Skills
-                    </label>
+        <form action="post" onSubmit={(event) => userDataUpdate(user.id, event)}>
+          <div
+            className={!isEdit ? `profile__field`: `profile__field-reverse`}
+          >
+            <h5 className="profile__field_title">Skills</h5>
+            {isEdit ? (
+              <ProfileInputField value={userSkills} setValue={setUserSkills} name="skills" />
+            ) : (
+              <ProfileTextField text={userSkills} name="skills" />
+            )}
+          </div>
 
-                    <textarea
-                      required
-                      id="skills"
-                      value={skills}
-                      onChange={handleSkillsChange}
-                      className={styles.item__textarea}
-                      placeholder="Add skills"
-                    />
-                  </div>
-                </li>
+          <div
+            className={!isEdit ? `profile__field`: `profile__field--reverse`}
+          >
+            <h5 className="profile__field_title">Contacts</h5>
 
-                <li className={`${styles.list__item} ${styles.item}`}>
-                  <div className={`${styles.box__item}`}>
-                    <div className={`${styles.title__item}`}>Contactd</div>
+            <ContactsList
+              list={userContacts}
+              isEdit={isEdit}
+              setUserContacts={setUserContacts}
+            />
+          </div>
 
-                    <div className={`${styles.boxRight__item}`}>
-                      <div className={styles.contacts__item} id="contacts">
-                        <div className={styles.item__select}>Email</div>
-                        <input
-                          type="link"
-                          required
-                          value={linkEmail}
-                          onChange={handleLinkEmailChange}
-                          className={`${styles.item__input}`}
-                        />
+          <div className="profile__field profile__field--reverse">
+            <h5 className="profile__field-title">About</h5>
+
+            {isEdit ? (
+              <ProfileInputField value={userAbout} setValue={setUserAbout} name="about" />
+            ) : (
+              <ProfileTextField text={userAbout} name="about" />
+            )}
+          </div>
+
+          {isEdit ? (
+            <div className="profile__buttons">
+              <CompleteButton title="Save" isLoader={isUpdateLoad} />
+              <CompleteReverseButton title="Cancel" />
+            </div>
+          ) : (
+            <>
+              {isProjectsLoad ? (
+                <div className="profile__bottomField--loader">
+                  <LoaderBig/>
+                </div>
+              ) : (
+                <>
+                  {isProjectsError ? (
+                    <div className="profile__bottomField--error">
+                      <Error message={isProjectsError} />
+                    </div>
+                  ) : (
+                    <div className="profile__projects">
+                      <div className="profile__field profile__field--reverse">
+                        <h5 className="profile__project_title">Your projects</h5>
+  
+                        {userOwnedProjects.length ? (
+                          <ul className="profile__field_list">
+                            {userOwnedProjects.map((project: any) => (
+                              <ProfileProject
+                                key={project.id}
+                                project={project}
+                                onClick={onProjectHandler}
+                              />
+                            ))}
+                          </ul>
+                        ) : (
+                          <Empty />
+                        )}
                       </div>
-
-                      <div className={styles.contacts__item} id="contacts">
-                        <div className={styles.item__select}>Linkedin</div>
-                        <input
-                          type="link"
-                          value={linkLinkedin}
-                          onChange={handleLinkLinkedinChange}
-                          className={`${styles.item__input}`}
-                        />
+  
+                      <div className="profile__field profile__field--reverse">
+                        <h5 className="profile__project_title">Projects history</h5>
+  
+                        {userArhivedProjects.length ? (
+                          <ul className="profile__field_list">
+                            {userArhivedProjects.map((project: any) => (
+                              <ProfileProject
+                                key={project.id}
+                                project={project}
+                                onClick={onProjectHandler}
+                              />
+                            ))}
+                          </ul>
+                        ) : (
+                          <Empty />
+                        )}
                       </div>
+  
+                      <div className="profile__field profile__field--reverse">
+                        <h5 className="profile__project_title">Ongoing projects</h5>
 
-                      <div className={styles.contacts__item} id="contacts">
-                        <div className={styles.item__select}>Telegram</div>
-                        <input
-                          type="link"
-                          value={linkTelegram}
-                          onChange={handleLinkTelegramChange}
-                          className={`${styles.item__input}`}
-                        />
+                        {userOnGoingProjects.length ? (
+                          <ul className="profile__field_list">
+                            {userOnGoingProjects.map((project: any) => (
+                              <ProfileProject
+                                key={project.id}
+                                project={project}
+                                onClick={onProjectHandler}
+                              />
+                            ))}
+                          </ul>
+                        ) : (
+                          <Empty />
+                        )}
                       </div>
                     </div>
-                  </div>
-                </li>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </form>
+      </div>
 
-                <li className={`${styles.list__item}`}>
-                  <label htmlFor="about" className={`${styles.item__label} ${styles.about}`}>
-                    About
-                  </label>
-                  <div className={styles.about__item} id="about">
-                    <textarea
-                      name="about"
-                      className={`${styles.item__textarea}`}
-                      value={about}
-                      onChange={handleAboutChange}
-                      placeholder="Add about"
-                    />
-                  </div>
-                </li>
-              </ul>
-
-              <div className={styles.boxButtons__item}>
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className={classnames(`${styles.form__button}`, `${styles.button__active}`)}
-                >
-                  Save
-                </button>
-
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className={classnames(`${styles.form__button}`, `${styles.button__inactive}`)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )
+      {isModal && projectModal && (
+        <Modal>
+          <ProjectModal project={projectModal} />
+        </Modal>
+      )}
+    </section>
   );
 };

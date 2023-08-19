@@ -10,15 +10,26 @@ import { RadioBtnList } from '../RadioBtnList/RadioBtnList';
 import { FilterByList } from '../FilterByList/FilterByList';
 
 type Props = {
-  positions: string[],
-  setPositions: (prev: string[]) => void,
-}
-;
-export const SideBar: FC<Props> = ({ positions, setPositions }) => {
+  position: string,
+  setPosition: (prev: string) => void,
+  status: string,
+  setStatus: (value: string) => void,
+  teamSize: string,
+  setTeamSize: (value: string) => void,
+};
+
+export const SideBar: FC<Props> = ({
+  position,
+  setPosition,
+  status,
+  setStatus,
+  teamSize,
+  setTeamSize,
+}) => {
   // const [positions, setPositions] = useState<string[]>([]);
-  const [statuses, setStatuses] = useState<string[]>([]);
+  // const [statuses, setStatuses] = useState<string>('');
   const [technologies, setTechnologies] = useState<string[]>([]);
-  const [teamSize, setTeamSize] = useState('4');
+  // const [teamSize, setTeamSize] = useState('4');
   const [displayProjects, setDisplayProjects] = useState('16');
   const preMadePositions = ['Front-end developer', 'Back-end developer', 'Full-stack developer', 'DevOps', 'QA', 'Project Manager', 'UI/UX Designer'];
   const preMadeStatuses = ['All', 'Recruitment', 'In progress', 'Finished'];
@@ -47,19 +58,19 @@ export const SideBar: FC<Props> = ({ positions, setPositions }) => {
       setAllFilters((current) => [...current].filter((el) => !preMadePositions.includes(el)));
 
       if (allFilters.includes(val)) {
-        setAllFilters((current) => [...current].filter((el) => el !== val));
-        setPositions([]);
+        // setAllFilters((current) => [...current].filter((el) => el !== val));
+        setPosition('');
       } else {
-        setPositions([val]);
+        setPosition(val);
       }
     } else if (stateType === 'status') {
       setAllFilters((current) => [...current].filter((el) => !preMadeStatuses.includes(el)));
 
       if (allFilters.includes(val)) {
         setAllFilters((current) => [...current].filter((el) => el !== val));
-        setStatuses([]);
+        setStatus('');
       } else {
-        setStatuses([val]);
+        setStatus(val);
       }
     } else if (stateType === 'technologies') {
       if (technologies.includes(val)) {
@@ -74,24 +85,26 @@ export const SideBar: FC<Props> = ({ positions, setPositions }) => {
     } else {
       setAllFilters((current) => [...current, val]);
     }
-  }, [statuses, positions, technologies]);
+  }, [status, position, technologies]);
 
   const handleClearAll = () => {
-    setPositions([]);
-    setStatuses([]);
+    setPosition('');
+    setStatus('');
     setTechnologies([]);
-    setTeamSize('4');
+    setTeamSize('');
     setDisplayProjects('16');
     setAllFilters([]);
   };
 
   useEffect(() => {
-    setAllFilters((current) => {
-      return [
-        ...current.filter((el) => !el.includes('members')),
-        `${teamSize} members`,
-      ];
-    });
+    if (teamSize) {
+      setAllFilters((current) => {
+        return [
+          ...current.filter((el) => !el.includes('members')),
+          `${teamSize} members`,
+        ];
+      });
+    }
   }, [teamSize]);
 
   useEffect(() => {

@@ -4,6 +4,8 @@ import {
   HashRouter,
 } from 'react-router-dom';
 import './index.scss';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 import { App } from './App';
 // import { SignInPage } from './pages/SignInPage/SignInPage';
 // import { MainPage } from './pages/MainPage/MainPage';
@@ -16,10 +18,12 @@ import { App } from './App';
 // import { SignUp } from './pages/SignUpPage/SignUp';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root'),
 );

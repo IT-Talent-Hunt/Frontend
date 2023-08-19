@@ -1,223 +1,159 @@
-import
-{
-  ChangeEvent,
-  FC,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import styles from './EditProject.module.scss';
-import { MemberItem } from './MemberItem';
-import { PositionItem } from './PositionItem';
+import { useState } from 'react';
+import { ProjectCardProps } from '../../Types/ProjectCardProps';
+import { textValidation } from '../../helpers/validation';
+import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
+import { ContactItem } from '../ContactsList/ContactItem/ContactItem';
+import { CreateComplete } from '../CreateComplete/CreateComplete';
+import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
+import { ProjectContainer } from '../ProjectContainer/ProjectContainer';
+import { ShineMessage } from '../ShineMessage/ShineMessage';
+// import { useLocalStorage } from 'usehooks-ts';
+// import { User } from '../../Types/User';
+import { Contact } from '../../Types/Contact';
+import { existContacts } from '../../helpers/Variables';
+import { InputField } from '../InputField/InputField';
+import { Error } from '../Error/Error';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+// import { Select } from '../../Types/InputField';
+import * as projectsActions from '../../redux/features/projects/projects';
 
-interface Person {
-  name: string;
-  role: string;
-  id: number;
-}
+type Props = {
+  project: ProjectCardProps,
+};
 
-const dataMembers: Person[] = [
-  { id: 1, name: 'Vitalii Rudenko', role: 'UI/UX Designer' },
-  { id: 2, name: 'Pavel Ohiiko', role: 'Front-end developer' },
-  { id: 3, name: 'Oleh Ivanuk', role: 'Front-end developer' },
-  { id: 4, name: 'Artem Rymarchuk', role: 'Back-end developer' },
-  { id: 5, name: 'Ivan Kucher', role: 'QA engineer' },
-];
+export const EditProject: React.FC<Props> = ({ project }) => {
+  const [name, setName] = useState(project.name);
+  const [isNameDirty, setIsNameDirty] = useState(false);
+  const [nameMessage, setNameMessage] = useState('');
+  const [isNameSuccess, setIsNameSuccess] = useState(false);
+  // const [user] = useLocalStorage<User | any>('user', {});
 
-export const EditProject: FC = () => {
-  const [name, setName] = useState('Taskify');
-  const [description, setDescription] = useState('"Taskify" is a simple web application with a user-friendly interface for task management. Users can create, track, and update their tasks, assign priorities, and set deadlines. The application also allows for collaborative task management, where teams can communicate and share files. The project\'s goal is to create a straightforward, efficient, and intuitive solution for task management to enhance productivity and organization in the work environment.');
-  const [members, setMembers] = useState<Person[]>(dataMembers);
-  const [messenger, setMessenger] = useState('Telegram');
-  const [link, setLink] = useState('');
-  const [newPosition, setNewPosition] = useState<boolean>(false);
+  // const [selectedPositions, setSelectedPositions] = useState<Select[]>([]);
+  // const preparetedPositions = selectedPositions.map((position) => position.name);
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [description, setDescription] = useState(project.description);
+  const [contacts, setContacts] = useState<Contact[]>(existContacts);
+  const [currentContact, setCurrentContact] = useState<Contact>(project.socialLink);
+  const [isUpLoad, setIsUpLoad] = useState(false);
 
-  useEffect(() => {
-    const textarea = textareaRef.current;
+  const dispatch = useAppDispatch();
+  const { error, loading } = useAppSelector(state => state.projects);
 
-    if (textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
-  }, [description]);
-
-  const removeMember = async (memberId: number) => {
-    setMembers(prevMembers => prevMembers.filter(({ id }) => id !== memberId));
+  const nameFied = {
+    id: 0,
+    type: 'text',
+    name: 'name',
+    value: name,
+    message: nameMessage,
+    isDirty: isNameDirty,
+    isSuccess: isNameSuccess,
+    text: 'Project name',
   };
 
-  const updateMembers = async (position: string) => {
-    const newMember = {
-      name: '',
-      role: position,
-      id: (new Date()).getTime(),
-    };
+  const restList = [...contacts]
+    .filter((contact) => contact.platform !== currentContact.platform);
 
-    setMembers([...members, newMember]);
-  };
+  const editProjetcData = () => {
+    // const editedProject = {
+    //   ...project,
+    //   name,
+    //   description,
+    //   socialLink: currentContact,
+    // };
 
-  const cleareForm = () => {
-    setName('');
-    setDescription('');
-    setMessenger('Telegram');
-    setLink('');
-  };
-
-  const handleSave = async (event: React.FormEvent) => {
-    event.preventDefault();
-    cleareForm();
-  };
-
-  const handleCancel = async (event: React.FormEvent) => {
-    event.preventDefault();
-  };
-
-  const handleClickPlus = () => {
-    setNewPosition(!newPosition);
-  };
-
-  const handleChangeMessenger = (event: ChangeEvent<HTMLSelectElement>) => {
-    setMessenger(event.target.value);
-  };
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleDescriptiChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
-  };
-
-  const handleLinkChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLink(event.target.value);
+    dispatch(projectsActions.edit(project.id));
+    setIsUpLoad(true);
   };
 
   return (
-    <div className={styles.newProject__wrapper}>
-      <div className={styles.newProject__container}>
-        <span>
-          <button
-            type="button"
-            className={styles.newProject__BtnBack}
-            onClick={handleCancel}
-          >
-            &lt; Back
-          </button>
-        </span>
-        <form
-          className={`${styles.newProject__form} ${styles.form}`}
-          onSubmit={handleSave}
-        >
-          <h1 className={styles.form__header}>Edit project</h1>
-          <ul className={`${styles.form__list} ${styles.list}`}>
-            <li className={`${styles.list__item} ${styles.item} ${styles.descriptions}`}>
-              <div className={styles.item__title}>Name and description</div>
-              <label htmlFor="name" className={styles.item__label}>
-                Project name
-              </label>
-              <input
-                type="text"
-                required
-                id="name"
-                value={name}
-                onChange={handleNameChange}
-                className={styles.item__input}
-                placeholder="Enter the name of the project"
-              />
-              <label htmlFor="description" className={styles.item__label}>
-                Project description
-              </label>
-              <textarea
-                required
-                ref={textareaRef}
-                id="description"
-                value={description}
-                onChange={handleDescriptiChange}
-                className={`${styles.item__input} ${styles.description}`}
-                placeholder="Enter the description of the project"
-              />
-            </li>
-            <li className={`${styles.list__item} ${styles.item} ${styles.members}`}>
-              <div className={styles.item__title}>Project members</div>
-              {members.map((member) => {
-                return (
-                  <MemberItem
-                    removeMember={removeMember}
-                    member={member}
-                    key={member.id}
-                  />
-                );
-              })}
-              {newPosition && (
-                <PositionItem
-                  updateMembers={updateMembers}
-                  handleClickPlus={handleClickPlus}
-                />
-              )}
-              <div className={styles.position}>
-                <label
-                  htmlFor="addPositionButton"
-                  className={styles.position__label}
-                >
-                  Add position
-                </label>
-                <button
-                  className={styles.position__button}
-                  id="addPositionButton"
-                  type="button"
-                  onClick={handleClickPlus}
-                >
-                  +
-                </button>
-              </div>
-            </li>
-            <li className={`${styles.list__item} ${styles.item} ${styles.communication}`}>
-              <div className={styles.item__title}>Communication</div>
-              <label htmlFor="communication" className={styles.item__label}>
-                Link for communication
-              </label>
-              <div className={styles.communication__item} id="communication">
-                <select
-                  name="select"
-                  className={styles.item__select}
-                  value={messenger}
-                  onChange={handleChangeMessenger}
-                >
-                  <option value="Telegram">Telegram</option>
-                  <option value="Discord">Discord</option>
-                  <option value="Slack">Slack</option>
-                </select>
-                <input
-                  type="link"
-                  required
-                  value={link}
-                  onChange={handleLinkChange}
-                  className={`${styles.item__input} ${styles.link}`}
-                  placeholder={`Enter ${messenger} link`}
-                />
-              </div>
-            </li>
-          </ul>
-          <div className={`${styles.form__buttons} ${styles.buttons}`}>
-            <button
-              type="submit"
-              onClick={handleSave}
-              className={`${styles.buttons__button} ${styles.buttons__save}`}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={handleCancel}
-              className={`${styles.buttons__button} ${styles.buttons__cancel}`}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <ProjectContainer>
+      <>
+        {isUpLoad && typeof error === 'boolean' && !loading ? (
+          <CreateComplete projectName={name} />
+        ) : (
+          <form method="GET" onSubmit={(event) => event.preventDefault()}>
+            <h1 className="createProject__title-main">
+              Create your own project with a team!
+            </h1>
 
+            {isUpLoad && typeof error === 'string' && (
+              <ShineMessage>
+                <Error message={error} />
+              </ShineMessage>
+            )}
+
+            <h4 className="createProject__title">
+              Name and description
+            </h4>
+
+            <div className="createProject__field">
+              <InputField
+                input={nameFied}
+                onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}
+                setValue={setName}
+                setIsValueDirty={setIsNameDirty}
+              />
+
+              <div>
+                <h6 className="createProject__title-sub">Project description</h6>
+
+                <ProfileInputField
+                  value={description}
+                  setValue={setDescription}
+                  name="description"
+                />
+              </div>
+            </div>
+
+            {/* {project.teamResponseDto.userResponseDtos.map((u) => (
+              <p key={}>
+                <span>{u.specialities}</span>
+              </p>
+            ))} */}
+
+            <div className="createProject__field">
+              <h4 className="createProject__title">
+                Project members
+              </h4>
+
+              {/* <div className="createProject__positions">
+                <h6 className="createProject__title-sub">Positions</h6>
+                <ProjectPositions
+                  selectedPositions={selectedPositions}
+                  setSelectedPositions={setSelectedPositions}
+                />
+              </div> */}
+
+            </div>
+
+            <div className="createProject__field">
+              <h4 className="createProject__title">
+                Communication
+              </h4>
+
+              <div>
+                <h6 className="createProject__title-sub">Link for communication</h6>
+
+                <ContactItem
+                  key={currentContact.platform}
+                  contact={currentContact}
+                  restList={restList}
+                  setContact={setCurrentContact}
+                  setContacts={setContacts}
+                  isEdit={!!true}
+                />
+              </div>
+            </div>
+
+            <CompleteButton
+              title="Save"
+              onClick={editProjetcData}
+              isLoader={loading}
+              isDisabled={false}
+            />
+          </form>
+        )}
+      </>
+    </ProjectContainer>
   );
 };

@@ -1,26 +1,24 @@
+/* eslint-disable no-confusing-arrow */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import arrow from '../../svg/arrow-left.svg';
+import './BackTo.scss';
 
-export const BackTo = () => {
+type Props = {
+  onClick?: (value: any) => void,
+};
+
+export const BackTo: React.FC<Props> = ({ onClick }) => {
   const navigation = useNavigate();
 
   return (
     <button
       type="button"
-      style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-      onClick={() => navigation(-1)}
+      className="back"
+      onClick={() => onClick ? onClick(false) : navigation(-1)}
     >
-      <div
-        style={{
-          backgroundImage: `url('${arrow}')`,
-          backgroundRepeat: 'no-repeat',
-          width: '10px',
-          height: '16px',
-        }}
-      />
+      <div className="back__arrow" />
 
-      <span>Back</span>
+      <span className="back__title">Back</span>
     </button>
   );
 };

@@ -1,9 +1,21 @@
+@import '../../../helpers/helpers.scss';
+
 .projectDescription {
+    min-height: 20px;
     padding-right: 8px;
     margin-top: 10px;
   
     text-align: start;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 12px;
     color: #495057;
+
+    @include tablet() {
+      min-height: 40px;
+      font-size: 14px;
+    }
+
+    @include desktop() {
+      font-size: 16px;
+    }
   }

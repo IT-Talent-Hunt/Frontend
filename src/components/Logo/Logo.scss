@@ -1,6 +1,19 @@
+@import '../../helpers/helpers.scss';
+
 .logo {
-  width: 150px;
-  height: 20px;
+  width: 80px;
+  height: 15px;
 
   background-repeat: no-repeat;
+  background-size: contain;
+
+  @include tablet() {
+    width: 150px;
+    height: 20px;
+  }
+
+  @include desktop() {
+    width: 150px;
+    height: 20px;
+  }
 }

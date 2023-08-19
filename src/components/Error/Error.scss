@@ -1,0 +1,45 @@
+@import '../../helpers/helpers.scss';
+
+.error {
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    color:  #FF4949;
+    font-weight: 500;
+    max-width: 700px;
+    margin: 0 auto;
+
+    &-img {
+      margin: 0 auto;
+      background-image: url('../../svg/error-icon.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 100px;
+      height: 100px;
+
+      @include tablet() {
+        width: 100px;
+        height: 100px;
+      }
+
+      @include tablet() {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    &__message {
+        margin: 0 auto;
+        margin-top: 20px;
+
+        font-size: 14px;
+
+        @include tablet() {
+          font-size: 16px;
+        }
+    
+        @include tablet() {
+          font-size: 18px;
+        }
+    }
+  }

@@ -1,0 +1,19 @@
+@import '../../helpers/helpers.scss';
+
+.projectsField {
+  &__wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 12px;
+      
+    @include tablet() {
+      gap: 18px;
+    }
+      
+    @include desktop() {
+      gap: 24px;
+    }
+  }
+}

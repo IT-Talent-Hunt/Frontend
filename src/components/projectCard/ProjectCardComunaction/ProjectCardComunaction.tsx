@@ -1,8 +1,8 @@
 import './ProjectCardComunaction.scss';
-import { Comunaction } from '../../../Types/ProjectCardProps';
+import { Communication } from '../../../Types/ProjectCardProps';
 
 type Props = {
-  comunication: Comunaction,
+  comunication: Communication,
 };
 
 export const ProjectCardComunaction: React.FC<Props> = ({ comunication }) => {
@@ -11,7 +11,7 @@ export const ProjectCardComunaction: React.FC<Props> = ({ comunication }) => {
   return (
     <div className="projectComunacation">
       <div className="projectComunacation__communication">
-        <i className={`bx bxl-${img} projectComunacation__icon`} />
+        <i className={`${img} projectComunacation__icon`} />
         <span className="projectComunacation__app">{`${name}:`}</span>
       </div>
 

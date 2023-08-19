@@ -1,0 +1,15 @@
+import { getData, postData, putData } from '../../../helpers/helpers';
+import { ProjectCardProps } from '../../../Types/ProjectCardProps';
+
+export const getProjects = (link: string) => {
+  // return getData('projects/search');
+  return getData(link);
+};
+
+export const addProject = (newProject: ProjectCardProps | any) => {
+  return postData('projects', newProject);
+};
+
+export const editProject = (projectId: number, data: ProjectCardProps) => {
+  return putData(`projects/${projectId}`, data);
+};

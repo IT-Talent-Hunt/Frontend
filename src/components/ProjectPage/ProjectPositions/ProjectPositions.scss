@@ -1,0 +1,172 @@
+@import '../../../helpers/helpers.scss';
+
+.projectPositions {
+  background-color: $color-grey--lite;
+  min-height: 30px;
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  @include tablet() {
+    min-height: 41px;
+  }
+  
+  @include desktop() {
+    min-height: 51px;
+  }
+
+  &__container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__selected {
+    &_list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    &_cross {
+      padding-left: 3px;
+      &-img {
+        width: 6px;
+        height: 6px;
+        background-size: contain;
+        background-repeat: no-repeat;
+  
+        @include tablet() {
+          width: 8px;
+          height: 8px;
+        }
+      
+        @include desktop() {
+          width: 9px;
+          height: 9px;
+        }
+      }
+    }
+
+    &_item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: max-content;
+      padding: 3px;
+      border-radius: 5px;
+      font-size: 8px;
+      font-weight: 600;
+      background-color: $color-green;
+      // background-color: #29ec29b3;
+      color: #fff;
+
+      @include tablet() {
+        font-size: 10px;
+      }
+    
+      @include desktop() {
+        font-size: 12px;
+      }
+
+      &-name {
+        padding-right: 3px;
+        border-right: 1px solid #fff;
+      }
+    } 
+  }
+
+  &__input {
+    display: inline-block;
+    position: relative;
+    font-size: 10px;
+
+    &::placeholder {
+      @include tablet() {
+        font-size: 12px;
+      }
+      
+      @include desktop() {
+        font-size: 14px;
+      }
+    }
+
+    @include tablet() {
+      font-size: 12px;
+    }
+    
+    @include desktop() {
+      font-size: 14px;
+    }
+  }
+
+  &__list {
+    background-color: $color-grey--lite;
+    padding: 5px;
+    min-height: 30px;
+    border-radius: 10px;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -35px;
+
+    @include tablet() {
+      padding: 7px;
+      min-height: 40px;
+      bottom: -47px;
+    }
+  
+    @include desktop() {
+      padding: 10px;
+      min-height: 45px;
+      bottom: -57px;
+      gap: 5px;
+    }
+
+    &-item {
+      text-align: center;
+      background-color: #fff;
+      padding: 4px 4px;
+      line-height: 12px;
+      border: 1px solid #eee;
+      border-radius: 5px;
+
+      >button {
+        display: flex;
+        align-items: center;
+        font-size: 8px;
+
+        @include tablet() {
+          font-size: 10px;
+          padding: 4px 8px;
+        }
+      
+        @include desktop() {
+          font-size: 12px;
+        }
+
+      }
+
+      &--disabled {
+        background-color: #ddd;
+      }
+    }
+  }
+
+  &__nothing {
+    font-size: 14px;
+  }
+}
