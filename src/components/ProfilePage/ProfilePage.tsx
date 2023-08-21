@@ -36,9 +36,9 @@ export const ProfilePage = () => {
   const [userAbout, setUserAbout] = useState(user.description);
   const [userContacts, setUserContacts] = useState([...user.socialLinks]);
 
-  const [userOwnedProjects, setUserOwneProjects] = useState<any>([]);
-  const [userArhivedProjects, setUserArhivedProjects] = useState<any>([]);
-  const [userOnGoingProjects, setUserOnGoingProjects] = useState<any>([]);
+  const [userOwnedProjects, setUserOwneProjects] = useState<ProjectCardProps[]>([]);
+  const [userArhivedProjects, setUserArhivedProjects] = useState<ProjectCardProps[]>([]);
+  const [userOnGoingProjects, setUserOnGoingProjects] = useState<ProjectCardProps[]>([]);
 
   const [isUpdateLoad, setIsUpdateLoad] = useState(false);
   const [isUpdateError, setIsUpdateError] = useState('');
@@ -88,16 +88,16 @@ export const ProfilePage = () => {
   const loadUserProjectsData = async() => {
     try {
       setIsProjectsLoad(true);
-      const ownedProjectData = await getData(`projects/by-user/${user.id}`);
+      const ownedProjectData: ProjectCardProps[] | any  = await getData(`projects/by-user/${user.id}`);
       setUserOwneProjects(ownedProjectData);
 
-      const arhivedProjects =await getData(
+      const arhivedProjects: ProjectCardProps[] | any = await getData(
         `projects/by-user/${user.id}/status?projectStatus=FINISHED`
       );
       console.log(arhivedProjects);
       setUserArhivedProjects(arhivedProjects);
 
-      const onGoingProjects = await getData(
+      const onGoingProjects: ProjectCardProps[] | any = await getData(
         `projects/by-user/${user.id}/status?projectStatus=IN_PROGRESS`
       );
       setUserOnGoingProjects(onGoingProjects);

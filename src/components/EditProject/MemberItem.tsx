@@ -1,35 +1,22 @@
-import { FC } from 'react';
-import styles from './MemberItem.module.scss';
-
-interface Person {
-  name: string;
-  role: string;
-  id: number;
-}
+import { useLocalStorage } from 'usehooks-ts';
+import { User } from '../../Types/User';
+import { EditProjectButton } from './EditProjectButton/EditProjectButton';
 
 type Props = {
-  member: Person;
-  removeMember: (id: number) => Promise<void>,
+  user: User,
+  onKick: (user: User) => void,
 };
 
-export const MemberItem: FC<Props> = ({ member, removeMember }) => {
-  const {
-    name,
-    role,
-    id,
-  } = member;
-
-  const handleKick = () => {
-    removeMember(id);
-  };
+export const MemberItem: React.FC<Props> = ({ user, onKick }) => {
+  const [currentUser] = useLocalStorage<any>('user', {});
+  const { speciality, firstName, lastName } = user;
 
   return (
-    <div className={styles.member}>
-      <span className={styles.role}>{role}</span>
-      <span className={styles.name}>{name}</span>
-      <button type="button" className={styles.kickButton} onClick={handleKick}>
-        Kick
-      </button>
-    </div>
+    <li className="project__member">
+      <div className="project__member_title">{speciality}</div>
+      <div className="project__member_title">{`${firstName} ${lastName}`}</div>
+
+      <EditProjectButton title="Kick" onClick={() => onKick(user)} isDisabled={currentUser.id !== user.id} />
+    </li>
   );
 };

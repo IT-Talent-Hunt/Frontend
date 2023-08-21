@@ -116,9 +116,9 @@ export const ProjectPage = () => {
       {isUpLoad && typeof error === 'boolean' && !loading ? (
         <CreateComplete projectName={name} />
       ) : (
-        <section className="createProject">
-          <form method="GET" onSubmit={(event) => event.preventDefault()} className="createProject__container">
-            <h1 className="createProject__title-main">
+        <section className="project">
+          <form method="GET" onSubmit={(event) => event.preventDefault()} className="project__container">
+            <h1 className="project__title-main">
               Create your own project with a team!
             </h1>
 
@@ -128,11 +128,11 @@ export const ProjectPage = () => {
               </ShineMessage>
             )}
 
-            <h4 className="createProject__title">
+            <h4 className="project__title">
               Name and description
             </h4>
 
-            <div className="createProject__field">
+            <div className="project__field">
               <InputField
                 input={nameFied}
                 onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}
@@ -141,7 +141,7 @@ export const ProjectPage = () => {
               />
 
               <div>
-                <h6 className="createProject__title-sub">Project description</h6>
+                <h6 className="project__title-sub">Project description</h6>
 
                 <ProfileInputField
                   value={description}
@@ -151,13 +151,13 @@ export const ProjectPage = () => {
               </div>
             </div>
 
-            <div className="createProject__field">
-              <h4 className="createProject__title">
+            <div className="project__field">
+              <h4 className="project__title">
                 Project members
               </h4>
 
-              <div className="createProject__positions">
-                <h6 className="createProject__title-sub">Positions</h6>
+              <div className="project__positions">
+                <h6 className="project__title-sub">Positions</h6>
                 <ProjectPositions
                   selectedPositions={selectedPositions}
                   setSelectedPositions={setSelectedPositions}
@@ -166,13 +166,13 @@ export const ProjectPage = () => {
 
             </div>
 
-            <div className="createProject__field">
-              <h4 className="createProject__title">
+            <div className="project__field">
+              <h4 className="project__title">
                 Communication
               </h4>
 
               <div>
-                <h6 className="createProject__title-sub">Link for communication</h6>
+                <h6 className="project__title-sub">Link for communication</h6>
 
                 <ContactItem
                   key={currentContact.platform}

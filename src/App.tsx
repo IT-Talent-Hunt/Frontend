@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 // import { Outlet } from 'react-router-dom';
 import './App.scss';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom';
 // import classNames from 'classnames';
 import { Header } from './components/Header/Header';
 // import { Footer } from './components/Footer/Footer';
@@ -16,14 +21,28 @@ import { CreateProfile } from './components/CreateProfile/CreateProfile';
 import { SignUp } from './pages/SignUpPage/SignUp';
 import { ModalProvider } from './Providers/ModalProvider';
 import { useAppSelector } from './redux/hooks';
+// import { useAppSelector } from './redux/hooks';
 
 export const App: React.FC = () => {
+  const navigation = useNavigate();
+  const { projects } = useAppSelector(state => state.projects);
   // const [isSignedIn, setIsSignedIn] = useState(false);
   const [isSideBar, setIsSideBar] = useState(false);
+  const [toEditProject, setToEditProject] = useState(projects[0]);
 
-  const { projects } = useAppSelector(state => state.projects);
+  const selectEditProject = (event: React.MouseEvent, projectId: number) => {
+    event.stopPropagation();
 
-  const project = projects[3];
+    const editProject = projects.find((project) => project.id === projectId);
+
+    if (editProject) {
+      setToEditProject(editProject);
+      navigation('edit_project');
+    }
+  };
+
+  /* eslint-disable-next-line */
+  console.log(toEditProject);
 
   return (
     <ModalProvider>
@@ -34,10 +53,13 @@ export const App: React.FC = () => {
         <main>
           <Routes>
             <Route path="main" element={<Navigate to="/" replace />} />
-            <Route index element={<MainPage isSideBar={isSideBar} />} />
+            <Route
+              index
+              element={<MainPage isSideBar={isSideBar} setEditProject={selectEditProject} />}
+            />
             <Route path="createProject" element={<ProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="edit_project" element={<EditProject project={project} />} />
+            <Route path="edit_project" element={<EditProject project={toEditProject} />} />
             <Route path="signIn" element={<SignInPage />} />
             <Route path="recovery" element={<PasswordRecovery />} />
             <Route path="recoveryComplete" element={<RecoveryComplete />} />

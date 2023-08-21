@@ -2,6 +2,7 @@
 import {
   FC, useEffect, useRef, useState,
 } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import styles from './ProjectCard.module.scss';
 import heartEmpty from '../../svg/heartEmpty.svg';
@@ -18,13 +19,16 @@ import { ProjectCardButton } from './ProjectCardButton/ProjectCardButton';
 import { deleteData, formatDate, putData } from '../../helpers/helpers';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import * as favoritesActions from '../../redux/features/favorites/favorites';
+import edit from '../../svg/edit-pen--icon.svg';
+import { User } from '../../Types/User';
 
 type Props = {
   project: ProjectCardProps,
   onClick: (value: number) => void,
+  setEditProject: (evennt: React.MouseEvent, projectId: number) => void,
 };
 
-export const ProjectCard: FC<Props> = ({ project, onClick }) => {
+export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => {
   const {
     id,
     name,
@@ -35,6 +39,10 @@ export const ProjectCard: FC<Props> = ({ project, onClick }) => {
     creationDate,
   } = project;
   const { userResponseDtos, maxMembers } = teamResponseDto;
+
+  const [currentUser] = useLocalStorage<User | null>('user', null);
+  const [isEditVisible, setIsEditVisible] = useState<boolean>(false);
+
   const shortDescp = truncateText(description, 120);
 
   const formatedData = formatDate(creationDate);
@@ -71,7 +79,11 @@ export const ProjectCard: FC<Props> = ({ project, onClick }) => {
   return (
     /* The <div> element has a child <button> element that allows keyboard interaction */
     /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
-    <div className={styles.card} onClick={() => onClick(id)} onKeyDown={() => { }}>
+    <div
+      className={styles.card}
+      onClick={() => onClick(id)}
+      onKeyDown={() => { }}
+    >
       <div className={styles.heading}>
         <div className={styles.heading__container}>
           <h2 className={styles.title}>{name}</h2>
@@ -79,12 +91,21 @@ export const ProjectCard: FC<Props> = ({ project, onClick }) => {
         </div>
 
         {/* must be added is favorite in early future */}
-        {isFavorite ? (
-          <IconButton svg={heartFull} onClick={handleFavoritesRemove} />
-        ) : (
-          <IconButton svg={heartEmpty} onClick={handleFavoritesAdd} />
-        )}
 
+        <div className={styles.icons}>
+          {isFavorite ? (
+            <IconButton svg={heartFull} onClick={handleFavoritesRemove} />
+          ) : (
+            <IconButton svg={heartEmpty} onClick={handleFavoritesAdd} />
+          )}
+
+          {currentUser && currentUser.id === ownerId && (
+            <IconButton
+              svg={edit}
+              onClick={(event) => setEditProject(event, project.id)}
+            />
+          )}
+        </div>
       </div>
 
       <ProjectCardOwner owner={projectOwner} />

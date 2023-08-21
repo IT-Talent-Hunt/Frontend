@@ -10,6 +10,7 @@ type Props = {
   error: boolean | string,
   loader: boolean,
   onCardClick: (id: number) => void,
+  setEditProject: (event: React.MouseEvent, projectId: number) => void,
 };
 
 export const ProjectsField: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const ProjectsField: React.FC<Props> = ({
   error,
   loader,
   onCardClick,
+  setEditProject,
 }) => {
   return (
     <div className="projectsField">
@@ -35,6 +37,7 @@ export const ProjectsField: React.FC<Props> = ({
                       key={project.id}
                       project={project}
                       onClick={onCardClick}
+                      setEditProject={setEditProject}
                     />
                   ))}
                 </ul>

@@ -32,9 +32,10 @@ import { FiltersEnumTypes } from '../../Types/FilterEnumTypes';
 
 type Props = {
   isSideBar: boolean,
+  setEditProject: (evennt: React.MouseEvent, projectId: number) => void,
 };
 
-export const MainPage: FC<Props> = ({ isSideBar }) => {
+export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
   const [currentId, setCurrentId] = useState(0);
 
   const [position, setPosition] = useState<string>('');
@@ -167,6 +168,7 @@ export const MainPage: FC<Props> = ({ isSideBar }) => {
             error={error}
             loader={loading}
             onCardClick={handleCardClick}
+            setEditProject={setEditProject}
           />
         )}
 
@@ -176,6 +178,7 @@ export const MainPage: FC<Props> = ({ isSideBar }) => {
             error={favoritesError}
             loader={favoritesLoading}
             onCardClick={handleCardClick}
+            setEditProject={setEditProject}
           />
         )}
       </div>

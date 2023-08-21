@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign, @typescript-eslint/no-unused-vars */
+/* eslint-disable */
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProjectCardProps } from '../../../Types/ProjectCardProps';
@@ -24,10 +25,12 @@ export const push = createAsyncThunk('project/push', (newProject: ProjectCardPro
   return addProject(newProject);
 });
 
-export const edit = createAsyncThunk('project/edit', (
-  projectId: number, data: ProjectCardProps | any,
+export const edit = createAsyncThunk('project/edit', 
+async( data: { projectId: number, newData: ProjectCardProps | any,}
 ) => {
-  return editProject(projectId, data);
+  const response: any = await editProject(data.projectId, data.newData)
+
+  return response.data;
 });
 
 export const projectsSlice = createSlice({
@@ -72,6 +75,24 @@ export const projectsSlice = createSlice({
       `;
     });
     builder.addCase(push.fulfilled,
+      (state: ProjectsType, actions: any) => {
+        state.projects = [...state.projects, actions.payload];
+        state.loading = false;
+        state.error = false;
+      });
+
+    builder.addCase(edit.pending, (state: ProjectsType) => {
+      state.loading = true;
+    });
+
+    builder.addCase(edit.rejected, (state: ProjectsType) => {
+      state.loading = false;
+      state.error = `
+        An error occurred while attempting to load data from the server. An internal server error may be caused by technical glitches or issues within the system. Our experts have already been notified of this problem and are actively working to resolve it.We apologize for any inconvenience caused. Please try to load the data again later.If the issue persists, please contact our support team for further assistance.Thank you for your understanding.
+        `;
+    });
+
+    builder.addCase(edit.fulfilled,
       (state: ProjectsType, actions: any) => {
         state.projects = [...state.projects, actions.payload];
         state.loading = false;

@@ -1,0 +1,41 @@
+@import '../../../helpers/helpers.scss';
+
+.editProjectButton {
+  height: 15px;
+  width: 40px;
+//   margin-top: 20px;
+
+  background-color: $color-purple;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 8px;
+  border: 1px solid transparent;
+
+  @include tablet() {
+    font-size: 10px;
+    height: 25px;
+    width: 60px;
+  }
+
+  @include desktop() {
+    font-size: 12px;
+    height: 30px;
+    width: 70px;
+  }
+
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    background-color: #fff;
+    color: #343A40;
+    border: 1px solid $color-grey--dark;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &-disable {
+    background-color: rgba($color: $color-purple, $alpha: .7);
+  }
+}
