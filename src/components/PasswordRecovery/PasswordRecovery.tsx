@@ -64,7 +64,9 @@ export const PasswordRecovery = () => {
             setIsValueDirty={setIsEmailDirty}
           />
 
-          <CompleteButton title="Send" isDisabled={isEmailSuccess} />
+          <div className="recovery__button">
+            <CompleteButton title="Send" isDisabled={isEmailSuccess} />
+          </div>
         </form>
       </Container>
     </section>

@@ -185,12 +185,14 @@ export const ProjectPage = () => {
               </div>
             </div>
 
-            <CompleteButton
-              title="Create"
-              onClick={loadNewProject}
-              isLoader={loading}
-              isDisabled={isValid}
-            />
+            <div className="project__button">
+              <CompleteButton
+                title="Create"
+                onClick={loadNewProject}
+                isLoader={loading}
+                isDisabled={isValid}
+              />
+            </div>
           </form>
         </section>
       )}

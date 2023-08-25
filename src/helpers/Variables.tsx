@@ -42,3 +42,5 @@ export const communications = [
   { name: 'LinkedIn', img: 'bx bxl-linkedin-square', link: '' },
   { name: 'GitHub', img: 'bx bxl-github', link: '' },
 ];
+
+export const projectStatuses = ['In progress', 'Finished', 'Recruitment'];

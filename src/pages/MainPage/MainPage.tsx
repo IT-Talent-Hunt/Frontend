@@ -1,4 +1,5 @@
 /* eslint-disable import/no-duplicates, no-shadow */
+/* eslint-disable */
 
 import {
   FC,
@@ -29,14 +30,15 @@ import * as favoritesActions from '../../redux/features/favorites/favorites';
 // import { deleteData } from '../../helpers/helpers';
 import { ProjectsField } from '../../components/ProjectsField/ProjectsFiled';
 import { FiltersEnumTypes } from '../../Types/FilterEnumTypes';
+import { ProjectCardProps } from '../../Types/ProjectCardProps';
 
 type Props = {
   isSideBar: boolean,
-  setEditProject: (evennt: React.MouseEvent, projectId: number) => void,
+  setEditProject: (evennt: React.MouseEvent, projectId: number | undefined) => void,
 };
 
 export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
-  const [currentId, setCurrentId] = useState(0);
+  const [currentProject, setCurrentProject] = useState<ProjectCardProps | null>(null);
 
   const [position, setPosition] = useState<string>('');
   const [status, setStatus] = useState<string>('');
@@ -49,9 +51,9 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
   const { projects, loading, error } = useAppSelector(state => state.projects);
   const { favorites, favoritesLoading, favoritesError } = useAppSelector(state => state.favorites);
 
-  const handleCardClick = useCallback((id: number) => {
+  const handleCardClick = useCallback((project: ProjectCardProps) => {
     setIsModal(true);
-    setCurrentId(id);
+    setCurrentProject(project);
   }, []);
 
   function generateSpecialitiesLink(position?: string, teamSize?: string, status?: string): string {
@@ -127,12 +129,14 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
     getFavoritesPojects();
   }, [filter, position, status, teamSize]);
 
-  const currentProject = projects
-    .find((project) => project.id === currentId) || projects[1];
+  // const currentProject = projects
+  //   .find((project) => project.id === currentId) || projects[1];
+
+  // console.log(currentId);
 
   return (
     <div className={classNames(styles.main, { [styles.main__block]: isModal })}>
-      {isModal && (
+      {isModal && currentProject && (
         <Modal>
           <ProjectModal project={currentProject} />
         </Modal>

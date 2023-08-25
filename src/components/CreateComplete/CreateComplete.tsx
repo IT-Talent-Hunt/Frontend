@@ -26,7 +26,9 @@ export const CreateComplete: React.FC<Props> = ({ projectName }) => {
           {`You successfully create the project "${projectName}"`}
         </p>
 
-        <CompleteButton title="Log in" onClick={onSubmit} />
+        <div className="createComplete__button">
+          <CompleteButton title="Log in" onClick={onSubmit} />
+        </div>
       </Container>
     </section>
   );

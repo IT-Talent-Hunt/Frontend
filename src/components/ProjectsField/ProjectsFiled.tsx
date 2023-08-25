@@ -9,8 +9,8 @@ type Props = {
   projects: ProjectCardProps[],
   error: boolean | string,
   loader: boolean,
-  onCardClick: (id: number) => void,
-  setEditProject: (event: React.MouseEvent, projectId: number) => void,
+  onCardClick: (project: ProjectCardProps) => void,
+  setEditProject: (event: React.MouseEvent, projectId: number | undefined) => void,
 };
 
 export const ProjectsField: React.FC<Props> = ({

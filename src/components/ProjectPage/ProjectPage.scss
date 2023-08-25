@@ -38,6 +38,7 @@
 
   &__field {
     margin-top: 10px;
+    position: relative;
 
 
     @include desktop() {
@@ -94,10 +95,61 @@
     // margin-top: 100px;
   }
 
+  &__addPosition {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    // align-items: baseline;
+
+    &_buttons {
+      // width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+
+      position: relative;
+      top: -6px;
+    }
+
+    &_button {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-weight: 600;
+  
+      font-size: 10px;
+  
+      @include tablet() {
+        font-size: 12px;
+      }
+  
+      @include desktop() {
+        font-size: 14px;
+      }
+  
+      &_plus {
+        font-size: 15px;
+        font-weight: 300;
+  
+        @include tablet() {
+          font-size: 20px;
+        }
+    
+        @include desktop() {
+          font-size: 25px;
+        }
+      }
+    }
+  }
+
   &__members {
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
     gap: 5px;
+
+    border-bottom: 1px solid #eee;
   }
 
   &__member {
@@ -107,6 +159,70 @@
 
     &_title {
       font-size: 8px;
+
+      @include tablet() {
+        font-size: 10px;
+      }
+
+      @include desktop() {
+        font-size: 12px;
+      }
+    }
+  }
+
+  &__positions {
+    padding: 10px 0;
+    // padding-bottom: 10px;
+    // display: flex;
+    // flex-direction: column;
+    // gap: 5px;
+
+    // border-bottom: 1px solid #eee;
+  }
+
+  &__button {
+    margin-top: 20px;
+  }
+
+  &__status {
+    margin-top: 10px;
+  }
+
+  &__statuses {
+    // padding: 7px;
+    max-width: 150px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    // gap: 5px;
+
+    background-color: #fff;
+    box-shadow: 0 4px 3px  rgba($color: #000, $alpha: .2);
+    z-index: 1;
+
+    position: absolute;
+    top: 60px;
+    left: -7px;
+
+
+    &_item {
+      padding: 5px 7px;
+
+      &:hover {
+        background-color: $color-grey--lite;
+      }
+
+      &-green {
+        &:hover {
+          background-color: rgba($color: $color-green, $alpha: .1);
+        }
+      }
+
+      &-yellow {
+        &:hover {
+          background-color: rgba($color: $color-orange, $alpha: .1);
+        }
+      }
     }
   }
 }

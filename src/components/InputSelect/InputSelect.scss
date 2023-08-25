@@ -1,6 +1,7 @@
 @import '../../helpers/helpers.scss';
 
 .inputSelect {
+  position: relative;
   &__list {
     // padding: 10px;
     border-radius: 10px;
@@ -13,9 +14,11 @@
     box-shadow: 0 4px 3px  #eee;
 
     position: absolute;
-    bottom: -104px;
+    bottom: -165px;
     max-height: 180px;
     overflow: auto;
+
+    z-index: 1;
   }
 
   &__title {
@@ -59,7 +62,7 @@
 
     position: absolute;
 
-    bottom: 9px;
+    top: 25px;
     right: 15px;
 
     transition: .5s;
@@ -70,28 +73,28 @@
       width: 11px;
       height: 11px;
 
-      bottom: 11px;
+      top: 32px;
     }
 
     @include desktop() {
       width: 13px;
       height: 13px;
 
-      bottom: 14px;
+      top: 40px;
     }
 
     &-move {
       transition: .5s;
       transform: rotateX(180deg);
-      bottom: 12px;
+      top: 21px;
 
       @include tablet() {
-        bottom: 16px;
+        top: 28px;
       }
 
 
       @include desktop() {
-        bottom: 20px;
+        top: 33px;
       }
     }
   }

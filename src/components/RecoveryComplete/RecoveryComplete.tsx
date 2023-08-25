@@ -22,7 +22,9 @@ export const RecoveryComplete = () => {
           Follow the links to recover your password.
         </p>
 
-        <CompleteButton title="Log in" onClick={onSubmit} />
+        <div className="recoveryComplete__button">
+          <CompleteButton title="Log in" onClick={onSubmit} />
+        </div>
       </Container>
     </section>
   );

@@ -1,15 +1,17 @@
 @import '../../../helpers/helpers.scss';
 
-.editProjectButton {
+.editReverseButton {
   height: 25px;
   min-width: 50px;
-//   margin-top: 20px;
+  // margin-top: 20px;
 
-  background-color: $color-purple;
+  background-color: transparent;
   border-radius: 4px;
-  color: #fff;
+  color: $color-purple;
   font-size: 10px;
-  border: 1px solid transparent;
+  border: 1px solid $color-purple;
+
+  transition: all ease-in-out 0.2s;
 
   @include tablet() {
     font-size: 12px;
@@ -23,12 +25,10 @@
     width: 90px;
   }
 
-  transition: all ease-in-out 0.2s;
-
   &:hover {
-    background-color: #fff;
-    color: #343A40;
-    border: 1px solid $color-grey--dark;
+    background-color: $color-grey--dark;
+    color: #fff;
+    border: 1px solid #fff;
   }
 
   &:active {
@@ -36,6 +36,6 @@
   }
 
   &-disable {
-    background-color: rgba($color: $color-purple, $alpha: .7);
+    background-color: $color-purple;
   }
 }

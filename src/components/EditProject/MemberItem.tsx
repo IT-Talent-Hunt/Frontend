@@ -16,7 +16,11 @@ export const MemberItem: React.FC<Props> = ({ user, onKick }) => {
       <div className="project__member_title">{speciality}</div>
       <div className="project__member_title">{`${firstName} ${lastName}`}</div>
 
-      <EditProjectButton title="Kick" onClick={() => onKick(user)} isDisabled={currentUser.id !== user.id} />
+      <EditProjectButton
+        title="Kick"
+        onClick={() => onKick(user)}
+        isDisabled={currentUser.id !== user.id}
+      />
     </li>
   );
 };

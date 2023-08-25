@@ -240,11 +240,13 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
           </>
         )}
 
-        <CompleteButton
-          title={isSigningUp ? 'Sign up' : 'Sign in'}
-          isDisabled={isValidForms && isButtonDisabled}
-          isLoader={isLoader}
-        />
+        <div className={styles.complete}>
+          <CompleteButton
+            title={isSigningUp ? 'Sign up' : 'Sign in'}
+            isDisabled={isValidForms && isButtonDisabled}
+            isLoader={isLoader}
+          />
+        </div>
       </form>
 
       <p className={styles.p}>

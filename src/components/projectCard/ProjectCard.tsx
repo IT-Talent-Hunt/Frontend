@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable */
 import {
   FC, useEffect, useRef, useState,
 } from 'react';
@@ -24,8 +25,8 @@ import { User } from '../../Types/User';
 
 type Props = {
   project: ProjectCardProps,
-  onClick: (value: number) => void,
-  setEditProject: (evennt: React.MouseEvent, projectId: number) => void,
+  onClick: (value: ProjectCardProps) => void,
+  setEditProject: (event: React.MouseEvent, projectId: number) => void,
 };
 
 export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => {
@@ -81,7 +82,7 @@ export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => 
     /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
     <div
       className={styles.card}
-      onClick={() => onClick(id)}
+      onClick={() => onClick(project)}
       onKeyDown={() => { }}
     >
       <div className={styles.heading}>
@@ -102,7 +103,7 @@ export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => 
           {currentUser && currentUser.id === ownerId && (
             <IconButton
               svg={edit}
-              onClick={(event) => setEditProject(event, project.id)}
+              onClick={(event) => setEditProject(event, id ? id : 0)}
             />
           )}
         </div>

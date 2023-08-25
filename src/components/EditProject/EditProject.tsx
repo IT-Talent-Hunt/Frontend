@@ -1,7 +1,9 @@
 import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
+import classNames from 'classnames';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
-import { textValidation } from '../../helpers/validation';
+import { selectValidation, textValidation } from '../../helpers/validation';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { ContactItem } from '../ContactsList/ContactItem/ContactItem';
 import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
@@ -10,7 +12,7 @@ import { ShineMessage } from '../ShineMessage/ShineMessage';
 // import { useLocalStorage } from 'usehooks-ts';
 // import { User } from '../../Types/User';
 import { Contact } from '../../Types/Contact';
-import { existContacts } from '../../helpers/Variables';
+import { existContacts, socialities, projectStatuses } from '../../helpers/Variables';
 import { InputField } from '../InputField/InputField';
 import { Error } from '../Error/Error';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -19,6 +21,11 @@ import * as projectsActions from '../../redux/features/projects/projects';
 import { MemberItem } from './MemberItem';
 import { User } from '../../Types/User';
 import { Success } from '../Success/Success';
+import { InputSelect } from '../InputSelect/InputSelect';
+import { EditProjectButton } from './EditProjectButton/EditProjectButton';
+import { EditReverseButton } from './EditReverseButton/EditReverseButton';
+import { PositionItem } from './PositionItem/PositionItem';
+import { ProjectCardStatus } from '../projectCard/ProjectCardStatus/ProjectCardStatus';
 
 type Props = {
   project: ProjectCardProps,
@@ -30,18 +37,32 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const [isNameDirty, setIsNameDirty] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isNameSuccess, setIsNameSuccess] = useState(false);
-  // const [user] = useLocalStorage<User | any>('user', {});
+  const [currentUser] = useLocalStorage<User | any>('user', {});
 
   // const [selectedPositions, setSelectedPositions] = useState<Select[]>([]);
   // const preparetedPositions = selectedPositions.map((position) => position.name);
 
-  const [description, setDescription] = useState(project.description);
+  const [description, setDescription] = useState<string>(project.description);
   const [contacts, setContacts] = useState<Contact[]>(existContacts);
   const [currentContact, setCurrentContact] = useState<Contact>(project.socialLink);
   const [userMembers, setUserMemeers] = useState<User[]>(project.teamResponseDto.userResponseDtos);
-  const [isUpLoad, setIsUpLoad] = useState(false);
+  const [projectPositions, setProjectPositions] = useState<string[]>(
+    project.teamResponseDto.requiredSpecialities,
+  );
+  const [projectStatus, setProjectStatus] = useState<string>(project.status);
+
+  const [isUpLoad, setIsUpLoad] = useState<boolean>(false);
+  const [isAddPosition, setIsAddPosition] = useState<boolean>(false);
+  const [isProjectStatuses, setIsProjectStatuses] = useState<boolean>(false);
+
+  const [position, setPosition] = useState('');
+  const [isPositionDirty, setIsPositionDirty] = useState(false);
+  const [positionMessage, setPositionMessage] = useState('');
+  const [isPositionSuccess, setIsPositionSuccess] = useState(false);
 
   const membersIds = userMembers.map((member) => member.id);
+  const visibleMembers = userMembers.filter((member) => member.id !== currentUser.id);
+  const preparetedStatuses = projectStatuses.filter((status) => status !== projectStatus);
 
   const dispatch = useAppDispatch();
   const { error, loading } = useAppSelector(state => state.projects);
@@ -66,9 +87,11 @@ export const EditProject: React.FC<Props> = ({ project }) => {
       name,
       description,
       socialLink: currentContact,
+      status: projectStatus,
       teamRequestDto: {
         ...project.teamResponseDto,
         userIds: membersIds,
+        requiredSpecialities: projectPositions,
       },
     };
 
@@ -86,6 +109,41 @@ export const EditProject: React.FC<Props> = ({ project }) => {
 
   const onUserKick = (user: User) => {
     setUserMemeers((current) => [...current].filter((member: User) => member.id !== user.id));
+  };
+
+  const onPositionAdd = () => {
+    if (!projectPositions.includes(position)) {
+      setProjectPositions((current) => [...current, position]);
+      setIsAddPosition(false);
+    }
+
+    setPosition('');
+  };
+
+  const onPositionCancel = () => {
+    setPosition('');
+    setIsAddPosition(false);
+  };
+
+  const onPositionRevome = (removePosition: string) => {
+    setProjectPositions((current) => [...current].filter((pos) => pos !== removePosition));
+  };
+
+  const onStatusChange = (newStatus: string) => {
+    setProjectStatus(newStatus);
+    setIsProjectStatuses(false);
+  };
+
+  const selectPositionField = {
+    id: 2,
+    type: 'text',
+    name: 'position',
+    value: position,
+    message: positionMessage,
+    isDirty: isPositionDirty,
+    isSuccess: isPositionSuccess,
+    text: 'Position',
+    selections: socialities,
   };
 
   return (
@@ -138,14 +196,87 @@ export const EditProject: React.FC<Props> = ({ project }) => {
 
           <div className="project__field">
             <h4 className="project__title">
+              Project status
+            </h4>
+
+            <button
+              type="button"
+              onClick={() => setIsProjectStatuses((current) => !current)}
+              className="project__status"
+            >
+              <ProjectCardStatus status={projectStatus} />
+            </button>
+
+            {isProjectStatuses && (
+              <ul className="project__statuses">
+                {preparetedStatuses.map((newStatus) => (
+                  <button
+                    key={newStatus}
+                    type="button"
+                    className={classNames(
+                      'project__statuses_item',
+                      { 'project__statuses_item-green': newStatus === 'In progress' },
+                      { 'project__statuses_item-yellow': newStatus === 'Recruitment' },
+                    )}
+                    onClick={() => onStatusChange(newStatus)}
+                  >
+                    <ProjectCardStatus status={newStatus} />
+                  </button>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="project__field">
+            <h4 className="project__title">
               Project members
             </h4>
 
             <ul className="project__members">
-              {userMembers.map((user) => (
+              {visibleMembers.map((user) => (
                 <MemberItem key={user.id} user={user} onKick={onUserKick} />
               ))}
             </ul>
+
+            <ul className="project__positions">
+              {projectPositions.map((requiredPosition) => (
+                <PositionItem
+                  key={requiredPosition}
+                  position={requiredPosition}
+                  onRemove={onPositionRevome}
+                />
+              ))}
+            </ul>
+
+            {!isAddPosition && (
+              <button
+                type="button"
+                className="project__addPosition_button"
+                onClick={() => setIsAddPosition(true)}
+              >
+                <span className="project__addPosition_button-title">
+                  Add position
+                </span>
+
+                <span className="project__addPosition_button-plus">+</span>
+              </button>
+            )}
+
+            {isAddPosition && (
+              <div className="project__addPosition">
+                <InputSelect
+                  input={selectPositionField}
+                  onBlur={() => selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess)}
+                  setValue={setPosition}
+                  setIsValueDirty={setIsPositionDirty}
+                />
+
+                <div className="project__addPosition_buttons">
+                  <EditProjectButton title="Add" isDisabled={!!position} onClick={onPositionAdd} />
+                  <EditReverseButton title="Cancel" onClick={onPositionCancel} />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="project__field">
@@ -167,11 +298,13 @@ export const EditProject: React.FC<Props> = ({ project }) => {
             </div>
           </div>
 
-          <CompleteButton
-            title="Save"
-            onClick={editProjetcData}
-            isLoader={loading}
-          />
+          <div className="project__button">
+            <CompleteButton
+              title="Save"
+              onClick={editProjetcData}
+              isLoader={loading}
+            />
+          </div>
         </form>
       </>
     </ProjectContainer>

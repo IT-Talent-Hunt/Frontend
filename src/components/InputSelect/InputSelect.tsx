@@ -45,12 +45,12 @@ export const InputSelect: React.FC<Props> = ({
   };
 
   return (
-    <>
-      <label
-        htmlFor={type}
-        className={styles.label}
-        id={type}
-      >
+    <label
+      htmlFor={type}
+      className={styles.label}
+      id={type}
+    >
+      <div className="inputSelect">
         <div>
           <h4 className="inputSelect__title">{text}</h4>
           <button
@@ -98,11 +98,15 @@ export const InputSelect: React.FC<Props> = ({
             style={{ backgroundImage: `url('${arrow}')` }}
           />
         </button>
-      </label>
 
-      {isSeleted && (
-        <List selections={selections || null} onSelect={onPositionSelect} onHover={onSelectHover} />
-      )}
-    </>
+        {isSeleted && (
+          <List
+            selections={selections || null}
+            onSelect={onPositionSelect}
+            onHover={onSelectHover}
+          />
+        )}
+      </div>
+    </label>
   );
 };

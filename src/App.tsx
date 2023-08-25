@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState } from 'react';
 // import { Outlet } from 'react-router-dom';
 import './App.scss';
@@ -21,6 +23,7 @@ import { CreateProfile } from './components/CreateProfile/CreateProfile';
 import { SignUp } from './pages/SignUpPage/SignUp';
 import { ModalProvider } from './Providers/ModalProvider';
 import { useAppSelector } from './redux/hooks';
+import { ProjectCardProps } from './Types/ProjectCardProps';
 // import { useAppSelector } from './redux/hooks';
 
 export const App: React.FC = () => {
@@ -28,16 +31,18 @@ export const App: React.FC = () => {
   const { projects } = useAppSelector(state => state.projects);
   // const [isSignedIn, setIsSignedIn] = useState(false);
   const [isSideBar, setIsSideBar] = useState(false);
-  const [toEditProject, setToEditProject] = useState(projects[0]);
+  const [toEditProject, setToEditProject] = useState<ProjectCardProps | null>(null);
 
-  const selectEditProject = (event: React.MouseEvent, projectId: number) => {
+  const selectEditProject = (event: React.MouseEvent, projectId: number | any) => {
     event.stopPropagation();
 
-    const editProject = projects.find((project) => project.id === projectId);
+    if (projectId && projects) {
+      const editProject = projects.find((project) => project.id === projectId);
 
-    if (editProject) {
-      setToEditProject(editProject);
-      navigation('edit_project');
+      if (editProject) {
+        setToEditProject(editProject);
+        navigation('edit_project');
+      }
     }
   };
 
@@ -59,7 +64,7 @@ export const App: React.FC = () => {
             />
             <Route path="createProject" element={<ProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="edit_project" element={<EditProject project={toEditProject} />} />
+            <Route path="edit_project" element={<EditProject project={toEditProject!} />} />
             <Route path="signIn" element={<SignInPage />} />
             <Route path="recovery" element={<PasswordRecovery />} />
             <Route path="recoveryComplete" element={<RecoveryComplete />} />

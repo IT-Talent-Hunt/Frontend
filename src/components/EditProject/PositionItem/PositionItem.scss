@@ -1,0 +1,37 @@
+@import '../../../helpers/helpers.scss';
+
+.positionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+
+  font-size: 8px;
+
+  @include tablet() {
+    font-size: 10px;
+  }
+
+  @include desktop() {
+    font-size: 12px;
+  }
+
+  &__position {
+    width: 75px;
+
+    @include tablet() {
+      width: 95px; 
+    }
+    
+    @include desktop() {
+      width: 110px;
+    }
+  }
+
+  &__state {
+    text-align: center;
+    // color: #ccc;
+    color: $color-orange;
+    font-weight: 600;
+  }
+}
