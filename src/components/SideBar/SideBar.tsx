@@ -32,7 +32,7 @@ export const SideBar: FC<Props> = ({
   // const [teamSize, setTeamSize] = useState('4');
   const [displayProjects, setDisplayProjects] = useState('16');
   const preMadePositions = ['Front-end developer', 'Back-end developer', 'Full-stack developer', 'DevOps', 'QA', 'Project Manager', 'UI/UX Designer'];
-  const preMadeStatuses = ['All', 'Recruitment', 'In progress', 'Finished'];
+  const preMadeStatuses = ['Recruitment', 'In progress', 'Finished'];
   const preMadeTechnologies = ['TypeScript', 'Java', 'C#', 'Python', 'Assembly', 'Figma', 'HTML/CSS'];
   const teamSizes = ['2', '3', '4', '5', '6+'];
   const displayProjectsArr = ['8', '16', '24', '32'];
@@ -41,7 +41,7 @@ export const SideBar: FC<Props> = ({
 
   const onFilterHandler = (val: string) => {
     if (val.includes('members')) {
-      setTeamSize('4');
+      setTeamSize('');
     }
 
     if (val.includes('displayed')) {

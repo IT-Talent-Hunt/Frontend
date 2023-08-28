@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars,
+@typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable */
 import {
-  FC, useEffect, useRef, useState,
+  FC
 } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import styles from './ProjectCard.module.scss';
-import heartEmpty from '../../svg/heartEmpty.svg';
-import heartFull from '../../svg/heartFull.svg';
-import { truncateText } from '../../helpers/truncateText';
 import { ProjectCardStatus } from './ProjectCardStatus/ProjectCardStatus';
 import { ProjectCardOwner } from './ProjectCardOwner/ProjectCardOwner';
 import { IconButton } from '../IconButton/IconButton';
@@ -17,19 +15,22 @@ import { ProjectCardDescriptions } from './ProjectCardDescriptions/ProjectCardDe
 // import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { ProjectCardDate } from './ProjectCardDate/ProjectCardDate';
 import { ProjectCardButton } from './ProjectCardButton/ProjectCardButton';
-import { deleteData, formatDate, putData } from '../../helpers/helpers';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import * as favoritesActions from '../../redux/features/favorites/favorites';
+import { formatDate } from '../../helpers/helpers';
 import edit from '../../svg/edit-pen--icon.svg';
 import { User } from '../../Types/User';
+import { ProjectCardFavorite } from './ProjectCardFavorite/ProjectCardFavorite';
+import success from '../../svg/success-icon.svg';
+import { Icon } from '../Icon/Icon';
 
 type Props = {
   project: ProjectCardProps,
   onClick: (value: ProjectCardProps) => void,
   setEditProject: (event: React.MouseEvent, projectId: number) => void,
+  onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
+  onFavorite: (value: string) => void,
 };
 
-export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => {
+export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject, onApply, onFavorite }) => {
   const {
     id,
     name,
@@ -39,47 +40,20 @@ export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => 
     description,
     creationDate,
   } = project;
-  const { userResponseDtos, maxMembers } = teamResponseDto;
+  const { userResponseDtos, maxMembers, requiredSpecialities } = teamResponseDto;
 
   const [currentUser] = useLocalStorage<User | null>('user', null);
-  const [isEditVisible, setIsEditVisible] = useState<boolean>(false);
 
-  const shortDescp = truncateText(description, 120);
+  const isOwner = currentUser?.id === ownerId;
+  // const isApplied = project.teamResponseDto.requiredSpecialities.includes(currentUser?.speciality!);
+  const isApplied = userResponseDtos.some((member) => member.id === currentUser?.id);
+  const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
 
   const formatedData = formatDate(creationDate);
 
-  const dispatch = useAppDispatch();
-  const { favorites, favoritesLoading, favoritesError } = useAppSelector(state => state.favorites);
-
-  const isFavorite = favorites.some((fav) => fav.id === project.id);
-
-  const handleApplyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation(); // Prevent click event from bubbling up to the card
-  };
-
-  const handleFavoritesAdd = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation(); // Prevent click event from bubbling up to the card
-
-    dispatch(favoritesActions.push(project.id));
-    dispatch(favoritesActions.add(project));
-    // return putData(`liked-carts/projects/${project.id}`, null);
-  };
-
-  const handleFavoritesRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation(); // Prevent click event from bubbling up to the card
-
-    dispatch(favoritesActions.remove(project.id));
-    dispatch(favoritesActions.take(project));
-
-    // return deleteData(`liked-carts/projects/${project.id}`);
-  };
-
-  const projectOwner = teamResponseDto.userResponseDtos.find((user) => user.id === ownerId)
-    || teamResponseDto.userResponseDtos[0];
+  const projectOwner = teamResponseDto.userResponseDtos.find((user) => user.id === ownerId);
 
   return (
-    /* The <div> element has a child <button> element that allows keyboard interaction */
-    /* eslint-disable-next-line jsx-a11y/no-static-element-interactions */
     <div
       className={styles.card}
       onClick={() => onClick(project)}
@@ -91,35 +65,40 @@ export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject }) => 
           <ProjectCardStatus status={status} />
         </div>
 
-        {/* must be added is favorite in early future */}
-
         <div className={styles.icons}>
-          {isFavorite ? (
-            <IconButton svg={heartFull} onClick={handleFavoritesRemove} />
-          ) : (
-            <IconButton svg={heartEmpty} onClick={handleFavoritesAdd} />
-          )}
-
-          {currentUser && currentUser.id === ownerId && (
+          {currentUser && isOwner && (
             <IconButton
               svg={edit}
-              onClick={(event) => setEditProject(event, id ? id : 0)}
+              onClick={(event) => setEditProject(event, id)}
             />
           )}
+
+          <ProjectCardFavorite project={project} onFavorite={onFavorite}/>
         </div>
       </div>
-
-      <ProjectCardOwner owner={projectOwner} />
+      
+      {projectOwner && (
+        <ProjectCardOwner owner={projectOwner} />
+      )}
 
       <ProjectCardMembers members={userResponseDtos.length} maxMembers={maxMembers} />
 
       <ProjectCardDescriptions description={description} />
 
       <div className={styles.footer}>
-        <ProjectCardButton
-          title="Apply"
-          onClick={(event: any) => event.stopPropagation()}
-        />
+        {!isOwner && (
+          <div className={styles.buttons}>
+            <ProjectCardButton
+              title="Apply"
+              onClick={(event) => onApply(event, project)}
+              isDisabled={!isApplied && noSpecialityHas}
+            />
+        
+            {isApplied && (
+              <Icon icon={success} />
+            )}
+          </div>
+        )}
 
         <ProjectCardDate date={formatedData} />
       </div>

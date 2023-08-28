@@ -1,6 +1,9 @@
+@import '../../helpers/helpers.scss';
+
 .projectModal {
   background-color: #fff;
-  padding: 20px;
+  padding: 15px;
+  width: 80%;
   max-width: 550px;
   border-radius: 10px;
 
@@ -11,10 +14,44 @@
 
   &__wrapper {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     align-items: center;
 
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+
+    @include tablet() {
+      margin-bottom: 10px;
+      gap: 15px;
+    }
+
+    @include desktop() {
+      margin-bottom: 15px;
+      gap: 20px;
+    }
+  }
+
+  &__title {
+    font-size: 16px;
+
+    @include tablet() {
+      font-size: 18px
+    }
+
+    @include desktop() {
+      font-size: 20px;
+    }
+
+    &-sub {
+      font-size: 12px;
+
+      @include tablet() {
+        font-size: 14px
+      }
+  
+      @include desktop() {
+        font-size: 16px;
+      }
+    }
   }
 
   &__list {
@@ -40,6 +77,18 @@
 
     >div {
       display: flex;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &-apply {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
   }
 }

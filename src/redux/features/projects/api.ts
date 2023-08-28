@@ -10,6 +10,10 @@ export const addProject = (newProject: ProjectCardProps | any) => {
   return postData('projects', newProject);
 };
 
-export const editProject = (projectId: number, data: ProjectCardProps) => {
-  return putData(`projects/${projectId}`, data);
+export const editProject = (projectId: number, teamId: number, data: ProjectCardProps) => {
+  return putData(`projects/${projectId}/teams/${teamId}`, data);
+};
+
+export const applyToProject = (teamId: number, userId: number) => {
+  return putData(`teams/${teamId}/${userId}`, null);
 };

@@ -51,6 +51,7 @@
         align-items: center;
         gap: 5px;
         height: 20px;
+        padding: 5px;
 
         @include tablet() {
           height: 30px;

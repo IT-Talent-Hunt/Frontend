@@ -16,12 +16,15 @@ import { App } from './App';
 // import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
 // import { CreateProfile } from './components/CreateProfile/CreateProfile';
 // import { SignUp } from './pages/SignUpPage/SignUp';
+import { ModalProvider } from './Providers/ModalProvider';
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <HashRouter>
-        <App />
+        <ModalProvider>
+          <App />
+        </ModalProvider>
       </HashRouter>
     </React.StrictMode>
   </Provider>,

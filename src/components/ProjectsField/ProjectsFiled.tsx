@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+import React from 'react';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { Empty } from '../Empty/Empty';
 import { Error } from '../Error/Error';
@@ -11,6 +14,8 @@ type Props = {
   loader: boolean,
   onCardClick: (project: ProjectCardProps) => void,
   setEditProject: (event: React.MouseEvent, projectId: number | undefined) => void,
+  onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
+  onFavorite: (value: string) => void,
 };
 
 export const ProjectsField: React.FC<Props> = ({
@@ -19,6 +24,8 @@ export const ProjectsField: React.FC<Props> = ({
   loader,
   onCardClick,
   setEditProject,
+  onApply,
+  onFavorite,
 }) => {
   return (
     <div className="projectsField">
@@ -38,6 +45,8 @@ export const ProjectsField: React.FC<Props> = ({
                       project={project}
                       onClick={onCardClick}
                       setEditProject={setEditProject}
+                      onApply={onApply}
+                      onFavorite={onFavorite}
                     />
                   ))}
                 </ul>

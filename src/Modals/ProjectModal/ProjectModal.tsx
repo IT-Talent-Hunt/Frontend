@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useLocalStorage } from 'usehooks-ts';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { ProjectCardStatus } from '../../components/projectCard/ProjectCardStatus/ProjectCardStatus';
 import { ProjectCardOwner } from '../../components/projectCard/ProjectCardOwner/ProjectCardOwner';
@@ -7,20 +8,30 @@ import { ProjectCardDescriptions } from '../../components/projectCard/ProjectCar
 import { ProjectCardMemberItem } from '../../components/projectCard/ProjectCardMemberItem/ProjectCardMemberItem';
 import { ProjectCardComunaction } from '../../components/projectCard/ProjectCardComunaction/ProjectCardComunaction';
 import { ProjectCardButton } from '../../components/projectCard/ProjectCardButton/ProjectCardButton';
-import { ModalContext } from '../../Providers/ModalProvider';
-import favorite from '../../svg/heartEmpty.svg';
 import cross from '../../svg/cross-icon.svg';
 import './ProjectModal.scss';
 import { IconButton } from '../../components/IconButton/IconButton';
 import { ProjectCardDate } from '../../components/projectCard/ProjectCardDate/ProjectCardDate';
 import { communications } from '../../helpers/Variables';
 import { formatDate } from '../../helpers/helpers';
+import { User } from '../../Types/User';
+import { ProjectCardFavorite } from '../../components/projectCard/ProjectCardFavorite/ProjectCardFavorite';
+import success from '../../svg/success-icon.svg';
+import { Icon } from '../../components/Icon/Icon';
 
 type Props = {
   project: ProjectCardProps,
+  onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
+  onFavorite: (value: string) => void,
+  onProjectModalClose: () => void,
 };
 
-export const ProjectModal: React.FC<Props> = ({ project }) => {
+export const ProjectModal: React.FC<Props> = ({
+  project,
+  onApply,
+  onFavorite,
+  onProjectModalClose,
+}) => {
   const {
     name,
     ownerId,
@@ -31,13 +42,16 @@ export const ProjectModal: React.FC<Props> = ({ project }) => {
     socialLink,
   } = project;
 
-  const { userResponseDtos, maxMembers } = teamResponseDto;
+  const { userResponseDtos, maxMembers, requiredSpecialities } = teamResponseDto;
+  const [currentUser] = useLocalStorage<User | null>('user', null);
 
   const projectOwner = userResponseDtos
     .find((user) => user.id === ownerId)
     || userResponseDtos[0];
 
-  const { setIsModal } = useContext(ModalContext);
+  const isOwner = currentUser?.id === ownerId;
+  const isApplied = userResponseDtos.some((member) => member.id === currentUser?.id);
+  const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
 
   // const selectedSocialLink = socialLinks.filter((socialLink) => socialLink.url.length > 0)[0];
 
@@ -56,11 +70,11 @@ export const ProjectModal: React.FC<Props> = ({ project }) => {
     <div className="projectModal">
       <div className="projectModal__top">
         <div className="projectModal__wrapper">
-          <h1>{name}</h1>
+          <h1 className="projectModal__title">{name}</h1>
           <ProjectCardStatus status={status} />
         </div>
 
-        <IconButton svg={cross} onClick={() => setIsModal(false)} />
+        <IconButton svg={cross} onClick={onProjectModalClose} />
       </div>
 
       <ProjectCardOwner owner={projectOwner} />
@@ -75,20 +89,33 @@ export const ProjectModal: React.FC<Props> = ({ project }) => {
         ))}
       </ul>
 
-      <p className="projectModal__container">
-        <h2>Description</h2>
+      <div className="projectModal__container">
+        <h1 className="projectModal__title-sub">Description</h1>
         <ProjectCardDescriptions description={description} isModal={!!true} />
-      </p>
+      </div>
 
-      <p className="projectModal__container">
-        <h2>Comunication</h2>
+      <div className="projectModal__container">
+        <h1 className="projectModal__title-sub">Comunication</h1>
         <ProjectCardComunaction comunication={communication} />
-      </p>
+      </div>
 
       <div className="projectModal__bottom">
-        <div>
-          <ProjectCardButton title="Apply" />
-          <IconButton svg={favorite} />
+        <div className="projectModal__buttons">
+          {!isOwner && (
+            <div className="projectModal__buttons-apply">
+              <ProjectCardButton
+                title="Apply"
+                onClick={(event) => onApply(event, project)}
+                isDisabled={!isApplied && noSpecialityHas}
+              />
+
+              {isApplied && (
+                <Icon icon={success} />
+              )}
+            </div>
+          )}
+
+          <ProjectCardFavorite project={project} onFavorite={onFavorite} />
         </div>
 
         <ProjectCardDate date={formatedDate} />

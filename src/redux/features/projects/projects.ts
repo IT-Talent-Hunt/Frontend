@@ -3,7 +3,7 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProjectCardProps } from '../../../Types/ProjectCardProps';
-import { getProjects, addProject, editProject } from './api';
+import { getProjects, addProject, editProject, applyToProject } from './api';
 
 type ProjectsType = {
   projects: ProjectCardProps[],
@@ -26,12 +26,18 @@ export const push = createAsyncThunk('project/push', (newProject: ProjectCardPro
 });
 
 export const edit = createAsyncThunk('project/edit', 
-async( data: { projectId: number, newData: ProjectCardProps | any,}
+async( data: { projectId: number, teamId: number, newData: ProjectCardProps | any,}
 ) => {
-  const response: any = await editProject(data.projectId, data.newData)
+  const response: any = await editProject(data.projectId, data.teamId, data.newData)
 
   return response.data;
 });
+
+export const apply = createAsyncThunk('project/apply', async(data: {teamId: number, userId: number}) => {
+  const response: any = await applyToProject(data.teamId, data.userId);
+
+  return response.data;
+})
 
 export const projectsSlice = createSlice({
   name: 'projects',
@@ -93,11 +99,11 @@ export const projectsSlice = createSlice({
     });
 
     builder.addCase(edit.fulfilled,
-      (state: ProjectsType, actions: any) => {
-        state.projects = [...state.projects, actions.payload];
+      (state: ProjectsType) => {
         state.loading = false;
         state.error = false;
       });
+      
   },
 });
 

@@ -14,3 +14,11 @@ export interface InputFieldType {
   text: string,
   selections?: Select[],
 };
+
+export interface SelectFieldType {
+  id: number,
+  type: string,
+  value: string,
+  text: string,
+  selections?: Select[],
+};

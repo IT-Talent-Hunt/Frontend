@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 import { Contact } from '../../../Types/Contact';
-import { IconButton } from '../../IconButton/IconButton';
+import { Icon } from '../../Icon/Icon';
 import arrowBottom from '../../../svg/arrow-bottom.svg';
 import arrowTop from '../../../svg/arrow-top.svg';
 import './ContactItem.scss';
@@ -67,7 +67,7 @@ export const ContactItem: React.FC<Props> = ({
             )}
           >
             {isEdit && (
-              <IconButton svg={isRest ? arrowTop : arrowBottom} />
+              <Icon icon={isRest ? arrowTop : arrowBottom} />
             )}
           </div>
         </button>
@@ -76,7 +76,7 @@ export const ContactItem: React.FC<Props> = ({
           <ul className="contactItem__rest">
             {restList.map((rest) => (
               <button
-                key={platform}
+                key={rest.platform}
                 type="button"
                 onClick={() => setContact(rest)}
                 className="contactItem__rest_button"

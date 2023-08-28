@@ -37,7 +37,7 @@ export const SearchInput = () => {
   };
 
   useEffect(() => {
-    setSearchParams(updateSeachParams(searchParams, { queryParam: appliedQuery }));
+    setSearchParams(updateSeachParams(searchParams, { queryParam: appliedQuery || null }));
   }, [appliedQuery]);
 
   const onQueryReset = () => {

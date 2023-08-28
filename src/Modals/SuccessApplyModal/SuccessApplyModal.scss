@@ -1,0 +1,43 @@
+@import '../../helpers/helpers.scss';
+
+.successApply {
+  max-width: 80%;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+
+  @include tablet() {
+    padding: 15px;
+  }
+
+  @include desktop() {
+    padding: 20px;
+  }
+
+  &__title {
+    font-size: 16px;
+    text-align: center;
+
+    @include tablet() {
+      font-size: 18px;
+    }
+
+    @include desktop() {
+      font-size: 20px;
+    }
+
+    &_sub {
+      font-size: 12px;
+      margin: 10px 0;
+
+      @include tablet() {
+        font-size: 14px;
+        margin: 15px 0;
+      }
+  
+      @include desktop() {
+        font-size: 16px;
+      }
+    }
+  }
+}

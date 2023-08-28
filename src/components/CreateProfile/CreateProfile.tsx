@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
@@ -6,7 +8,7 @@ import { InputField } from '../InputField/InputField';
 import './CreateProfile.scss';
 import { InputSelect } from '../InputSelect/InputSelect';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
-import { textValidation, selectValidation } from '../../helpers/validation';
+import { textValidation } from '../../helpers/validation';
 import { User } from '../../Types/User';
 import { patchData } from '../../helpers/helpers';
 import { socialities } from '../../helpers/Variables';
@@ -23,9 +25,6 @@ export const CreateProfile = () => {
   const [isSurNameSuccess, setIsSurNameSuccess] = useState(false);
 
   const [position, setPosition] = useState('');
-  const [isPositionDirty, setIsPositionDirty] = useState(false);
-  const [positionMessage, setPositionMessage] = useState('');
-  const [isPositionSuccess, setIsPositionSuccess] = useState(false);
 
   const [user, setUser] = useLocalStorage<User | any>('user', {});
   const navigation = useNavigate();
@@ -33,8 +32,7 @@ export const CreateProfile = () => {
   // const visiblePosition = socialities
   //   .find((sociality) => sociality.name === user.specialities[0].specialityName);
 
-  const isValid = isPositionDirty === false
-  && isNameDirty === false
+  const isValid = isNameDirty === false
   && isSurNameDirty === false
   && name.length > 0
   && surName.length > 0
@@ -65,11 +63,7 @@ export const CreateProfile = () => {
   const selectPositionField = {
     id: 2,
     type: 'text',
-    name: 'position',
     value: position,
-    message: positionMessage,
-    isDirty: isPositionDirty,
-    isSuccess: isPositionSuccess,
     text: 'Position',
     selections: socialities,
   };
@@ -91,7 +85,7 @@ export const CreateProfile = () => {
 
     textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess);
     textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
-    selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
+    // selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
 
     const updatedUser = await upLoadUserData(user.id);
 
@@ -124,9 +118,7 @@ export const CreateProfile = () => {
 
           <InputSelect
             input={selectPositionField}
-            onBlur={() => selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess)}
             setValue={setPosition}
-            setIsValueDirty={setIsPositionDirty}
           />
 
           <CompleteButton title="Sign up" isDisabled={isValid} />

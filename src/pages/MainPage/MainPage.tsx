@@ -31,14 +31,45 @@ import * as favoritesActions from '../../redux/features/favorites/favorites';
 import { ProjectsField } from '../../components/ProjectsField/ProjectsFiled';
 import { FiltersEnumTypes } from '../../Types/FilterEnumTypes';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
+import { SuccessApplyModal } from '../../Modals/SuccessApplyModal/SuccessApplyModal';
+import { CenceledApplyModal } from '../../Modals/CanceledApplyModal/CanceledApplyModal';
+import { useLocalStorage } from 'usehooks-ts';
+import { User } from '../../Types/User';
+import { useSearchParams } from 'react-router-dom';
+// import { SearchInput } from '../../components/SearchInput/SearchInput';
 
 type Props = {
   isSideBar: boolean,
   setEditProject: (evennt: React.MouseEvent, projectId: number | undefined) => void,
+  onCanceledFavorite: (value: string) => void,
+  isApplyCanceled: boolean,
+  cenceledMessage: string,
+  isFavoriteCanceled: boolean,
+  applyProject: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
+  successMessage: string,
+  setSuccessMessage: (value: string) => void,
+  setCenceledMessage: (value: string) => void,
+  cardClick: (project: ProjectCardProps) => void,
+  currentProject: ProjectCardProps | null,
+  onProjectModalClose: () => void,
 };
 
-export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
-  const [currentProject, setCurrentProject] = useState<ProjectCardProps | null>(null);
+export const MainPage: FC<Props> = ({
+  isSideBar,
+  setEditProject,
+  onCanceledFavorite,
+  applyProject,
+  isApplyCanceled,
+  cenceledMessage,
+  isFavoriteCanceled,
+  successMessage,
+  setSuccessMessage,
+  setCenceledMessage,
+  cardClick,
+  currentProject,
+  onProjectModalClose,
+}) => {
+  const [currentUser] = useLocalStorage<User | null>('user', null);
 
   const [position, setPosition] = useState<string>('');
   const [status, setStatus] = useState<string>('');
@@ -47,14 +78,12 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
 
   const { isModal, setIsModal } = useContext(ModalContext);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('queryParam');
+
   const dispatch = useAppDispatch();
   const { projects, loading, error } = useAppSelector(state => state.projects);
   const { favorites, favoritesLoading, favoritesError } = useAppSelector(state => state.favorites);
-
-  const handleCardClick = useCallback((project: ProjectCardProps) => {
-    setIsModal(true);
-    setCurrentProject(project);
-  }, []);
 
   function generateSpecialitiesLink(position?: string, teamSize?: string, status?: string): string {
     let link = 'projects/search';
@@ -94,6 +123,14 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
       link += `${(position || teamSize) ? '&' : '?'}status=${statusCode}`;
     }
 
+    if (filter === FiltersEnumTypes.NEW) {
+      link += `${(position || teamSize || status) ? '&' : '?'}sortBy=creationDate:ASC`;
+    }
+
+    if (query) {
+      link += `${(position || teamSize || status) ? '&' : '?'}name=${query}`;
+    }
+
     return link;
   }
 
@@ -117,28 +154,67 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
 
     const url = generateSpecialitiesLink(position, teamSize, status);
 
+    console.log('123');
     dispatch(projectsActions.init(url));
   };
 
+  const getSortedProjects = () => {
+    const url = generateSpecialitiesLink(position, teamSize, status);
+    dispatch(projectsActions.init(url));
+  }
+
   const getFavoritesPojects = () => {
+    console.log('fav');
     dispatch(favoritesActions.init());
   };
 
   useEffect(() => {
     getProjects();
-    getFavoritesPojects();
-  }, [filter, position, status, teamSize]);
+  }, [filter === FiltersEnumTypes.ALL, position, status, teamSize, query]);
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      getFavoritesPojects();
+    }
+  }, [filter === FiltersEnumTypes.FAVORITES]);
+
+  useEffect(() => {
+    getSortedProjects();
+  }, [filter === FiltersEnumTypes.NEW])
 
   // const currentProject = projects
   //   .find((project) => project.id === currentId) || projects[1];
 
-  // console.log(currentId);
+  console.log(projects);
 
   return (
     <div className={classNames(styles.main, { [styles.main__block]: isModal })}>
       {isModal && currentProject && (
         <Modal>
-          <ProjectModal project={currentProject} />
+          <ProjectModal
+            project={currentProject}
+            onApply={applyProject}
+            onFavorite={onCanceledFavorite}
+            onProjectModalClose={onProjectModalClose}
+          />
+        </Modal>
+      )}
+
+      {isModal && !isApplyCanceled && successMessage &&   (
+        <Modal>
+          <SuccessApplyModal message={successMessage} onClose={setSuccessMessage}/>
+        </Modal>
+      )}
+
+      {isModal && isApplyCanceled && cenceledMessage && (
+        <Modal>
+          <CenceledApplyModal message={cenceledMessage} onClose={setCenceledMessage} />
+        </Modal>
+      )}
+
+      {isModal && isFavoriteCanceled && cenceledMessage && (
+        <Modal>
+          <CenceledApplyModal message={cenceledMessage} onClose={setCenceledMessage} />
         </Modal>
       )}
 
@@ -159,20 +235,38 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
       </div>
 
       <div className={styles.grid__container}>
-        <GridHeader
-          n={0}
-          position={position}
-          filter={filter}
-          setFilter={setFilter}
-        />
+        <div>
+          <GridHeader
+            n={0}
+            position={position}
+            filter={filter}
+            setFilter={setFilter}
+          />
+
+          {/* <SearchInput /> */}
+        </div>
 
         {filter === 'all' && (
           <ProjectsField
             projects={projects}
             error={error}
             loader={loading}
-            onCardClick={handleCardClick}
+            onCardClick={cardClick}
             setEditProject={setEditProject}
+            onApply={applyProject}
+            onFavorite={onCanceledFavorite}
+          />
+        )}
+
+        {filter === 'new' && (
+          <ProjectsField
+            projects={projects}
+            error={error}
+            loader={loading}
+            onCardClick={cardClick}
+            setEditProject={setEditProject}
+            onApply={applyProject}
+            onFavorite={onCanceledFavorite}
           />
         )}
 
@@ -181,8 +275,10 @@ export const MainPage: FC<Props> = ({ isSideBar, setEditProject }) => {
             projects={favorites}
             error={favoritesError}
             loader={favoritesLoading}
-            onCardClick={handleCardClick}
+            onCardClick={cardClick}
             setEditProject={setEditProject}
+            onApply={applyProject}
+            onFavorite={onCanceledFavorite}
           />
         )}
       </div>

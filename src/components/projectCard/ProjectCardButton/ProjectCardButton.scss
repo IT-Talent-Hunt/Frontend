@@ -1,26 +1,30 @@
 @import '../../../helpers/helpers.scss';
 
 .projectButton {
-  height: 30px;
-  width: 130px;
+  height: 20px;
+  width: 80px;
+  border-radius: 6px;
+  font-size: 10px;
+
+  @include tablet() {
+    height: 30px;
+    width: 130px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  @include desktop() {
+    font-size: 14px;
+    height: 35px;
+    width: 180px;
+  }
 
   background-color: $color-purple;
-  border-radius: 10px;
   color: #fff;
-  font-size: 12px;
   border: 1px solid transparent;
 
   transition: all ease-in-out 0.2s;
 
-  @include tablet() {
-    font-size: 14px;
-  }
-
-  @include desktop() {
-    font-size: 16px;
-    height: 35px;
-    width: 180px;
-  }
 
   &:hover {
     background-color: #fff;
@@ -33,6 +37,6 @@
   }
 
   &-disable {
-    background-color: $color-purple;
+    background-color: rgba($color: $color-purple, $alpha: .7);
   }
 }

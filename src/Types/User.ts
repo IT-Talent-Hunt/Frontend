@@ -11,5 +11,5 @@ export interface User {
   provider: string,
   registrationDate: string,
   roles: Role[],
-  speciality: string[],
+  speciality: string,
 }

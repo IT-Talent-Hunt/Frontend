@@ -25,7 +25,17 @@ import { Empty } from '../Empty/Empty';
 import { ShineMessage } from '../ShineMessage/ShineMessage';
 // import { patchData } from '../../helpers/helpers';
 
-export const ProfilePage = () => {
+type Props = {
+  onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
+  onFavorite: (value: string) => void,
+  onProjectModalClose: () => void,
+}
+
+export const ProfilePage: React.FC<Props> = ({
+  onApply,
+  onFavorite,
+  onProjectModalClose,
+}) => {
   const { isModal, setIsModal } = useContext(ModalContext);
   const [projectModal, setProjectModal] = useState<ProjectCardProps | null>(null);
   const [user, setUser] = useLocalStorage<any>('user', {});
@@ -268,7 +278,12 @@ export const ProfilePage = () => {
 
       {isModal && projectModal && (
         <Modal>
-          <ProjectModal project={projectModal} />
+          <ProjectModal
+            project={projectModal}
+            onApply={onApply}
+            onFavorite={onFavorite}
+            onProjectModalClose={onProjectModalClose}
+          />
         </Modal>
       )}
     </section>

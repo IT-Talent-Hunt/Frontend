@@ -1,24 +1,45 @@
+@import '../../helpers/helpers.scss';
+
 .search {
+  width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 
     &__label {
+      width: 100%;
+      // width: 300px;
+      overflow: hidden;
+
+      @include tablet() {
+      }
+  
+      @include desktop() {
         width: 300px;
-        overflow: hidden;
+      }
     }
 
   &__input {
     color: #000;
-    font-size: 16px;
-    height: 40px;
+    font-size: 12px;
+    height: 20px;
     width: 100%;
     background-color: #fff;
     padding: 0 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     transform: translateX(300px);
     transition: 1s;
+
+    @include tablet() {
+      height: 30px;
+    }
+
+    @include desktop() {
+      height: 40px;
+      border-radius: 10px;
+    font-size: 16px;
+    }
 
     &-move {
       transform: translateX(0);

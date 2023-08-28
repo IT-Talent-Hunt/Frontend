@@ -124,6 +124,12 @@
   }
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .icons {
   display: flex;
   flex-direction: row;

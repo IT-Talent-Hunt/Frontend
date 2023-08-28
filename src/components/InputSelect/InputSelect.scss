@@ -1,7 +1,7 @@
 @import '../../helpers/helpers.scss';
 
 .inputSelect {
-  position: relative;
+  // position: relative;
   &__list {
     // padding: 10px;
     border-radius: 10px;
@@ -102,5 +102,29 @@
   &__button {
     width: 100%;
     text-align: left;
+  }
+
+  &__placeholder {
+    font-size: 10px;
+    font-weight: 300;
+    color: #ADB5BD;
+
+
+    @include tablet() {
+      font-size: 12px;
+    }
+    
+    @include desktop() {
+      font-size: 14px;
+    }
+  
+    &-value {
+      color: #000;
+    }
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
   }
 }

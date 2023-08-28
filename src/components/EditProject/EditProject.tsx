@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import classNames from 'classnames';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
-import { selectValidation, textValidation } from '../../helpers/validation';
+import { textValidation } from '../../helpers/validation';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { ContactItem } from '../ContactsList/ContactItem/ContactItem';
 import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
@@ -56,9 +56,6 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const [isProjectStatuses, setIsProjectStatuses] = useState<boolean>(false);
 
   const [position, setPosition] = useState('');
-  const [isPositionDirty, setIsPositionDirty] = useState(false);
-  const [positionMessage, setPositionMessage] = useState('');
-  const [isPositionSuccess, setIsPositionSuccess] = useState(false);
 
   const membersIds = userMembers.map((member) => member.id);
   const visibleMembers = userMembers.filter((member) => member.id !== currentUser.id);
@@ -84,6 +81,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const editProjetcData = () => {
     const editedProject = {
       ...project,
+      id: project.id,
       name,
       description,
       socialLink: currentContact,
@@ -95,7 +93,11 @@ export const EditProject: React.FC<Props> = ({ project }) => {
       },
     };
 
-    dispatch(projectsActions.edit({ projectId: project.id, newData: editedProject }));
+    dispatch(projectsActions.edit({
+      projectId: project.id,
+      teamId: project.teamResponseDto.id,
+      newData: editedProject,
+    }));
     setIsUpLoad(true);
 
     setTimeout(() => {
@@ -109,15 +111,12 @@ export const EditProject: React.FC<Props> = ({ project }) => {
 
   const onUserKick = (user: User) => {
     setUserMemeers((current) => [...current].filter((member: User) => member.id !== user.id));
+    setProjectPositions((current) => [...current, user.speciality]);
   };
 
   const onPositionAdd = () => {
-    if (!projectPositions.includes(position)) {
-      setProjectPositions((current) => [...current, position]);
-      setIsAddPosition(false);
-    }
-
-    setPosition('');
+    setProjectPositions((current) => [...current, position]);
+    setIsAddPosition(false);
   };
 
   const onPositionCancel = () => {
@@ -137,11 +136,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const selectPositionField = {
     id: 2,
     type: 'text',
-    name: 'position',
     value: position,
-    message: positionMessage,
-    isDirty: isPositionDirty,
-    isSuccess: isPositionSuccess,
     text: 'Position',
     selections: socialities,
   };
@@ -266,9 +261,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
               <div className="project__addPosition">
                 <InputSelect
                   input={selectPositionField}
-                  onBlur={() => selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess)}
                   setValue={setPosition}
-                  setIsValueDirty={setIsPositionDirty}
                 />
 
                 <div className="project__addPosition_buttons">
