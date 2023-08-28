@@ -15,6 +15,7 @@ export const ProfileTools = () => {
   const onLogOut = () => {
     setUser({});
     setToken('');
+    navigation('/main');
   };
 
   return (

@@ -126,4 +126,13 @@
     right: 40px;
     top: 55px;
   }
+
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }

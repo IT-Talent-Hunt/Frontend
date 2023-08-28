@@ -36,7 +36,7 @@ import { CenceledApplyModal } from '../../Modals/CanceledApplyModal/CanceledAppl
 import { useLocalStorage } from 'usehooks-ts';
 import { User } from '../../Types/User';
 import { useSearchParams } from 'react-router-dom';
-// import { SearchInput } from '../../components/SearchInput/SearchInput';
+import { SearchInput } from '../../components/SearchInput/SearchInput';
 
 type Props = {
   isSideBar: boolean,
@@ -180,6 +180,7 @@ export const MainPage: FC<Props> = ({
 
   useEffect(() => {
     getSortedProjects();
+
   }, [filter === FiltersEnumTypes.NEW])
 
   // const currentProject = projects
@@ -235,15 +236,21 @@ export const MainPage: FC<Props> = ({
       </div>
 
       <div className={styles.grid__container}>
-        <div>
+        <div className={styles.wrapper}>
           <GridHeader
-            n={0}
+            n={filter === FiltersEnumTypes.ALL
+              || filter === FiltersEnumTypes.NEW
+                ? projects.length
+                : favorites.length
+            }
             position={position}
             filter={filter}
             setFilter={setFilter}
           />
 
-          {/* <SearchInput /> */}
+          {window.innerWidth < 640 && (
+            <SearchInput />
+          )}
         </div>
 
         {filter === 'all' && (

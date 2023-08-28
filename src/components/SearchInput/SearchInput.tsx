@@ -2,8 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 import { updateSeachParams } from '../../helpers/UpdateSearchParams';
-import crossImg from '../../svg/cross-icon.svg';
-import loop from '../../svg/search-loop--icon.svg';
+import crossBlack from '../../svg/cross--icon-black.png';
+import crossWhite from '../../svg/cross--icon-white.png';
+// import loop from '../../svg/search-loop--icon.svg';
+import loopBlack from '../../svg/loop--black.png';
+import loopWhite from '../../svg/loop--white.png';
 import './SearchInput.scss';
 import { IconButton } from '../IconButton/IconButton';
 
@@ -36,8 +39,16 @@ export const SearchInput = () => {
     appliedDebouncedQuery(value);
   };
 
-  useEffect(() => {
+  const updateSearchParams = (event?: React.FormEvent) => {
+    if (event) {
+      event.preventDefault();
+    }
+
     setSearchParams(updateSeachParams(searchParams, { queryParam: appliedQuery || null }));
+  };
+
+  useEffect(() => {
+    updateSearchParams();
   }, [appliedQuery]);
 
   const onQueryReset = () => {
@@ -46,23 +57,30 @@ export const SearchInput = () => {
   };
 
   return (
-    <div className="search">
-      <label htmlFor="" className="search__label">
+    <form method="GET" className="search" onSubmit={(event) => updateSearchParams(event)}>
+      <label htmlFor="search" className="search__label">
         <input
+          id="search"
           className={classNames('search__input', { 'search__input-move': isMove })}
-          placeholder="Try 'Coffee shop project'..."
+          placeholder="Project name..."
           value={query}
           onChange={(event) => updateQuery(event)}
         />
       </label>
 
-      {!query.length ? (
-        <IconButton svg={loop} onClick={() => setIsMove(!isMove)} />
-      ) : (
-        <div className="search__cross">
-          <IconButton svg={crossImg} onClick={onQueryReset} />
-        </div>
-      )}
-    </div>
+      <div className="search__button">
+        {!query.length ? (
+          <IconButton
+            svg={window.innerWidth < 640 ? loopBlack : loopWhite}
+            onClick={() => setIsMove(!isMove)}
+          />
+        ) : (
+          <IconButton
+            svg={window.innerWidth < 640 ? crossBlack : crossWhite}
+            onClick={onQueryReset}
+          />
+        )}
+      </div>
+    </form>
   );
 };

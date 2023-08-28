@@ -86,7 +86,7 @@ export const App: React.FC = () => {
     // console.log(projects);
 
     if (projectId && projects) {
-      const editProject = projects.find((project) => project.id === projectId);
+      const editProject = projects.find((project: ProjectCardProps) => project.id === projectId);
 
       if (editProject) {
         setToEditProject(editProject);

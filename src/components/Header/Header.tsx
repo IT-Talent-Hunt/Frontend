@@ -8,7 +8,7 @@ import { Logo } from '../Logo/Logo';
 
 import { User } from '../../Types/User';
 import { PageNavLink } from '../PageNavLink/PageNavLink';
-// import { SearchInput } from '../SearchInput/SearchInput';
+import { SearchInput } from '../SearchInput/SearchInput';
 import { TransparentButton } from '../Buttons/TransparentButton/TransparentButton';
 import { ProfileTools } from '../ProfileTools/ProfileTools';
 import { IconButton } from '../IconButton/IconButton';
@@ -49,38 +49,43 @@ export const Header: FC<Props> = ({ isSideBar, setIsSideBar }) => {
         </div>
       </div>
 
-      {user.email ? (
-        <div className={styles.controls}>
-          {/* <SearchInput /> */}
+      <div className={styles.wrapper}>
+        {window.innerWidth > 640 && (
+          <SearchInput />
+        )}
 
-          <button
-            type="button"
-            className={styles.create_button}
-            onClick={() => navigation('createProject')}
-          >
-            Create
-          </button>
+        {user.email ? (
+          <div className={styles.controls}>
 
-          <div className={styles.actions}>
-            <div className={styles.shell}>
-              <PageNavLink to="" img={bell} />
+            <button
+              type="button"
+              className={styles.create_button}
+              onClick={() => navigation('createProject')}
+            >
+              Create
+            </button>
+
+            <div className={styles.actions}>
+              <div className={styles.shell}>
+                <PageNavLink to="" img={bell} />
+              </div>
+
+              <div className={styles.shell}>
+                <PageNavLink img={profile} onClick={() => setIsTools(!isTools)} />
+              </div>
             </div>
 
-            <div className={styles.shell}>
-              <PageNavLink img={profile} onClick={() => setIsTools(!isTools)} />
-            </div>
+            {isTools && (
+              <div className={styles.tools}>
+                <ProfileTools />
+              </div>
+            )}
+
           </div>
-
-          {isTools && (
-            <div className={styles.tools}>
-              <ProfileTools />
-            </div>
-          )}
-
-        </div>
-      ) : (
-        <TransparentButton title="Sign In" onClick={() => navigation('/signIn')} />
-      )}
+        ) : (
+          <TransparentButton title="Sign In" onClick={() => navigation('/signIn')} />
+        )}
+      </div>
     </div>
   );
 };
