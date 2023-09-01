@@ -30,7 +30,13 @@ type Props = {
   onFavorite: (value: string) => void,
 };
 
-export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject, onApply, onFavorite }) => {
+export const ProjectCard: FC<Props> = ({
+  project,
+  onClick,
+  setEditProject,
+  onApply,
+  onFavorite,
+}) => {
   const {
     id,
     name,
@@ -45,9 +51,8 @@ export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject, onApp
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
   const isOwner = currentUser?.id === ownerId;
-  // const isApplied = project.teamResponseDto.requiredSpecialities.includes(currentUser?.speciality!);
   const isApplied = userResponseDtos.some((member) => member.id === currentUser?.id);
-  const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
+  // const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
 
   const formatedData = formatDate(creationDate);
 
@@ -91,9 +96,9 @@ export const ProjectCard: FC<Props> = ({ project, onClick, setEditProject, onApp
             <ProjectCardButton
               title="Apply"
               onClick={(event) => onApply(event, project)}
-              isDisabled={!isApplied && noSpecialityHas}
+              isDisabled={!isApplied}
             />
-        
+
             {isApplied && (
               <Icon icon={success} />
             )}

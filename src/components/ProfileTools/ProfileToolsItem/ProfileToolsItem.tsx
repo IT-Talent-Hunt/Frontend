@@ -1,17 +1,25 @@
+import { NavLink, useLocation } from 'react-router-dom';
 import { ProfileTool } from '../../../Types/ProfileTool';
 
 import '../ProfileTools.scss';
 
 type Props = {
   tool: ProfileTool,
-  onClick: Function,
+  onClick: () => void,
 };
 
-export const ProfileToolsItem: React.FC<Props> = ({ tool, onClick }) => {
-  const { title, img } = tool;
+export const ProfileToolsItem: React.FC<Props> = ({ tool, onClick = () => {} }) => {
+  const location = useLocation();
+  const { title, img, to } = tool;
 
   return (
-    <button type="button" onClick={() => onClick()}>
+    <NavLink
+      to={{
+        pathname: `/${to}`,
+        search: location.search,
+      }}
+      onClick={() => onClick()}
+    >
       <li className="profileTools__item">
         <div
           style={{ backgroundImage: `url('${img}')` }}
@@ -20,6 +28,6 @@ export const ProfileToolsItem: React.FC<Props> = ({ tool, onClick }) => {
 
         <span className="profileTools__item-title">{title}</span>
       </li>
-    </button>
+    </NavLink>
   );
 };

@@ -1,0 +1,33 @@
+@import '../../../helpers/helpers.scss';
+
+.paginationItem {
+    cursor: pointer;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    color: $color-grey--dark;
+    font-size: 10px;
+    border-radius: 5px;
+    
+    background-color: #eee;
+    transition: all ease-in-out 0.2s;
+  
+    @include tablet() {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+      border-radius: 5px;
+    }
+  
+    @include desktop() {
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+    }
+
+    &--active {
+      background-color: $color-purple;
+      color: #fff;
+    }
+}

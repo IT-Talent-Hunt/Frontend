@@ -1,7 +1,7 @@
 import { deleteData, getData, putData } from '../../../helpers/helpers';
 
-export const getFavorites = () => {
-  return getData('liked-carts/by-user');
+export const getFavorites = (url: string) => {
+  return getData(url);
 };
 
 export const addFavorite = (projectId: number) => {

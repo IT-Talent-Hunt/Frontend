@@ -77,7 +77,7 @@ export const Header: FC<Props> = ({ isSideBar, setIsSideBar }) => {
 
             {isTools && (
               <div className={styles.tools}>
-                <ProfileTools />
+                <ProfileTools onClose={() => setIsTools(false)} />
               </div>
             )}
 

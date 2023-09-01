@@ -4,10 +4,12 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styles from './sideBar.module.scss';
 import { CheckBoxList } from '../CheckBoxList/CheckBoxList';
 import { RadioBtnList } from '../RadioBtnList/RadioBtnList';
 import { FilterByList } from '../FilterByList/FilterByList';
+import { updateSeachParams } from '../../helpers/UpdateSearchParams';
 
 type Props = {
   position: string,
@@ -26,18 +28,22 @@ export const SideBar: FC<Props> = ({
   teamSize,
   setTeamSize,
 }) => {
-  // const [positions, setPositions] = useState<string[]>([]);
-  // const [statuses, setStatuses] = useState<string>('');
-  const [technologies, setTechnologies] = useState<string[]>([]);
-  // const [teamSize, setTeamSize] = useState('4');
-  const [displayProjects, setDisplayProjects] = useState('16');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const perPage = searchParams.get('perPage') || '4';
   const preMadePositions = ['Front-end developer', 'Back-end developer', 'Full-stack developer', 'DevOps', 'QA', 'Project Manager', 'UI/UX Designer'];
   const preMadeStatuses = ['Recruitment', 'In progress', 'Finished'];
-  const preMadeTechnologies = ['TypeScript', 'Java', 'C#', 'Python', 'Assembly', 'Figma', 'HTML/CSS'];
   const teamSizes = ['2', '3', '4', '5', '6+'];
-  const displayProjectsArr = ['8', '16', '24', '32'];
+  const displayProjectsArr = ['4', '8', '16', '24', '32'];
 
   const [allFilters, setAllFilters] = useState<string[]>([]);
+
+  const pageReset = () => {
+    setSearchParams(updateSeachParams(searchParams, { page: null }));
+  };
+
+  const setDisplayProjects = (value: string | null) => {
+    setSearchParams(updateSeachParams(searchParams, { perPage: value }));
+  };
 
   const onFilterHandler = (val: string) => {
     if (val.includes('members')) {
@@ -54,11 +60,12 @@ export const SideBar: FC<Props> = ({
   const handleCheckbox = useCallback((evt: React.ChangeEvent<HTMLInputElement>, stateType: 'position' | 'status' | 'technologies') => {
     const val = evt.target.name;
 
+    pageReset();
+
     if (stateType === 'position') {
       setAllFilters((current) => [...current].filter((el) => !preMadePositions.includes(el)));
 
       if (allFilters.includes(val)) {
-        // setAllFilters((current) => [...current].filter((el) => el !== val));
         setPosition('');
       } else {
         setPosition(val);
@@ -72,12 +79,6 @@ export const SideBar: FC<Props> = ({
       } else {
         setStatus(val);
       }
-    } else if (stateType === 'technologies') {
-      if (technologies.includes(val)) {
-        setTechnologies(technologies.filter((el) => el !== val));
-      } else {
-        setTechnologies([...technologies, val]);
-      }
     }
 
     if (allFilters.includes(val)) {
@@ -85,14 +86,13 @@ export const SideBar: FC<Props> = ({
     } else {
       setAllFilters((current) => [...current, val]);
     }
-  }, [status, position, technologies]);
+  }, [status, position]);
 
   const handleClearAll = () => {
     setPosition('');
     setStatus('');
-    setTechnologies([]);
     setTeamSize('');
-    setDisplayProjects('16');
+    setDisplayProjects(null);
     setAllFilters([]);
   };
 
@@ -111,10 +111,10 @@ export const SideBar: FC<Props> = ({
     setAllFilters((current) => {
       return [
         ...current.filter((el) => !el.includes('displayed')),
-        `${displayProjects} displayed`,
+        `${perPage} displayed`,
       ];
     });
-  }, [displayProjects]);
+  }, [perPage]);
 
   return (
     <div className={styles.main}>
@@ -137,6 +137,7 @@ export const SideBar: FC<Props> = ({
           <FilterByList list={allFilters} onFilter={onFilterHandler} />
         )}
       </div>
+
       <CheckBoxList
         list={preMadePositions}
         callbackFn={handleCheckbox}
@@ -144,13 +145,7 @@ export const SideBar: FC<Props> = ({
         heading="Position"
         state={allFilters}
       />
-      <CheckBoxList
-        list={preMadeStatuses}
-        callbackFn={handleCheckbox}
-        stateType="status"
-        heading="Status"
-        state={allFilters}
-      />
+
       <RadioBtnList
         list={teamSizes}
         state={teamSize}
@@ -158,16 +153,18 @@ export const SideBar: FC<Props> = ({
         heading="Team size"
         groupName="team"
       />
+
       <CheckBoxList
-        list={preMadeTechnologies}
+        list={preMadeStatuses}
         callbackFn={handleCheckbox}
-        stateType="technologies"
-        heading="Technologies"
+        stateType="status"
+        heading="Status"
         state={allFilters}
       />
+
       <RadioBtnList
         list={displayProjectsArr}
-        state={displayProjects}
+        state={perPage}
         setState={setDisplayProjects}
         heading="Display projects"
         groupName="projects"

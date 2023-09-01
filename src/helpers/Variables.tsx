@@ -3,9 +3,24 @@ import liked from '../svg/heartEmpty.svg';
 import logOut from '../svg/log-out--icon.svg';
 
 export const profileTools = [
-  { id: 0, title: 'Profile', img: profile },
-  { id: 1, title: 'Saved', img: liked },
-  { id: 2, title: 'Log out', img: logOut },
+  {
+    id: 0,
+    title: 'Profile',
+    img: profile,
+    to: 'profile',
+  },
+  {
+    id: 1,
+    title: 'Saved',
+    img: liked,
+    to: 'saved',
+  },
+  {
+    id: 2,
+    title: 'Log out',
+    img: logOut,
+    to: 'main',
+  },
 ];
 
 export const socialities = [
@@ -44,3 +59,20 @@ export const communications = [
 ];
 
 export const projectStatuses = ['In progress', 'Finished', 'Recruitment'];
+
+export const professionsMap: Record<string, string> = {
+  'UI/UX Designer': 'UI_UX_DESIGNER',
+  'Front-end developer': 'FRONTEND_DEVELOPER',
+  'Back-end developer': 'BACKEND_DEVELOPER',
+  'Full-stack developer': 'FULLSTACK_DEVELOPER',
+  DevOps: 'DEVOPS',
+  'Project Manager': 'PROJECT_MANAGER',
+  QA: 'QA_ENGINEER',
+  Mentor: 'MENTOR',
+};
+
+export const statusesMap: Record<string, string> = {
+  Recruitment: 'RECRUITMENT',
+  'In progress': 'IN_PROGRESS',
+  Finished: 'FINISHED',
+};

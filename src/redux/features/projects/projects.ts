@@ -7,12 +7,14 @@ import { getProjects, addProject, editProject, applyToProject } from './api';
 
 type ProjectsType = {
   projects: ProjectCardProps[],
+  pages: number,
   loading: boolean,
   error: string | boolean,
 };
 
 const initialState: ProjectsType = {
   projects: [],
+  pages: 0,
   loading: false,
   error: false,
 };
@@ -65,8 +67,9 @@ export const projectsSlice = createSlice({
       `;
     });
     builder.addCase(init.fulfilled,
-      (state: ProjectsType, actions: any) => {
-        state.projects = actions.payload;
+      (state: ProjectsType, action: any) => {
+        state.projects = action.payload.projectResponseDtos;
+        state.pages = action.payload.totalPage;
         state.loading = false;
         state.error = false;
       });

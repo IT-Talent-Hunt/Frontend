@@ -96,7 +96,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       } else {
         setIsEmailSucces(false);
         setIsEmailDirty(true);
-        setEmailMessage('The email address you provided is already in use. Please choose a different email.');
+        setEmailMessage('Invalid email or password');
       }
     } finally {
       setIsLoader(false);

@@ -6,11 +6,12 @@ import { Icon } from '../../Icon/Icon';
 import arrowBottom from '../../../svg/arrow-bottom.svg';
 import arrowTop from '../../../svg/arrow-top.svg';
 import './ContactItem.scss';
+import { ContactLink } from '../../ContactLink/ContactLink';
 
 type Props = {
   contact: Contact,
   restList: Contact[],
-  setContact: (value: Contact) => void,
+  setContact: (value: Contact, prev: string) => void,
   setContacts: Function,
   isEdit: boolean
 };
@@ -78,7 +79,7 @@ export const ContactItem: React.FC<Props> = ({
               <button
                 key={rest.platform}
                 type="button"
-                onClick={() => setContact(rest)}
+                onClick={() => setContact(rest, contact.platform)}
                 className="contactItem__rest_button"
               >
                 <li key={rest.platform} className="contactItem__rest_item">
@@ -106,26 +107,7 @@ export const ContactItem: React.FC<Props> = ({
           />
         </label>
       ) : (
-        <>
-          {url ? (
-            <a
-              href={
-                platform === 'Email'
-                  ? `mailto:${url}`
-                  : platform === 'Telegram'
-                    ? `https://t.me/${url}/`
-                    : url
-              }
-              target="_blank"
-              rel="noreferrer"
-              className="contactItem_link"
-            >
-              <span>{platform === 'Telegram' ? `@${url}` : url}</span>
-            </a>
-          ) : (
-            <span className="contactItem_link">{placeholder}</span>
-          )}
-        </>
+        <ContactLink platform={platform} url={url} placeholder={placeholder} />
       )}
     </li>
   );

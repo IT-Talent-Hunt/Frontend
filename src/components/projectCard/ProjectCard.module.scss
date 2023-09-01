@@ -10,6 +10,13 @@
 
   background-color: #fff;
   border-radius: 10px;
+  position: relative;
+
+  @include tablet() {
+
+  }
+  height: 100%;
+  position: relative;
 }
 
 .heading {
@@ -66,9 +73,6 @@
   align-items: center;
 
   margin-top: 20px;
-
-  // position: relative;
-  // top: -10px;
 
 }
 

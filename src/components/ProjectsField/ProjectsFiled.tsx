@@ -7,6 +7,7 @@ import { Error } from '../Error/Error';
 import { LoaderBig } from '../Loader/LoaderBig';
 import { ProjectCard } from '../projectCard/ProjectCard';
 import './ProjectsField.scss';
+import { Pagination } from '../Pagination/Pagination';
 
 type Props = {
   projects: ProjectCardProps[],
@@ -16,6 +17,8 @@ type Props = {
   setEditProject: (event: React.MouseEvent, projectId: number | undefined) => void,
   onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   onFavorite: (value: string) => void,
+  pages: number,
+
 };
 
 export const ProjectsField: React.FC<Props> = ({
@@ -26,6 +29,7 @@ export const ProjectsField: React.FC<Props> = ({
   setEditProject,
   onApply,
   onFavorite,
+  pages,
 }) => {
   return (
     <div className="projectsField">
@@ -38,18 +42,24 @@ export const ProjectsField: React.FC<Props> = ({
           ) : (
             <>
               {projects.length && !error && !loader ? (
-                <ul className="projectsField__wrapper">
-                  {projects.map((project) => (
-                    <ProjectCard
-                      key={project.id}
-                      project={project}
-                      onClick={onCardClick}
-                      setEditProject={setEditProject}
-                      onApply={onApply}
-                      onFavorite={onFavorite}
-                    />
-                  ))}
-                </ul>
+                <div className="projectsField__container">
+                  <ul className="projectsField__list">
+                    {projects.map((project) => (
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        onClick={onCardClick}
+                        setEditProject={setEditProject}
+                        onApply={onApply}
+                        onFavorite={onFavorite}
+                      />
+                    ))}
+                  </ul>
+
+                  {pages > 1 && (
+                    <Pagination pages={pages} />
+                  )}
+                </div>
               ) : (
                 <div>
                   <Empty />

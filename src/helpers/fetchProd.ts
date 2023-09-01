@@ -38,8 +38,18 @@ function request<T>(
   return fetch(`${BASE_URL}/${url}`, options)
     .then(response => {
       if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.setItem('tokenId', '""');
+          localStorage.setItem('user', '{}');
+          localStorage.setItem('isTokenValid', 'false');
+        }
+
         throw new Error(`${response.status} - ${response.statusText}`);
       }
+
+      /* eslint-disable */
+      console.log(response.status, response);
+
 
       return response.json();
     });

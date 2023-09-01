@@ -1,3 +1,5 @@
+import { Contact } from './Contact';
+
 export interface Role {
   roleName: string,
 }
@@ -12,4 +14,7 @@ export interface User {
   registrationDate: string,
   roles: Role[],
   speciality: string,
+  socialLinks: Contact[],
+  description: string,
+  skills: string,
 }

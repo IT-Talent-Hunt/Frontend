@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+import { NavLink } from 'react-router-dom';
 import { IconButton } from '../../IconButton/IconButton';
 import profile from '../../../svg/profile.svg';
 import './ProjectCardMemberItem.scss';
@@ -10,7 +13,9 @@ type Props = {
 export const ProjectCardMemberItem: React.FC<Props> = ({ member }) => {
   return (
     <li className={`projectMember projectMember-${member.id}`}>
-      <IconButton svg={profile} />
+      <NavLink to={`/profile/${member.id}`}>
+        <IconButton svg={profile} />
+      </NavLink>
     </li>
   );
 };

@@ -7,7 +7,9 @@ import {
   Navigate,
   Route,
   Routes,
+  useMatch,
   useNavigate,
+  useParams,
 } from 'react-router-dom';
 // import classNames from 'classnames';
 import { Header } from './components/Header/Header';
@@ -27,6 +29,8 @@ import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { ProjectCardProps } from './Types/ProjectCardProps';
 import { useLocalStorage } from 'usehooks-ts';
 import { User } from './Types/User';
+import { SavedPage } from './pages/Saved/SavedPage';
+import { getData } from './helpers/helpers';
 
 // import { useAppSelector } from './redux/hooks';
 
@@ -36,6 +40,7 @@ export const App: React.FC = () => {
 
   const { projects } = useAppSelector(state => state.projects);
   const [user] = useLocalStorage<User | null>('user', null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -49,6 +54,20 @@ export const App: React.FC = () => {
 
   const [cenceledMessage, setCenceledMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
+
+  const match = useMatch('/profile/:userId');
+  const userId = match?.params.userId;
+
+  const getUser = async(userId: string) => {
+    if (userId) {
+      await getData(`users/${userId}`)
+      .then((res: any) => setSelectedUser(res));
+    }
+  }
+
+  useEffect(() => {
+    getUser(userId!);
+  }, [userId])
 
   const handleCardClick = useCallback((project: ProjectCardProps) => {
     setIsModal(true);
@@ -145,23 +164,49 @@ export const App: React.FC = () => {
                   cardClick={handleCardClick}
                   currentProject={currentProject}
                   onProjectModalClose={onProjectModalClose}
+  
                 />
               }
             />
             <Route path="createProject" element={<ProjectPage />} />
-            <Route path="profile" element={
+            <Route path="profile">
+            <Route index element={
               <ProfilePage
+                user={user!}
                 onApply={applyProject}
                 onFavorite={onCanceledFavorite}
                 onProjectModalClose={onProjectModalClose}
               />
             } />
+
+              {selectedUser && (
+                <Route path=":userId" element={
+              
+                  <ProfilePage
+                    user={selectedUser!}
+                    onApply={applyProject}
+                    onFavorite={onCanceledFavorite}
+                    onProjectModalClose={onProjectModalClose}
+                    />
+                } />
+              )}
+            </Route>
             <Route path="edit_project" element={<EditProject project={toEditProject!} />} />
             <Route path="signIn" element={<SignInPage />} />
             <Route path="recovery" element={<PasswordRecovery />} />
             <Route path="recoveryComplete" element={<RecoveryComplete />} />
             <Route path="profileCreate" element={<CreateProfile />} />
             <Route path="signUp" element={<SignUp />} />
+            <Route path="saved"
+              element={
+                <SavedPage
+                  onCardClick={handleCardClick}
+                  setEditProject={selectEditProject}
+                  onApply={applyProject}
+                  onFavorite={onCanceledFavorite}
+                />
+              }
+            />
           </Routes>
         </main>
         {/* { isSignedIn && (

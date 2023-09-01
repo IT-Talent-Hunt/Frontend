@@ -2,7 +2,7 @@
 
 .projectComunacation {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 10px;
 
   color: #495057;
@@ -10,7 +10,7 @@
 
   &__communication {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 5px;
   }
 

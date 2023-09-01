@@ -4,7 +4,11 @@ import { ProfileToolsItem } from './ProfileToolsItem/ProfileToolsItem';
 import { profileTools } from '../../helpers/Variables';
 import './ProfileTools.scss';
 
-export const ProfileTools = () => {
+type Props = {
+  onClose: () => void,
+};
+
+export const ProfileTools: React.FC<Props> = ({ onClose }) => {
   const navigation = useNavigate();
   const [user, setUser] = useLocalStorage('user', {});
   const [token, setToken] = useLocalStorage('tokenId', '');
@@ -20,9 +24,15 @@ export const ProfileTools = () => {
 
   return (
     <ul className="profileTools">
-      <ProfileToolsItem tool={profileTools[0]} onClick={() => navigation('/profile')} />
-      <ProfileToolsItem tool={profileTools[1]} onClick={() => navigation('/saved')} />
-      <ProfileToolsItem tool={profileTools[2]} onClick={onLogOut} />
+      <ProfileToolsItem tool={profileTools[0]} onClick={onClose} />
+      <ProfileToolsItem tool={profileTools[1]} onClick={onClose} />
+      <ProfileToolsItem
+        tool={profileTools[2]}
+        onClick={() => {
+          onLogOut();
+          onClose();
+        }}
+      />
     </ul>
   );
 };

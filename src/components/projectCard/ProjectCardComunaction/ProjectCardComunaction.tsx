@@ -1,5 +1,6 @@
 import './ProjectCardComunaction.scss';
 import { Communication } from '../../../Types/ProjectCardProps';
+import { ContactLink } from '../../ContactLink/ContactLink';
 
 type Props = {
   comunication: Communication,
@@ -15,14 +16,7 @@ export const ProjectCardComunaction: React.FC<Props> = ({ comunication }) => {
         <span className="projectComunacation__app">{`${name}:`}</span>
       </div>
 
-      <a
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-        className="projectComunacation__link"
-      >
-        {link}
-      </a>
+      <ContactLink platform={name} url={link} />
     </div>
   );
 };

@@ -23,27 +23,31 @@ import { Error } from '../Error/Error';
 import { Success } from '../Success/Success';
 import { Empty } from '../Empty/Empty';
 import { ShineMessage } from '../ShineMessage/ShineMessage';
+import { User } from '../../Types/User';
+import { NavLink } from 'react-router-dom';
 // import { patchData } from '../../helpers/helpers';
 
 type Props = {
+  user: User
   onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   onFavorite: (value: string) => void,
   onProjectModalClose: () => void,
 }
 
 export const ProfilePage: React.FC<Props> = ({
+  user,
   onApply,
   onFavorite,
   onProjectModalClose,
 }) => {
   const { isModal, setIsModal } = useContext(ModalContext);
   const [projectModal, setProjectModal] = useState<ProjectCardProps | null>(null);
-  const [user, setUser] = useLocalStorage<any>('user', {});
+  const [currentUser, setCurrentUser] = useLocalStorage<User | null>('user', null);
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const [userSkills, setUserSkills] = useState<string>(user.skills);
-  const [userAbout, setUserAbout] = useState(user.description);
+  const [userSkills, setUserSkills] = useState<string>(user.skills) || '';
+  const [userAbout, setUserAbout] = useState(user.description) || '';
   const [userContacts, setUserContacts] = useState([...user.socialLinks]);
 
   const [userOwnedProjects, setUserOwneProjects] = useState<ProjectCardProps[]>([]);
@@ -76,9 +80,9 @@ export const ProfilePage: React.FC<Props> = ({
         socialLinks: userContacts,
       };
 
-      const updatedUser = await putData(`users/${userId}`, chagedUserKeys)
+      const updatedUser: any = await putData(`users/${userId}`, chagedUserKeys)
 
-      setUser(updatedUser);
+      setCurrentUser(updatedUser);
       setIsSuccesUpdate("The requested updates to the user's information have been applied without any issues. The user's data has been successfully modified in the system.\nThank you for using our services!");
 
       setTimeout(() => {
@@ -133,7 +137,9 @@ export const ProfilePage: React.FC<Props> = ({
             <BackTo />
           )}
 
-          <IconButton svg={pen} onClick={() => setIsEdit((current) => !current)} />
+          {currentUser?.id === user.id && (
+            <IconButton svg={pen} onClick={() => setIsEdit((current) => !current)} />
+          )}
         </div>
         {isSuccessUpdate && (
           <ShineMessage>
@@ -154,14 +160,28 @@ export const ProfilePage: React.FC<Props> = ({
             </div>
           </div>
 
-          <p className="profile__name">
-            Hi,
-            <strong>{` ${user.firstName} ${user.lastName}!`}</strong>
-          </p>
-          <strong className="profile__position">{user.speciality}</strong>
+          <div className="profile__wrapper">
+            <div>
+              <p className="profile__name">
+                Hi,
+                <strong>{` ${user.firstName} ${user.lastName}!`}</strong>
+              </p>
+              <strong className="profile__position">{user.speciality}</strong>
+            </div>
+
+            {currentUser?.id === user.id && (
+              <NavLink
+                to='/profileCreate'
+                className="profile__wrapper-edit"
+              >
+                <IconButton svg={pen} />
+              </NavLink>
+            )}
+
+          </div>
         </div>
 
-        <form action="post" onSubmit={(event) => userDataUpdate(user.id, event)}>
+        <form action="post" onSubmit={(event) => userDataUpdate(user.id!, event)}>
           <div
             className={!isEdit ? `profile__field`: `profile__field-reverse`}
           >

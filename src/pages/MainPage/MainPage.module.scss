@@ -5,12 +5,13 @@
   display: flex;
   // justify-content: center;
   gap: 20px;
-  background-color: #F6F6F6;
+  // background-color: #F6F6F6;
 
-  min-height: 100vh;
+  // min-height: 100vh;
 
   // padding: 32px 64px;
   padding: 10px;
+  min-height: 100vh;
   position: relative;
 
 
@@ -56,26 +57,29 @@
 
   @include desktop() {
     gap: 24px;
+
+    height: max-content;
   }
 }
 
-.grid__wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+// .grid__wrapper {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 10px;
+//   position: relative;
 
-  @include tablet() {
-    display: grid;
-    grid-template-columns: repeat($grid-columns, 1fr);
-    grid-template-rows: repeat($grid-rows, 1fr);
-    grid-gap: $grid-gap;
+//   @include tablet() {
+//     display: grid;
+//     grid-template-columns: repeat($grid-columns, 1fr);
+//     grid-template-rows: repeat($grid-rows, 1fr);
+//     grid-gap: $grid-gap;
     
-    // Add additional styling if needed
-    // For example, to center the items within each cell
-    align-items: center;
-    justify-items: center;
-  }
-}
+//     // Add additional styling if needed
+//     // For example, to center the items within each cell
+//     align-items: center;
+//     justify-items: center;
+//   }
+// }
 
 .wrapper {
   display: flex;

@@ -12,22 +12,12 @@ import classNames from 'classnames';
 import styles from './MainPage.module.scss';
 import { SideBar } from '../../components/SideBar/SideBar';
 import { GridHeader } from '../../components/GridHeader/GridHeader';
-// import { ProjectCard } from '../../components/projectCard/ProjectCard';
 import { ModalContext } from '../../Providers/ModalProvider';
 import { ProjectModal } from '../../Modals/ProjectModal/ProjectModal';
 import { Modal } from '../../components/Modal/Modal';
-// import { getData } from '../../helpers/helpers';
-// import { ProjectCardProps } from '../../Types/ProjectCardProps';
-// import { Empty } from '../../components/Empty/Empty';
-// import { Error } from '../../components/Error/Error';
-// import { LoaderBig } from '../../components/Loader/LoaderBig';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-// import { init } from '../../redux/features/projects/projects';
 import * as projectsActions from '../../redux/features/projects/projects';
 import * as favoritesActions from '../../redux/features/favorites/favorites';
-// import { getData } from '../../helpers/helpers';
-// import { ProjectCardProps } from '../../Types/ProjectCardProps';
-// import { deleteData } from '../../helpers/helpers';
 import { ProjectsField } from '../../components/ProjectsField/ProjectsFiled';
 import { FiltersEnumTypes } from '../../Types/FilterEnumTypes';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
@@ -37,6 +27,9 @@ import { useLocalStorage } from 'usehooks-ts';
 import { User } from '../../Types/User';
 import { useSearchParams } from 'react-router-dom';
 import { SearchInput } from '../../components/SearchInput/SearchInput';
+import { Pagination } from '../../components/Pagination/Pagination';
+import { updateSeachParams } from '../../helpers/UpdateSearchParams';
+import { generateSpecialitiesLink } from '../../helpers/helpers';
 
 type Props = {
   isSideBar: boolean,
@@ -69,6 +62,13 @@ export const MainPage: FC<Props> = ({
   currentProject,
   onProjectModalClose,
 }) => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('queryParam') || '';
+  const page = searchParams.get('page') || '1';
+  const perPage = searchParams.get('perPage') || '4';
+
+  const [isTokenValid, setIsTokenValid] = useLocalStorage('isTokenValid', true);
+
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
   const [position, setPosition] = useState<string>('');
@@ -78,115 +78,46 @@ export const MainPage: FC<Props> = ({
 
   const { isModal, setIsModal } = useContext(ModalContext);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('queryParam');
-
   const dispatch = useAppDispatch();
-  const { projects, loading, error } = useAppSelector(state => state.projects);
-  const { favorites, favoritesLoading, favoritesError } = useAppSelector(state => state.favorites);
+  const { projects, loading, error, pages } = useAppSelector(state => state.projects);
+  const { favorites, favoritesLoading, favoritesError, favoritesPages } = useAppSelector(state => state.favorites);
 
-  function generateSpecialitiesLink(position?: string, teamSize?: string, status?: string): string {
-    let link = 'projects/search';
-
-    const professionsMap: Record<string, string> = {
-      'UI/UX Designer': 'UI_UX_DESIGNER',
-      'Front-end developer': 'FRONTEND_DEVELOPER',
-      'Back-end developer': 'BACKEND_DEVELOPER',
-      'Full-stack developer': 'FULLSTACK_DEVELOPER',
-      DevOps: 'DEVOPS',
-      'Project Manager': 'PROJECT_MANAGER',
-      QA: 'QA_ENGINEER',
-      Mentor: 'MENTOR',
-    };
-
-    const statusesMap: Record<string, string> = {
-      Recruitment: 'RECRUITMENT',
-      'In progress': 'IN_PROGRESS',
-      Finished: 'FINISHED',
-    };
-
-    if (position) {
-      const professionCode = professionsMap[position];
-
-      if (professionCode) {
-        link += `?specialities=${professionCode}`;
-      }
-    }
-
-    if (teamSize) {
-      link += `${position ? '&' : '?'}teamSize=${teamSize}`;
-    }
-
-    if (status && status !== 'All') {
-      const statusCode = statusesMap[status];
-
-      link += `${(position || teamSize) ? '&' : '?'}status=${statusCode}`;
-    }
-
-    if (filter === FiltersEnumTypes.NEW) {
-      link += `${(position || teamSize || status) ? '&' : '?'}sortBy=creationDate:ASC`;
-    }
-
-    if (query) {
-      link += `${(position || teamSize || status) ? '&' : '?'}name=${query}`;
-    }
-
-    return link;
-  }
-
-  /* eslint-disable-next-line */
-  console.log(generateSpecialitiesLink(position, teamSize, status));
 
   const getProjects = () => {
-    // const professionsMap: Record<string, string> = {
-    //   'UI/UX designer': 'UI_UX_DESIGNER',
-    //   'Front-end developer': 'FRONTEND_DEVELOPER',
-    //   'Back-end developer': 'BACKEND_DEVELOPER',
-    //   DevOps: 'DEVOPS',
-    //   'Project manager': 'PROJECT_MANAGER',
-    //   'QA Engineer': 'QA_ENGINEER',
-    //   Mentor: 'MENTOR',
-    // };
-
-    // const url = `projects/search${position
-    //   ? `?specialities=${professionsMap[position]}`
-    //   : ''} ${status ? `&status=${status.toUpperCase()}` : ''}`;
-
-    const url = generateSpecialitiesLink(position, teamSize, status);
-
-    console.log('123');
+    const url = generateSpecialitiesLink('projects/search' ,position, teamSize, status, filter, query, perPage, page);
     dispatch(projectsActions.init(url));
   };
 
   const getSortedProjects = () => {
-    const url = generateSpecialitiesLink(position, teamSize, status);
+    const url = generateSpecialitiesLink('projects/search', position, teamSize, status, filter, query, perPage, page);
     dispatch(projectsActions.init(url));
   }
 
   const getFavoritesPojects = () => {
-    console.log('fav');
-    dispatch(favoritesActions.init());
+    if (filter === FiltersEnumTypes.FAVORITES) {
+      const url = generateSpecialitiesLink('liked-carts/by-user/projects/', position, teamSize, status, filter, query, perPage, page);
+      dispatch(favoritesActions.init(url));
+    };
   };
 
   useEffect(() => {
     getProjects();
-  }, [filter === FiltersEnumTypes.ALL, position, status, teamSize, query]);
+  }, [filter === FiltersEnumTypes.ALL, position, status, teamSize, query, perPage, page]);
 
   useEffect(() => {
     if (currentUser?.id) {
       getFavoritesPojects();
     }
-  }, [filter === FiltersEnumTypes.FAVORITES]);
+  }, [filter === FiltersEnumTypes.FAVORITES, page, perPage]);
+
+  // useEffect(() => {
+  //   pageReset();
+  // }, [filter, position, status, teamSize])
 
   useEffect(() => {
     getSortedProjects();
 
   }, [filter === FiltersEnumTypes.NEW])
-
-  // const currentProject = projects
-  //   .find((project) => project.id === currentId) || projects[1];
-
-  console.log(projects);
 
   return (
     <div className={classNames(styles.main, { [styles.main__block]: isModal })}>
@@ -216,6 +147,14 @@ export const MainPage: FC<Props> = ({
       {isModal && isFavoriteCanceled && cenceledMessage && (
         <Modal>
           <CenceledApplyModal message={cenceledMessage} onClose={setCenceledMessage} />
+        </Modal>
+      )}
+
+      {!isTokenValid && (
+        <Modal>
+          <CenceledApplyModal
+          message={'Your token has expired, please sign in.'}
+          onClose={() => setIsTokenValid(true)} />
         </Modal>
       )}
 
@@ -262,6 +201,7 @@ export const MainPage: FC<Props> = ({
             setEditProject={setEditProject}
             onApply={applyProject}
             onFavorite={onCanceledFavorite}
+            pages={pages}
           />
         )}
 
@@ -274,6 +214,7 @@ export const MainPage: FC<Props> = ({
             setEditProject={setEditProject}
             onApply={applyProject}
             onFavorite={onCanceledFavorite}
+            pages={pages}
           />
         )}
 
@@ -286,6 +227,7 @@ export const MainPage: FC<Props> = ({
             setEditProject={setEditProject}
             onApply={applyProject}
             onFavorite={onCanceledFavorite}
+            pages={favoritesPages}
           />
         )}
       </div>

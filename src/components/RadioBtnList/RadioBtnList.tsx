@@ -21,7 +21,7 @@ export const RadioBtnList: FC<Props> = ({
             <input
               type="radio"
               name={groupName}
-              id={el.toLowerCase()}
+              id={`${groupName}-${el.toLowerCase()}`}
               value={el.toLowerCase()}
               checked={state === el.toLowerCase()}
               onChange={(evt) => setState(evt.target.value)}

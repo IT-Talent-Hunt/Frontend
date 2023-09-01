@@ -7,17 +7,19 @@ import { addFavorite, getFavorites, removeFavorite } from './api';
 type FavoritesTypes = {
   favorites: ProjectCardProps[],
   favoritesLoading: boolean,
+  favoritesPages: number,
   favoritesError: boolean | string,
 };
 
 const initialState: FavoritesTypes = {
   favorites: [],
   favoritesLoading: false,
+  favoritesPages: 0,
   favoritesError: false,
 };
 
-export const init = createAsyncThunk('favorites/fetch', () => {
-  return getFavorites();
+export const init = createAsyncThunk('favorites/fetch', (url: string) => {
+  return getFavorites(url);
 });
 
 export const push = createAsyncThunk('favorites/add', (projectId: number) => {
@@ -57,6 +59,7 @@ export const favoritesSlice = createSlice({
 
     builder.addCase(init.fulfilled, (state: FavoritesTypes, action: PayloadAction<any>) => {
       state.favorites = action.payload.projectResponseDtos;
+      state.favoritesPages = action.payload.totalPage;
       state.favoritesLoading = false;
     });
   },

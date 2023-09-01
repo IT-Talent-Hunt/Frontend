@@ -42,7 +42,7 @@ export const ProjectModal: React.FC<Props> = ({
     socialLink,
   } = project;
 
-  const { userResponseDtos, maxMembers, requiredSpecialities } = teamResponseDto;
+  const { userResponseDtos, maxMembers } = teamResponseDto;
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
   const projectOwner = userResponseDtos
@@ -51,7 +51,7 @@ export const ProjectModal: React.FC<Props> = ({
 
   const isOwner = currentUser?.id === ownerId;
   const isApplied = userResponseDtos.some((member) => member.id === currentUser?.id);
-  const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
+  // const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
 
   // const selectedSocialLink = socialLinks.filter((socialLink) => socialLink.url.length > 0)[0];
 
@@ -106,7 +106,7 @@ export const ProjectModal: React.FC<Props> = ({
               <ProjectCardButton
                 title="Apply"
                 onClick={(event) => onApply(event, project)}
-                isDisabled={!isApplied && noSpecialityHas}
+                isDisabled={!isApplied}
               />
 
               {isApplied && (

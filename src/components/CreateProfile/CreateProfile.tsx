@@ -14,19 +14,20 @@ import { patchData } from '../../helpers/helpers';
 import { socialities } from '../../helpers/Variables';
 
 export const CreateProfile = () => {
-  const [name, setName] = useState('');
+  const [user, setUser] = useLocalStorage<User | null>('user', null);
+
+  const [name, setName] = useState(user?.firstName ? user.firstName : '');
   const [isNameDirty, setIsNameDirty] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isNameSuccess, setIsNameSuccess] = useState(false);
 
-  const [surName, setSurName] = useState('');
+  const [surName, setSurName] = useState(user?.lastName ? user.lastName : '');
   const [isSurNameDirty, setIsSurNameDirty] = useState(false);
   const [surNameMessage, setSurNameMessage] = useState('');
   const [isSurNameSuccess, setIsSurNameSuccess] = useState(false);
 
-  const [position, setPosition] = useState('');
+  const [position, setPosition] = useState(user?.speciality ? user.speciality : '');
 
-  const [user, setUser] = useLocalStorage<User | any>('user', {});
   const navigation = useNavigate();
 
   // const visiblePosition = socialities
@@ -87,7 +88,7 @@ export const CreateProfile = () => {
     textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
     // selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
 
-    const updatedUser = await upLoadUserData(user.id);
+    const updatedUser: any = await upLoadUserData(user?.id!);
 
     setUser(updatedUser);
 

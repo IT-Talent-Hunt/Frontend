@@ -8,7 +8,7 @@ export const Logo = () => {
   return (
     <NavLink
       to={{
-        pathname: '/main',
+        pathname: '/',
         search: location.search,
       }}
     >

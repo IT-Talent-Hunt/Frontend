@@ -14,10 +14,10 @@ export const List: React.FC<Props> = ({ selections, onSelect, onHover = () => {}
         <button
           type="button"
           key={selectEl.id}
-          onClick={() => onSelect(selectEl.name)}
           className="inputSelect__item"
           onMouseOver={() => onHover(selectEl.name)}
-          onFocus={() => {}}
+          onClick={() => onSelect(selectEl.name)}
+          onFocus={() => onSelect(selectEl.name)}
         >
           <li>
             <span>

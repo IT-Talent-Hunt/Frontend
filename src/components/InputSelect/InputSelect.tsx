@@ -30,6 +30,7 @@ export const InputSelect: React.FC<Props> = ({
 
   const onPositionSelect = (selectName: string) => {
     setValue(selectName);
+    setIsSelected(false);
   };
 
   const onSelectHover = (selectName: string) => {
@@ -38,9 +39,7 @@ export const InputSelect: React.FC<Props> = ({
 
   return (
     <label
-      htmlFor={type}
       className={styles.label}
-      id={type}
     >
       <div className="inputSelect">
         <div>

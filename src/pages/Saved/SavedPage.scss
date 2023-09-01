@@ -1,0 +1,25 @@
+@import '../../helpers/helpers.scss';
+
+.saved {
+  min-height: 100vh;
+  padding: 0 10px;
+  margin: 0 auto;
+
+  @include tablet() {
+    padding: 0 20px;
+  }
+
+  @include desktop() {
+    width: 80%;
+  }
+
+  &__title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
+
+    @include tablet() {
+        font-size: 25px;
+    }
+  }
+}
