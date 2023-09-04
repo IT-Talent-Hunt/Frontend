@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PaginationItem } from './PaginationItem/PaginationItem';
 import { IconButton } from '../IconButton/IconButton';
-import doubleArrowLeft from '../../svg/double-arrow--left.png';
-import doubleArrowRight from '../../svg/double-arrow--right.png';
+import leftDark from '../../svg/arrow-left--dark.png';
+import leftLight from '../../svg/arrow-left--light.png';
+import rightDark from '../../svg/arrow-right--dark.png';
+import rightLight from '../../svg/arrow-right--light.png';
 import './Pagination.scss';
 import { updateSeachParams } from '../../helpers/UpdateSearchParams';
 
@@ -23,6 +25,9 @@ export const Pagination: React.FC<Props> = ({ pages }) => {
 
   const range = 3;
 
+  const isRightEnought = +currentPage >= pages;
+  const isLeftEnought = +currentPage <= 1;
+
   for (let i = startIndex; i < endIndex; i += 1) {
     pagesArray.push(i);
   }
@@ -32,13 +37,14 @@ export const Pagination: React.FC<Props> = ({ pages }) => {
 
     let newStartIndex = Math.max(currentPageNumber - Math.floor(range / 2), 0);
     let newEndIndex = Math.min(newStartIndex + range, pages);
-
+  
     setStartIndex(newStartIndex);
     setEndIndex(newEndIndex);
+
   }, [currentPage, pages]);
 
   const increase = () => {
-    if (+currentPage < pages) {
+    if (!isRightEnought) {
       setSearchParams(updateSeachParams(searchParams, { page: String(+currentPage + 1) }));
     }
   };
@@ -48,7 +54,7 @@ export const Pagination: React.FC<Props> = ({ pages }) => {
 
     let newStartIndex = Math.max(+currentPage + range, 0);
     let newEndIndex = Math.min(newStartIndex + range, pages);
-
+  
     setStartIndex(newStartIndex);
     setEndIndex(newEndIndex);
   }
@@ -65,7 +71,7 @@ export const Pagination: React.FC<Props> = ({ pages }) => {
   }
 
   const decrease = () => {
-    if (+currentPage > 1) {
+    if (!isLeftEnought) {
       setSearchParams(updateSeachParams(searchParams, { page: String(+currentPage - 1) }));
     }
   };
@@ -76,7 +82,7 @@ export const Pagination: React.FC<Props> = ({ pages }) => {
 
   return (
     <section className="pagination">
-      <IconButton svg={doubleArrowLeft} onClick={decrease} />
+      <IconButton svg={isLeftEnought ? leftLight :leftDark} onClick={decrease} />
       {startIndex > 0 && (
         <button onClick={onDecreaseMore}>...</button>
       )}
@@ -95,7 +101,7 @@ export const Pagination: React.FC<Props> = ({ pages }) => {
       {endIndex < pages && (
         <button onClick={onIncreaseMore}>...</button>
       )}
-      <IconButton svg={doubleArrowRight} onClick={increase} />
+      <IconButton svg={isRightEnought ? rightLight : rightDark} onClick={increase} />
     </section>
   );
 };

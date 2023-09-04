@@ -14,6 +14,7 @@ export const editProject = (projectId: number, teamId: number, data: ProjectCard
   return putData(`projects/${projectId}/teams/${teamId}`, data);
 };
 
-export const applyToProject = (teamId: number, userId: number) => {
-  return putData(`teams/${teamId}/${userId}`, null);
+export const applyToProject = (body: any) => {
+  return postData('requests/', body);
+  // return putData(`teams/${teamId}/${userId}`, null);
 };

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 // import { Outlet } from 'react-router-dom';
 import './App.scss';
 import {
@@ -31,12 +31,19 @@ import { useLocalStorage } from 'usehooks-ts';
 import { User } from './Types/User';
 import { SavedPage } from './pages/Saved/SavedPage';
 import { getData } from './helpers/helpers';
-
-// import { useAppSelector } from './redux/hooks';
+import { Messages } from './components/Messages/Messages';
+import SockJsClient from 'react-stomp';
+import { Modal } from './components/Modal/Modal';
+import { ProjectModal } from './Modals/ProjectModal/ProjectModal';
+import { SuccessApplyModal } from './Modals/SuccessApplyModal/SuccessApplyModal';
+import { CenceledApplyModal } from './Modals/CanceledApplyModal/CanceledApplyModal';
+import { LetterModal } from './Modals/LetterModal/LetterModal';
+import { LoaderBig } from './components/Loader/LoaderBig';
 
 export const App: React.FC = () => {
   const navigation = useNavigate();
   const [currentProject, setCurrentProject] = useState<ProjectCardProps | null>(null);
+  const [onApplyProject, setOnApplyProject] = useState<ProjectCardProps | null>(null);
 
   const { projects } = useAppSelector(state => state.projects);
   const [user] = useLocalStorage<User | null>('user', null);
@@ -51,6 +58,7 @@ export const App: React.FC = () => {
 
   const [isApplyCanceled, setIsApplyCanceled] = useState<boolean>(false);
   const [isFavoriteCanceled, setIsFavoriteCanceled] = useState<boolean>(false);
+  const [isCoverLetter, setIsCoverLetter] = useState<boolean>(false);
 
   const [cenceledMessage, setCenceledMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
@@ -58,8 +66,25 @@ export const App: React.FC = () => {
   const match = useMatch('/profile/:userId');
   const userId = match?.params.userId;
 
+  const [messages, setMessages] = useLocalStorage<any>('messages', []);
+  const [typedMessage, setTypedMessage] = useState('Kolya privet');
+  const [name, setName] = useState('DB');
+
+  const clientRef = useRef<any>(null);
+  const [isTokenValid, setIsTokenValid] = useLocalStorage('isTokenValid', true);
+
+  const sendMessage = (name: string, message: string) => {
+    if (clientRef.current) {
+      clientRef.current.sendMessage('/app/user-all', JSON.stringify({
+        name,
+        message,
+      }));
+    }
+  };
+
   const getUser = async(userId: string) => {
     if (userId) {
+      setIsModal(false);
       await getData(`users/${userId}`)
       .then((res: any) => setSelectedUser(res));
     }
@@ -75,8 +100,8 @@ export const App: React.FC = () => {
   }, []);
 
   const onSuccessApplied = (projectName: string) => {
-    setIsModal(true);
-    setSuccessMessage(`You have successfuly applied to the "${projectName}" project.`)
+    // setIsModal(true);
+    // setSuccessMessage(`You have successfuly applied to the "${projectName}" project.`)
   }
 
   const onCanceledApply = (projectName: string) => {
@@ -85,18 +110,25 @@ export const App: React.FC = () => {
 
     if (user && user.id) {
       setCenceledMessage(
-        `Unfortunately, you don't have needed specialty for the project "${projectName}".`,
+        `You cannot apply to the project because you don't have the required specialization.`,
       )
     } else {
-      setCenceledMessage(`You must sign in for apply to the "${projectName}" project.`);
+      setCenceledMessage(`You need to sign in before applying to the project.`);
     }
+  }
 
+  const onCanceledClose = () => {
+    setCenceledMessage('');
+    setIsApplyCanceled(false);
   }
 
   const onCanceledFavorite = (projectName: string) => {
     setIsModal(true);
     setIsFavoriteCanceled(true);
-    setCenceledMessage(`For a adding project "${projectName}", you mist sign in.`);
+    // setCenceledMessage(`For a adding project "${projectName}", you mist sign in.`);
+    setCenceledMessage(
+      "Sorry, the 'Add to Favorites' feature is only available to registered users. Please sign in.",
+    );
   }
 
   const selectEditProject = (event: React.MouseEvent, projectId: number | any) => {
@@ -119,13 +151,16 @@ export const App: React.FC = () => {
   const applyProject = (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => {
     event.stopPropagation();
     event.preventDefault();
+    setOnApplyProject(project);
 
     if (user && user.id) {
       const itPositionHas = project.teamResponseDto.requiredSpecialities.includes(user.speciality);
 
       if (itPositionHas) {
-        dispatch(projectActions.apply({ teamId: project.teamResponseDto.id, userId: user.id! }));
-        onSuccessApplied(project.name);
+        // dispatch(projectActions.apply({ teamId: project.teamResponseDto.id, userId: user.id! }));
+        // onSuccessApplied(project.name);
+        setIsCoverLetter(true);
+        setIsModal(true);
       } else {
         onCanceledApply(project.name);
       }
@@ -141,6 +176,48 @@ export const App: React.FC = () => {
 
   return (
       <div className="starter">
+        {isModal && currentProject && (
+          <Modal>
+            <ProjectModal
+              project={currentProject}
+              onApply={applyProject}
+              onFavorite={onCanceledFavorite}
+              onProjectModalClose={onProjectModalClose}
+            />
+          </Modal>
+        )}
+
+        {isModal && isCoverLetter && (
+          <Modal>
+            <LetterModal onSend={sendMessage} onClose={setIsCoverLetter} project={onApplyProject!} />
+          </Modal>
+        )}
+
+        {isModal && !isApplyCanceled && successMessage &&   (
+          <Modal>
+             <SuccessApplyModal message={successMessage} onClose={setSuccessMessage}/>
+          </Modal>
+        )}
+
+        {isModal && isApplyCanceled && cenceledMessage && (
+          <Modal>
+            <CenceledApplyModal message={cenceledMessage} onClose={onCanceledClose} />
+          </Modal>
+        )}
+
+        {isModal && isFavoriteCanceled && cenceledMessage && (
+          <Modal>
+            <CenceledApplyModal message={cenceledMessage} onClose={onCanceledClose} />
+          </Modal>
+        )}
+
+        {!isTokenValid && (
+          <Modal>
+            <CenceledApplyModal
+              message={'Your token has expired, please sign in.'}
+              onClose={() => setIsTokenValid(true)} />
+          </Modal>
+        )}
         <header>
           <Header isSideBar={isSideBar} setIsSideBar={setIsSideBar} />
         </header>
@@ -154,17 +231,8 @@ export const App: React.FC = () => {
                   isSideBar={isSideBar}
                   setEditProject={selectEditProject}
                   onCanceledFavorite={onCanceledFavorite}
-                  isApplyCanceled={isApplyCanceled}
-                  cenceledMessage={cenceledMessage}
-                  isFavoriteCanceled={isFavoriteCanceled}
                   applyProject={applyProject}
-                  successMessage={successMessage}
-                  setSuccessMessage={setSuccessMessage}
-                  setCenceledMessage={setCenceledMessage}
                   cardClick={handleCardClick}
-                  currentProject={currentProject}
-                  onProjectModalClose={onProjectModalClose}
-  
                 />
               }
             />
@@ -173,23 +241,20 @@ export const App: React.FC = () => {
             <Route index element={
               <ProfilePage
                 user={user!}
-                onApply={applyProject}
-                onFavorite={onCanceledFavorite}
-                onProjectModalClose={onProjectModalClose}
+                onCardClick={handleCardClick}
               />
             } />
 
-              {selectedUser && (
-                <Route path=":userId" element={
-              
-                  <ProfilePage
-                    user={selectedUser!}
-                    onApply={applyProject}
-                    onFavorite={onCanceledFavorite}
-                    onProjectModalClose={onProjectModalClose}
-                    />
-                } />
-              )}
+                {selectedUser && (
+                  <Route path=":userId"
+                    element={
+                     <ProfilePage
+                        user={selectedUser!}
+                        onCardClick={handleCardClick}
+                      />
+                    }
+                  />
+                )}
             </Route>
             <Route path="edit_project" element={<EditProject project={toEditProject!} />} />
             <Route path="signIn" element={<SignInPage />} />
@@ -197,6 +262,7 @@ export const App: React.FC = () => {
             <Route path="recoveryComplete" element={<RecoveryComplete />} />
             <Route path="profileCreate" element={<CreateProfile />} />
             <Route path="signUp" element={<SignUp />} />
+            <Route path="messages" element={<Messages />} />
             <Route path="saved"
               element={
                 <SavedPage
@@ -204,10 +270,29 @@ export const App: React.FC = () => {
                   setEditProject={selectEditProject}
                   onApply={applyProject}
                   onFavorite={onCanceledFavorite}
+                  applyProject={applyProject}
                 />
               }
             />
           </Routes>
+
+          <SockJsClient
+            url="https://potum.serveo.net/websocket-chat/"
+            topics={['/topic/user']}
+            onConnect={() => {
+              console.log('connected');
+            }}
+            onDisconnect={() => {
+              console.log('Disconnected');
+            }}
+            onMessage={(msg: any) => {
+              setMessages((current: any) => [...current, msg]);
+              console.log(messages);
+            }}
+            ref={(client: any) => {
+              clientRef.current = client;
+            }}
+          />
         </main>
         {/* { isSignedIn && (
           <footer>

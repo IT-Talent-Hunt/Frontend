@@ -6,21 +6,21 @@
   justify-content: flex-start;
   gap: 4px;
   
-  margin-top: 10px;
+  // margin-top: 10px;
   
-  font-size: 12px;
+  font-size: 10px;
 
   @include tablet() {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   @include desktop() {
-    font-size: 16px;
+    font-size: 14px;
   }
   
   &__icon {
     width: 16px;
      height: 16px;
-    background-image: url('../../../svg/users.svg');
+    background-image: url('../../../svg/users.png');
   }
 }

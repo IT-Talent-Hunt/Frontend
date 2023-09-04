@@ -30,21 +30,14 @@ import { SearchInput } from '../../components/SearchInput/SearchInput';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { updateSeachParams } from '../../helpers/UpdateSearchParams';
 import { generateSpecialitiesLink } from '../../helpers/helpers';
+// import { WebSocketService } from '../../helpers/websocket';
 
 type Props = {
   isSideBar: boolean,
   setEditProject: (evennt: React.MouseEvent, projectId: number | undefined) => void,
   onCanceledFavorite: (value: string) => void,
-  isApplyCanceled: boolean,
-  cenceledMessage: string,
-  isFavoriteCanceled: boolean,
   applyProject: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
-  successMessage: string,
-  setSuccessMessage: (value: string) => void,
-  setCenceledMessage: (value: string) => void,
   cardClick: (project: ProjectCardProps) => void,
-  currentProject: ProjectCardProps | null,
-  onProjectModalClose: () => void,
 };
 
 export const MainPage: FC<Props> = ({
@@ -52,22 +45,12 @@ export const MainPage: FC<Props> = ({
   setEditProject,
   onCanceledFavorite,
   applyProject,
-  isApplyCanceled,
-  cenceledMessage,
-  isFavoriteCanceled,
-  successMessage,
-  setSuccessMessage,
-  setCenceledMessage,
   cardClick,
-  currentProject,
-  onProjectModalClose,
 }) => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('queryParam') || '';
   const page = searchParams.get('page') || '1';
   const perPage = searchParams.get('perPage') || '4';
-
-  const [isTokenValid, setIsTokenValid] = useLocalStorage('isTokenValid', true);
 
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
@@ -116,48 +99,10 @@ export const MainPage: FC<Props> = ({
 
   useEffect(() => {
     getSortedProjects();
-
-  }, [filter === FiltersEnumTypes.NEW])
+  }, [filter === FiltersEnumTypes.NEW]);
 
   return (
     <div className={classNames(styles.main, { [styles.main__block]: isModal })}>
-      {isModal && currentProject && (
-        <Modal>
-          <ProjectModal
-            project={currentProject}
-            onApply={applyProject}
-            onFavorite={onCanceledFavorite}
-            onProjectModalClose={onProjectModalClose}
-          />
-        </Modal>
-      )}
-
-      {isModal && !isApplyCanceled && successMessage &&   (
-        <Modal>
-          <SuccessApplyModal message={successMessage} onClose={setSuccessMessage}/>
-        </Modal>
-      )}
-
-      {isModal && isApplyCanceled && cenceledMessage && (
-        <Modal>
-          <CenceledApplyModal message={cenceledMessage} onClose={setCenceledMessage} />
-        </Modal>
-      )}
-
-      {isModal && isFavoriteCanceled && cenceledMessage && (
-        <Modal>
-          <CenceledApplyModal message={cenceledMessage} onClose={setCenceledMessage} />
-        </Modal>
-      )}
-
-      {!isTokenValid && (
-        <Modal>
-          <CenceledApplyModal
-          message={'Your token has expired, please sign in.'}
-          onClose={() => setIsTokenValid(true)} />
-        </Modal>
-      )}
-
       <div
         className={classNames(
           styles.bar,

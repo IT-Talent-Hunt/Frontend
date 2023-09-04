@@ -35,10 +35,8 @@ async( data: { projectId: number, teamId: number, newData: ProjectCardProps | an
   return response.data;
 });
 
-export const apply = createAsyncThunk('project/apply', async(data: {teamId: number, userId: number}) => {
-  const response: any = await applyToProject(data.teamId, data.userId);
-
-  return response.data;
+export const apply = createAsyncThunk('project/apply', (data: any) => {
+  return applyToProject(data);
 })
 
 export const projectsSlice = createSlice({

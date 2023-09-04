@@ -6,14 +6,12 @@ import { BackTo } from '../BackTo/BackTo';
 import { IconButton } from '../IconButton/IconButton';
 import { ProfileTextField } from '../ProfileTextField/ProfileTextField';
 import { ProfileProject } from '../ProfileProject/ProfileProject';
-import { Modal } from '../Modal/Modal';
-import { ProjectModal } from '../../Modals/ProjectModal/ProjectModal';
 import { ModalContext } from '../../Providers/ModalProvider';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import pen from '../../svg/edit-pen--icon.svg';
-import profile from '../../svg/profile.svg';
+import profile from '../../svg/profile-black.png';
 import './ProfilePage.scss';
 import { CompleteReverseButton } from '../Buttons/CompleteReverseButton/CompleteReverseButton';
 import { ContactsList } from '../ContactsList/ContactsList';
@@ -25,23 +23,16 @@ import { Empty } from '../Empty/Empty';
 import { ShineMessage } from '../ShineMessage/ShineMessage';
 import { User } from '../../Types/User';
 import { NavLink } from 'react-router-dom';
-// import { patchData } from '../../helpers/helpers';
 
 type Props = {
   user: User
-  onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
-  onFavorite: (value: string) => void,
-  onProjectModalClose: () => void,
+  onCardClick: (value: ProjectCardProps) => void,
 }
 
 export const ProfilePage: React.FC<Props> = ({
   user,
-  onApply,
-  onFavorite,
-  onProjectModalClose,
+  onCardClick
 }) => {
-  const { isModal, setIsModal } = useContext(ModalContext);
-  const [projectModal, setProjectModal] = useState<ProjectCardProps | null>(null);
   const [currentUser, setCurrentUser] = useLocalStorage<User | null>('user', null);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -62,11 +53,6 @@ export const ProfilePage: React.FC<Props> = ({
 
   const [isSuccessUpdate, setIsSuccesUpdate] = useState('');
 
-  const onProjectHandler = (project: ProjectCardProps) => {
-    setProjectModal(project);
-    setIsModal(true);
-  };
-  
   const userDataUpdate = async(userId: number, event: React.FormEvent) => {
     event.preventDefault();
 
@@ -243,7 +229,7 @@ export const ProfilePage: React.FC<Props> = ({
                               <ProfileProject
                                 key={project.id}
                                 project={project}
-                                onClick={onProjectHandler}
+                                onClick={onCardClick}
                               />
                             ))}
                           </ul>
@@ -261,7 +247,7 @@ export const ProfilePage: React.FC<Props> = ({
                               <ProfileProject
                                 key={project.id}
                                 project={project}
-                                onClick={onProjectHandler}
+                                onClick={onCardClick}
                               />
                             ))}
                           </ul>
@@ -279,7 +265,7 @@ export const ProfilePage: React.FC<Props> = ({
                               <ProfileProject
                                 key={project.id}
                                 project={project}
-                                onClick={onProjectHandler}
+                                onClick={onCardClick}
                               />
                             ))}
                           </ul>
@@ -295,17 +281,6 @@ export const ProfilePage: React.FC<Props> = ({
           )}
         </form>
       </div>
-
-      {isModal && projectModal && (
-        <Modal>
-          <ProjectModal
-            project={projectModal}
-            onApply={onApply}
-            onFavorite={onFavorite}
-            onProjectModalClose={onProjectModalClose}
-          />
-        </Modal>
-      )}
     </section>
   );
 };

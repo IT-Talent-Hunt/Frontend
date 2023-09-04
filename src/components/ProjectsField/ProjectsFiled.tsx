@@ -31,6 +31,11 @@ export const ProjectsField: React.FC<Props> = ({
   onFavorite,
   pages,
 }) => {
+
+  if (!projects.length && !loader && !error) {
+    return <Empty />
+  }
+
   return (
     <div className="projectsField">
       {loader ? (
@@ -41,7 +46,7 @@ export const ProjectsField: React.FC<Props> = ({
             <Error message={error} />
           ) : (
             <>
-              {projects.length && !error && !loader ? (
+              {projects.length && !error && !loader && (
                 <div className="projectsField__container">
                   <ul className="projectsField__list">
                     {projects.map((project) => (
@@ -59,10 +64,6 @@ export const ProjectsField: React.FC<Props> = ({
                   {pages > 1 && (
                     <Pagination pages={pages} />
                   )}
-                </div>
-              ) : (
-                <div>
-                  <Empty />
                 </div>
               )}
             </>

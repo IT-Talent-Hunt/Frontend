@@ -1,4 +1,4 @@
-import profile from '../svg/profile.svg';
+import profile from '../svg/profile-black.png';
 import liked from '../svg/heartEmpty.svg';
 import logOut from '../svg/log-out--icon.svg';
 

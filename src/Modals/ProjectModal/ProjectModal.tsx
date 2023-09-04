@@ -18,6 +18,7 @@ import { User } from '../../Types/User';
 import { ProjectCardFavorite } from '../../components/projectCard/ProjectCardFavorite/ProjectCardFavorite';
 import success from '../../svg/success-icon.svg';
 import { Icon } from '../../components/Icon/Icon';
+import { ProjectCardSpecializationItem } from '../../components/projectCard/ProjectCardSpecializationItem/ProjectCardSpecializationItem';
 
 type Props = {
   project: ProjectCardProps,
@@ -42,7 +43,7 @@ export const ProjectModal: React.FC<Props> = ({
     socialLink,
   } = project;
 
-  const { userResponseDtos, maxMembers } = teamResponseDto;
+  const { userResponseDtos, maxMembers, requiredSpecialities } = teamResponseDto;
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
   const projectOwner = userResponseDtos
@@ -78,16 +79,33 @@ export const ProjectModal: React.FC<Props> = ({
       </div>
 
       <ProjectCardOwner owner={projectOwner} />
-      <ProjectCardMembers members={userResponseDtos.length} maxMembers={maxMembers} />
 
-      <ul className="projectModal__list">
-        {userResponseDtos.map((member) => (
-          <ProjectCardMemberItem
-            key={member.id}
-            member={member}
-          />
-        ))}
-      </ul>
+      <div className="projectModal__specialization">
+        <div>
+          <ProjectCardMembers members={userResponseDtos.length} maxMembers={maxMembers} />
+
+          <ul className="projectModal__list">
+            {userResponseDtos.map((member) => (
+              <ProjectCardMemberItem
+                key={member.id}
+                member={member}
+              />
+            ))}
+          </ul>
+        </div>
+
+        {!!requiredSpecialities.length && (
+          <div>
+            <h1 className="projectModal__specialization-title">Required specialties</h1>
+
+            <ul className="projectModal__list">
+              {requiredSpecialities.map((position) => (
+                <ProjectCardSpecializationItem key={position} position={position} />
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       <div className="projectModal__container">
         <h1 className="projectModal__title-sub">Description</h1>

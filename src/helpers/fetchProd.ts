@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // function wait(delay: number) {
 //   return new Promise(resolve => {
 //     setTimeout(resolve, delay);
@@ -6,6 +8,7 @@
 // const [token] = useLocalStorage<string>('tokenId', '');
 
 // }
+
 
 const BASE_URL = 'https://skill-swap-hub.onrender.com';
 // const token = localStorage.getItem('tokenId');

@@ -22,10 +22,6 @@
     gap: 12px;
   }
 
-  @include desktop() {
-    gap: 14px;
-  }
-
   &__ul {
     display: flex;
     flex-direction: column;
@@ -34,10 +30,7 @@
     @include tablet() {
       gap: 4px;
     }
-  
-    @include desktop() {
-      gap: 6px;
-    }
+
   }
   
   &__item {

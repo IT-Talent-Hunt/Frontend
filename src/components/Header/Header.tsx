@@ -2,8 +2,9 @@ import { FC, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import styles from './Header.module.scss';
-import bell from '../../svg/bell.svg';
-import profile from '../../svg/profile.svg';
+import bell from '../../svg/bell-white.png';
+// import profile from '../../svg/profile.svg';
+import profile from '../../svg/profile.png';
 import { Logo } from '../Logo/Logo';
 
 import { User } from '../../Types/User';
@@ -67,7 +68,7 @@ export const Header: FC<Props> = ({ isSideBar, setIsSideBar }) => {
 
             <div className={styles.actions}>
               <div className={styles.shell}>
-                <PageNavLink to="" img={bell} />
+                <PageNavLink to="messages" img={bell} />
               </div>
 
               <div className={styles.shell}>

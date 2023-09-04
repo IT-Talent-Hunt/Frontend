@@ -1,15 +1,19 @@
-import { useEffect } from 'react';
+/* eslint-disable */
+
+import { useContext, useEffect } from 'react';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { ProjectsField } from '../../components/ProjectsField/ProjectsFiled';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import * as favoritesActions from '../../redux/features/favorites/favorites';
 import './SavedPage.scss';
+import { ModalContext } from '../../Providers/ModalProvider';
 
 type Props = {
   onCardClick: (project: ProjectCardProps) => void,
   setEditProject: (event: React.MouseEvent, projectId: number | undefined) => void,
   onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   onFavorite: (value: string) => void,
+  applyProject: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
 };
 
 export const SavedPage: React.FC<Props> = ({
@@ -18,6 +22,7 @@ export const SavedPage: React.FC<Props> = ({
   onApply,
   onFavorite,
 }) => {
+  const { isModal, setIsModal } = useContext(ModalContext);
   const dispatch = useAppDispatch();
 
   const {

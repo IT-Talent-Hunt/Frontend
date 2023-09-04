@@ -86,7 +86,7 @@ export function generateSpecialitiesLink(
   }
 
   if (query) {
-    link += `${(position || teamSize || status) ? '&' : '?'}name=${query}`;
+    link += `${(position || teamSize || status || filter === FiltersEnumTypes.NEW) ? '&' : '?'}name=${query}`;
   }
 
   if (perPage) {

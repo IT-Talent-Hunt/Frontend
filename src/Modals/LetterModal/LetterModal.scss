@@ -1,10 +1,12 @@
 @import '../../helpers/helpers.scss';
 
-.successApply {
-  max-width: 80%;
+.letter {
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
+
+  width: 80%;
+  max-width: 500px;
 
   @include tablet() {
     padding: 15px;
@@ -17,6 +19,7 @@
   &__title {
     font-size: 16px;
     text-align: center;
+    margin-bottom: 5px;
 
     @include tablet() {
       font-size: 18px;
@@ -25,22 +28,11 @@
     @include desktop() {
       font-size: 20px;
     }
+  }
 
-    &_sub {
-      font-size: 10px;
-      margin: 10px 0;
-      max-width: 250px;
-
-      @include tablet() {
-        font-size: 12px;
-        margin: 15px 0;
-        max-width: 300px;
-      }
-  
-      @include desktop() {
-        font-size: 14px;
-        max-width: 400px;
-      }
-    }
+  &__buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 5px;
   }
 }

@@ -27,16 +27,19 @@
     }
 
     &_sub {
-      font-size: 12px;
+      font-size: 10px;
       margin: 10px 0;
+      max-width: 250px;
 
       @include tablet() {
-        font-size: 14px;
+        font-size: 12px;
         margin: 15px 0;
+        max-width: 250px;
       }
   
       @include desktop() {
-        font-size: 16px;
+        font-size: 14px;
+        max-width: 400px;
       }
     }
   }

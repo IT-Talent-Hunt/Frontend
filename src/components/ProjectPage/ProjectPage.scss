@@ -4,13 +4,15 @@
   display: block;
   padding: 10px;
   background: linear-gradient(#7b69ed, #fcffd7);
-  min-height: calc(100vh - 60px);
-
+  min-height: calc(100vh - 50px);
+  height: 100%;
+  // min-height: 100vh;
   display: flex;
   align-items: center;
 
   @include tablet() {
     padding: 30px;
+    min-height: calc(100vh - 60px);
   }
 
   @include desktop() {

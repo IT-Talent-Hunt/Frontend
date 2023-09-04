@@ -7,15 +7,17 @@
   
     text-align: start;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 10px;
     color: #495057;
+
+    height: max-content;
 
     @include tablet() {
       min-height: 40px;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     @include desktop() {
-      font-size: 16px;
+      font-size: 14px;
     }
   }

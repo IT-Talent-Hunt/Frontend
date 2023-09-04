@@ -6,7 +6,7 @@ import { CompleteButton } from '../../components/Buttons/CompleteButton/Complete
 
 type Props = {
   message: string,
-  onClose: (value: string) => void,
+  onClose: () => void,
 };
 
 export const CenceledApplyModal: React.FC<Props> = ({ message, onClose }) => {
@@ -14,7 +14,7 @@ export const CenceledApplyModal: React.FC<Props> = ({ message, onClose }) => {
   // const navigaton = useNavigate();
 
   const onBack = () => {
-    onClose('');
+    onClose();
     // setIsModal(false);
     // navigaton('/main');
   };

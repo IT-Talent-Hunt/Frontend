@@ -45,7 +45,38 @@ export const SideBar: FC<Props> = ({
     setSearchParams(updateSeachParams(searchParams, { perPage: value }));
   };
 
+  const filterHanlders = (stateType: string, value: any) => {
+    if (stateType === 'position') {
+      setAllFilters((current) => [...current].filter((el) => !preMadePositions.includes(el)));
+
+      if (allFilters.includes(value)) {
+        setPosition('');
+      } else {
+        setPosition(value);
+      }
+    } else if (stateType === 'status') {
+      setAllFilters((current) => [...current].filter((el) => !preMadeStatuses.includes(el)));
+
+      if (allFilters.includes(value)) {
+        setAllFilters((current) => [...current].filter((el) => el !== value));
+        setStatus('');
+      } else {
+        setStatus(value);
+      }
+    }
+  };
+
   const onFilterHandler = (val: string) => {
+    let valueStatus = '';
+
+    if (preMadePositions.includes(val)) {
+      valueStatus = 'position';
+    } else {
+      valueStatus = 'status';
+    }
+
+    filterHanlders(valueStatus, val);
+
     if (val.includes('members')) {
       setTeamSize('');
     }
@@ -62,24 +93,7 @@ export const SideBar: FC<Props> = ({
 
     pageReset();
 
-    if (stateType === 'position') {
-      setAllFilters((current) => [...current].filter((el) => !preMadePositions.includes(el)));
-
-      if (allFilters.includes(val)) {
-        setPosition('');
-      } else {
-        setPosition(val);
-      }
-    } else if (stateType === 'status') {
-      setAllFilters((current) => [...current].filter((el) => !preMadeStatuses.includes(el)));
-
-      if (allFilters.includes(val)) {
-        setAllFilters((current) => [...current].filter((el) => el !== val));
-        setStatus('');
-      } else {
-        setStatus(val);
-      }
-    }
+    filterHanlders(stateType, val);
 
     if (allFilters.includes(val)) {
       onFilterHandler(val);

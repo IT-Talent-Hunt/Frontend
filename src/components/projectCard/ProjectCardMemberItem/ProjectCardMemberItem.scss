@@ -1,30 +1,69 @@
+@import '../../../helpers/helpers.scss';
+
 .projectMember {
-  background-color: #ccc;
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
-  margin: -4px;
+  &__link {
+    background-color: #ccc;
+    border-radius: 50%;
 
-  transform: scale(.7);
+    margin: -4px;
 
-  &-1 {
-    background-color: #74C0FC;
+    width: 20px;
+    height: 20px;
 
-  }
+    @include tablet() {
+      width: 25px;
+      height: 25px;
+    }
+
+    @include desktop() {
+      width: 30px;
+      height: 30px;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
   
-  &-2 {
-    background-color: #E599F7;
+    transform: scale(.6);
+
+    // &-1 {
+    //   background-color: #74C0FC;
+  
+    // }
+    
+    // &-2 {
+    //   background-color: #E599F7;
+    // }
+  
+    // &-3 {
+    //   background-color: #63E6BE
+    //   ;
+    // }
+  
+    // &-4 {
+    //   background-color: #FFE066;
+    // }
+  
+    // &-5 {
+    //   background-color: blue;
+    // }
   }
 
-  &-3 {
-    background-color: #63E6BE
-    ;
-  }
+  &__position {
+    font-size: 8px;
+    font-weight: 500;
+    color: $color-grey--dark;
 
-  &-4 {
-    background-color: #FFE066;
-  }
+    @include tablet() {
+      font-size: 10px;
+    }
 
-  &-5 {
-    background-color: blue;
+    @include desktop() {
+      font-size: 12px;
+    }
   }
 }

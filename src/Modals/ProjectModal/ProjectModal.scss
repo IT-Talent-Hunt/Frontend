@@ -56,6 +56,8 @@
 
   &__list {
     display: flex;
+    flex-direction: column;
+    gap: 2px;
     margin-top: 10px;
   }
 
@@ -64,6 +66,37 @@
 
     >h2 {
       font-size: 20px;
+    }
+  }
+
+  &__specialization {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    width: 100%;
+
+    max-width: 200px;
+
+    @include tablet() {
+      max-width: 240px;
+    }
+
+    @include desktop() {
+      max-width: 300px;
+    }
+
+    &-title {
+      font-size: 10px;
+      font-weight: 300;
+
+      @include tablet() {
+        font-size: 12px;
+      }
+  
+      @include desktop() {
+        font-size: 14px;
+      }
     }
   }
 
