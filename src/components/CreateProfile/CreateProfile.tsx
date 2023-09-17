@@ -12,6 +12,8 @@ import { textValidation } from '../../helpers/validation';
 import { User } from '../../Types/User';
 import { patchData } from '../../helpers/helpers';
 import { socialities } from '../../helpers/Variables';
+import error from '../../svg/error-icon.svg';
+import { Icon } from '../Icon/Icon';
 
 export const CreateProfile = () => {
   const [user, setUser] = useLocalStorage<User | null>('user', null);
@@ -27,6 +29,9 @@ export const CreateProfile = () => {
   const [isSurNameSuccess, setIsSurNameSuccess] = useState(false);
 
   const [position, setPosition] = useState(user?.speciality ? user.speciality : '');
+
+  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const navigation = useNavigate();
 
@@ -69,16 +74,33 @@ export const CreateProfile = () => {
     selections: socialities,
   };
 
-  function upLoadUserData(userId: number) {
-    const chagedUserKeys = {
-      firstName: name,
-      lastName: surName,
-      speciality: position,
-    };
+  async function upLoadUserData(userId: number) {
+    setIsLoader(true);
 
-    return patchData(`users/${userId}`, chagedUserKeys)
-    /* eslint-disable-next-line */
-    .then((returnedUser) => returnedUser)
+    try {
+      const chagedUserKeys = {
+        firstName: name,
+        lastName: surName,
+        speciality: position,
+      };
+  
+      const returnedUser: any =  await patchData(`users/${userId}`, chagedUserKeys)
+      setUser(returnedUser);
+
+       
+    if (isValid) {
+      navigation('/profile');
+    }
+
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoader(false);
+
+      setTimeout(() => {
+        setIsError(false);
+      }, 4000);
+    }
   }
 
   const onSubmitHandler = async (event: React.FormEvent) => {
@@ -88,21 +110,23 @@ export const CreateProfile = () => {
     textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
     // selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
 
-    const updatedUser: any = await upLoadUserData(user?.id!);
-
-    setUser(updatedUser);
-
-    if (isValid) {
-      navigation('/signIn');
-    }
+    upLoadUserData(user?.id!);
   };
 
   return (
     <section className="profileCreate">
       <Container>
-
         <form method="GET" onSubmit={onSubmitHandler} className="profileCreate__shell">
           <h1 className="profileCreate__title">Profile</h1>
+
+          {isError && (
+            <div className="profileCreate__error">
+              <p className="profileCreate__error_message">An error was occured</p>
+
+              <Icon icon={error} />
+            </div>
+          )}
+
           <InputField
             input={nameFied}
             onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}
@@ -122,7 +146,7 @@ export const CreateProfile = () => {
             setValue={setPosition}
           />
 
-          <CompleteButton title="Sign up" isDisabled={isValid} />
+          <CompleteButton title="Sign up" isDisabled={isValid} isLoader={isLoader} />
         </form>
       </Container>
     </section>

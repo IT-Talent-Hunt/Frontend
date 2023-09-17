@@ -9,7 +9,10 @@ import './LetterModal.scss';
 import { User } from '../../Types/User';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
-import * as projectActions from '../../redux/features/projects/projects';
+import * as exportRequestsActions from '../../redux/features/requests/export/export';
+
+import error from '../../svg/error-icon.svg';
+import { Icon } from '../../components/Icon/Icon';
 
 type Props = {
   onSend: (name: string, messgae: string) => void,
@@ -19,7 +22,8 @@ type Props = {
 
 export const LetterModal: React.FC<Props> = ({ onSend, onClose, project }) => {
   const dispatch = useAppDispatch();
-  // const { projects } = useAppSelector(state => state.projects);
+  const { exportLoader, exportError } = useAppSelector(state => state.exportRequests);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [user] = useLocalStorage<User | null>('user', null);
   const [letter, setLetter] = useState<string>('');
@@ -31,12 +35,18 @@ export const LetterModal: React.FC<Props> = ({ onSend, onClose, project }) => {
       message: letter,
     }
 
-    dispatch(projectActions.apply(request));
+    dispatch(exportRequestsActions.send(request));
+    setIsLoaded(true);
   };
 
   return (
     <div className="letter">
       <h1 className="letter__title">Cover Letter</h1>
+      {exportError && isLoaded && (
+        <div className="letter__error">
+          <Icon icon={error} />
+        </div>
+      )}
 
       <ProfileInputField value={letter} setValue={setLetter} name="letter" />
 
@@ -47,6 +57,7 @@ export const LetterModal: React.FC<Props> = ({ onSend, onClose, project }) => {
           //   `${user?.firstName} ${user?.lastName}`, letter,
           // )}
           onClick={() => onApply(project)}
+          isLoader={exportLoader}
         />
         <CompleteReverseButton title="Cancel" onClick={() => onClose(false)} />
       </div>

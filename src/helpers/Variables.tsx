@@ -1,6 +1,7 @@
 import profile from '../svg/profile-black.png';
 import liked from '../svg/heartEmpty.svg';
 import logOut from '../svg/log-out--icon.svg';
+import requests from '../svg/requests.png';
 
 export const profileTools = [
   {
@@ -20,6 +21,13 @@ export const profileTools = [
     title: 'Log out',
     img: logOut,
     to: 'main',
+  },
+
+  {
+    id: 3,
+    title: 'Requests',
+    img: requests,
+    to: 'requests',
   },
 ];
 

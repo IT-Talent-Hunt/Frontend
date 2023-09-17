@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 // import { Outlet } from 'react-router-dom';
 import './App.scss';
@@ -39,6 +38,9 @@ import { SuccessApplyModal } from './Modals/SuccessApplyModal/SuccessApplyModal'
 import { CenceledApplyModal } from './Modals/CanceledApplyModal/CanceledApplyModal';
 import { LetterModal } from './Modals/LetterModal/LetterModal';
 import { LoaderBig } from './components/Loader/LoaderBig';
+import { RequestsPage } from './pages/RequestsPage/RequestsPage';
+import { NotFound } from './components/NotFound/NotFound';
+import { BASE_URL } from './helpers/fetchProd';
 
 export const App: React.FC = () => {
   const navigation = useNavigate();
@@ -47,7 +49,7 @@ export const App: React.FC = () => {
 
   const { projects } = useAppSelector(state => state.projects);
   const [user] = useLocalStorage<User | null>('user', null);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -63,8 +65,8 @@ export const App: React.FC = () => {
   const [cenceledMessage, setCenceledMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
 
-  const match = useMatch('/profile/:userId');
-  const userId = match?.params.userId;
+  // const match = useMatch('/profile/:userId');
+  // const userId = match?.params.userId;
 
   const [messages, setMessages] = useLocalStorage<any>('messages', []);
   const [typedMessage, setTypedMessage] = useState('Kolya privet');
@@ -82,17 +84,17 @@ export const App: React.FC = () => {
     }
   };
 
-  const getUser = async(userId: string) => {
-    if (userId) {
-      setIsModal(false);
-      await getData(`users/${userId}`)
-      .then((res: any) => setSelectedUser(res));
-    }
-  }
+  // const getUser = async(userId: string) => {
+  //   if (userId) {
+  //     setIsModal(false);
+  //     await getData(`users/${userId}`)
+  //     .then((res: any) => setSelectedUser(res));
+  //   }
+  // }
 
-  useEffect(() => {
-    getUser(userId!);
-  }, [userId])
+  // useEffect(() => {
+  //   getUser(userId!);
+  // }, [userId])
 
   const handleCardClick = useCallback((project: ProjectCardProps) => {
     setIsModal(true);
@@ -174,6 +176,8 @@ export const App: React.FC = () => {
     setCurrentProject(null);
   }
 
+  console.log('messages', messages);
+
   return (
       <div className="starter">
         {isModal && currentProject && (
@@ -238,23 +242,21 @@ export const App: React.FC = () => {
             />
             <Route path="createProject" element={<ProjectPage />} />
             <Route path="profile">
-            <Route index element={
-              <ProfilePage
-                user={user!}
-                onCardClick={handleCardClick}
-              />
-            } />
+            <Route index
+              element={
+                <ProfilePage
+                  onCardClick={handleCardClick}
+                />
+              }
+            />
 
-                {selectedUser && (
-                  <Route path=":userId"
-                    element={
-                     <ProfilePage
-                        user={selectedUser!}
-                        onCardClick={handleCardClick}
-                      />
-                    }
+              <Route path=":userId"
+                element={
+                  <ProfilePage
+                    onCardClick={handleCardClick}
                   />
-                )}
+                }
+              />
             </Route>
             <Route path="edit_project" element={<EditProject project={toEditProject!} />} />
             <Route path="signIn" element={<SignInPage />} />
@@ -263,6 +265,14 @@ export const App: React.FC = () => {
             <Route path="profileCreate" element={<CreateProfile />} />
             <Route path="signUp" element={<SignUp />} />
             <Route path="messages" element={<Messages />} />
+            <Route path="requests" element={<RequestsPage cardClick={handleCardClick}/>} />
+
+            <Route path="requests">
+              <Route index element={<RequestsPage cardClick={handleCardClick}/>} />
+              <Route path=":requestId" element={<RequestsPage cardClick={handleCardClick}/>} />
+
+            </Route>
+
             <Route path="saved"
               element={
                 <SavedPage
@@ -274,11 +284,12 @@ export const App: React.FC = () => {
                 />
               }
             />
+            <Route path="*" element={<Navigate to='/' replace />} />
           </Routes>
 
           <SockJsClient
-            url="https://potum.serveo.net/websocket-chat/"
-            topics={['/topic/user']}
+            url={`${BASE_URL}/websocket-chat/`}
+            topics={['/topic/user', `/user/${user?.email}/queue/notification`]}
             onConnect={() => {
               console.log('connected');
             }}
@@ -286,8 +297,8 @@ export const App: React.FC = () => {
               console.log('Disconnected');
             }}
             onMessage={(msg: any) => {
-              setMessages((current: any) => [...current, msg]);
-              console.log(messages);
+              setMessages((current: any): any => [...current, msg]);
+              console.log(messages, msg);
             }}
             ref={(client: any) => {
               clientRef.current = client;

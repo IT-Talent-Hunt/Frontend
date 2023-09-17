@@ -1,9 +1,12 @@
 @import '../../../helpers/helpers.scss';
 
 .projectDescription {
-    min-height: 20px;
+    min-height: 40px;
     padding-right: 8px;
     margin-top: 10px;
+    // background-color: $color-grey--lite;
+    // padding: 2px;
+    // border-radius: 5px;
   
     text-align: start;
     font-weight: 400;

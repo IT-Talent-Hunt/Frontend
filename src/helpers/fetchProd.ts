@@ -1,17 +1,7 @@
 /* eslint-disable */
 
-// function wait(delay: number) {
-//   return new Promise(resolve => {
-//     setTimeout(resolve, delay);
-//   });
-
-// const [token] = useLocalStorage<string>('tokenId', '');
-
-// }
-
-
-const BASE_URL = 'https://skill-swap-hub.onrender.com';
-// const token = localStorage.getItem('tokenId');
+export const BASE_URL = 'https://skill-swap-hub.onrender.com';
+// export const BASE_URL = 'https://auris.serveo.net';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 
@@ -50,7 +40,7 @@ function request<T>(
         throw new Error(`${response.status} - ${response.statusText}`);
       }
 
-      /* eslint-disable */
+      /* eslint-disable-next-line */
       console.log(response.status, response);
 
 

@@ -4,6 +4,7 @@
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
+  position: relative;
 
   width: 80%;
   max-width: 500px;
@@ -28,6 +29,12 @@
     @include desktop() {
       font-size: 20px;
     }
+  }
+
+  &__error {
+    position: absolute;
+    right: 5px;
+    top: 5px;
   }
 
   &__buttons {

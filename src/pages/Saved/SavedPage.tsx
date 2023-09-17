@@ -34,6 +34,10 @@ export const SavedPage: React.FC<Props> = ({
 
   useEffect(() => {
     dispatch(favoritesActions.init('liked-carts/by-user/projects/'));
+
+      return () => {
+        dispatch(favoritesActions.clear());
+      }
   }, []);
 
   return (

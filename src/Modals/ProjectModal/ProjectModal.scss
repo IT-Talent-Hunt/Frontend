@@ -6,6 +6,7 @@
   width: 80%;
   max-width: 550px;
   border-radius: 10px;
+  position: relative;
 
   &__top {
     display: flex;
@@ -54,6 +55,11 @@
     }
   }
 
+  &__actions {
+    display: flex;
+    gap: 5px;
+  }
+
   &__list {
     display: flex;
     flex-direction: column;
@@ -67,6 +73,32 @@
     >h2 {
       font-size: 20px;
     }
+  }
+
+  &__member {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &-position {
+      font-size: 8px;
+      font-weight: 500;
+      color: $color-grey--dark;
+  
+      @include tablet() {
+        font-size: 10px;
+      }
+  
+      @include desktop() {
+        font-size: 12px;
+      }
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 
   &__specialization {

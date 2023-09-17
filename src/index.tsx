@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  HashRouter,
+  // HashRouter,
+  BrowserRouter,
 } from 'react-router-dom';
 import './index.scss';
 import { Provider } from 'react-redux';
@@ -21,11 +22,11 @@ import { ModalProvider } from './Providers/ModalProvider';
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <HashRouter>
+      <BrowserRouter>
         <ModalProvider>
           <App />
         </ModalProvider>
-      </HashRouter>
+      </BrowserRouter>
     </React.StrictMode>
   </Provider>,
   document.getElementById('root'),

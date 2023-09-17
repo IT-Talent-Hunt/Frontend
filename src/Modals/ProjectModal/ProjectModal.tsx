@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { ProjectCardStatus } from '../../components/projectCard/ProjectCardStatus/ProjectCardStatus';
@@ -13,12 +14,15 @@ import './ProjectModal.scss';
 import { IconButton } from '../../components/IconButton/IconButton';
 import { ProjectCardDate } from '../../components/projectCard/ProjectCardDate/ProjectCardDate';
 import { communications } from '../../helpers/Variables';
-import { formatDate } from '../../helpers/helpers';
+import { formatDate, getData } from '../../helpers/helpers';
 import { User } from '../../Types/User';
 import { ProjectCardFavorite } from '../../components/projectCard/ProjectCardFavorite/ProjectCardFavorite';
 import success from '../../svg/success-icon.svg';
 import { Icon } from '../../components/Icon/Icon';
 import { ProjectCardSpecializationItem } from '../../components/projectCard/ProjectCardSpecializationItem/ProjectCardSpecializationItem';
+import { Request } from '../../Types/Request';
+import { ProjectCardRequest } from '../../components/projectCard/ProjectCardRequest/ProjectCardRequest';
+import { LoaderSmall } from '../../components/Loader/LoaderSmall';
 
 type Props = {
   project: ProjectCardProps,
@@ -34,6 +38,7 @@ export const ProjectModal: React.FC<Props> = ({
   onProjectModalClose,
 }) => {
   const {
+    id,
     name,
     ownerId,
     status,
@@ -46,15 +51,16 @@ export const ProjectModal: React.FC<Props> = ({
   const { userResponseDtos, maxMembers, requiredSpecialities } = teamResponseDto;
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
+  const [projectRequests, setProjectRequests] = useState<Request[]>([]);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+
   const projectOwner = userResponseDtos
     .find((user) => user.id === ownerId)
     || userResponseDtos[0];
 
   const isOwner = currentUser?.id === ownerId;
   const isApplied = userResponseDtos.some((member) => member.id === currentUser?.id);
-  // const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
-
-  // const selectedSocialLink = socialLinks.filter((socialLink) => socialLink.url.length > 0)[0];
 
   const communication = communications
     .find((com) => com.name === socialLink.platform)
@@ -64,8 +70,28 @@ export const ProjectModal: React.FC<Props> = ({
 
   const formatedDate = formatDate(creationDate);
 
+  const loadRequests = async () => {
+    setIsLoader(true);
+
+    try {
+      const requests: any = await getData(`requests/by-project/${id}`);
+
+      setProjectRequests(requests);
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser?.id === ownerId) {
+      loadRequests();
+    }
+  }, []);
+
   /* eslint-disable-next-line */
-  console.log(communication);
+  console.log(projectRequests);
 
   return (
     <div className="projectModal">
@@ -75,7 +101,12 @@ export const ProjectModal: React.FC<Props> = ({
           <ProjectCardStatus status={status} />
         </div>
 
-        <IconButton svg={cross} onClick={onProjectModalClose} />
+        <div className="projectModal__actions">
+          {isLoader && (
+            <LoaderSmall />
+          )}
+          <IconButton svg={cross} onClick={onProjectModalClose} />
+        </div>
       </div>
 
       <ProjectCardOwner owner={projectOwner} />
@@ -86,10 +117,16 @@ export const ProjectModal: React.FC<Props> = ({
 
           <ul className="projectModal__list">
             {userResponseDtos.map((member) => (
-              <ProjectCardMemberItem
-                key={member.id}
-                member={member}
-              />
+              <li key={member.id} className="projectModal__member">
+                <ProjectCardMemberItem
+                  key={member.id}
+                  member={member}
+                />
+
+                <p className="projectModal__member-position">
+                  {member.speciality}
+                </p>
+              </li>
             ))}
           </ul>
         </div>
@@ -111,6 +148,18 @@ export const ProjectModal: React.FC<Props> = ({
         <h1 className="projectModal__title-sub">Description</h1>
         <ProjectCardDescriptions description={description} isModal={!!true} />
       </div>
+
+      {currentUser?.id === ownerId && !!projectRequests.length && !isError && (
+        <div className="projectModal__container">
+          <h1 className="projectModal__title-sub">Requests</h1>
+
+          <ul className="projectModal__list">
+            {projectRequests.map((request) => (
+              <ProjectCardRequest key={request.id} request={request} />
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="projectModal__container">
         <h1 className="projectModal__title-sub">Comunication</h1>

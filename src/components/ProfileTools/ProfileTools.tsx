@@ -26,6 +26,7 @@ export const ProfileTools: React.FC<Props> = ({ onClose }) => {
     <ul className="profileTools">
       <ProfileToolsItem tool={profileTools[0]} onClick={onClose} />
       <ProfileToolsItem tool={profileTools[1]} onClick={onClose} />
+      <ProfileToolsItem tool={profileTools[3]} onClick={onClose} />
       <ProfileToolsItem
         tool={profileTools[2]}
         onClick={() => {

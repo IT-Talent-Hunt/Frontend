@@ -1,7 +1,7 @@
 @import '../../helpers/helpers.scss';
 
 .profileCreate {
-
+  position: relative;
   &__title {
     font-size: 16px;
 
@@ -14,10 +14,26 @@
     }
   }
 
+  &__error {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    position: absolute;
+    right: 2px;
+    top: 2px;
+
+    &_message {
+      font-size: 12px;
+      font-family: 600;
+      color: red;
+    }
+  }
+
   &__shell {
     max-width: 400px;
     margin: 0 auto;
-    position: relative;
+    // position: relative;
 
     display: flex;
     flex-direction: column;

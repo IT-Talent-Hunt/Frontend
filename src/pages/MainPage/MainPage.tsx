@@ -101,6 +101,14 @@ export const MainPage: FC<Props> = ({
     getSortedProjects();
   }, [filter === FiltersEnumTypes.NEW]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(projectsActions.clear());
+      dispatch(favoritesActions.clear());
+      setIsModal(false);
+    }
+  }, [])
+
   return (
     <div className={classNames(styles.main, { [styles.main__block]: isModal })}>
       <div

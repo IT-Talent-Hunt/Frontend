@@ -49,19 +49,13 @@ function generateLightColor() {
   console.log(generateColorForId(String(member.id)));
 
   return (
-    <li className="projectMember">
-      <NavLink
-        to={`/profile/${member.id}`}
-        className={`projectMember__link projectMember__link-${member.id}`}
-        style={{backgroundColor: `${generateColorForId(String(member.id))}`}}
-      >
-        <Icon icon={profile} />
+    <NavLink
+      to={`/profile/${member.id}`}
+      className={`projectMember projectMember-${member.id}`}
+      style={{backgroundColor: `${generateColorForId(String(member.id))}`}}
+    >
+      <Icon icon={profile} />
 
-      </NavLink>
-
-      <p className="projectMember__position">
-        {member.speciality}
-      </p>
-    </li>
+    </NavLink>
   );
 };
