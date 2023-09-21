@@ -23,12 +23,16 @@ import { ProjectCardSpecializationItem } from '../../components/projectCard/Proj
 import { Request } from '../../Types/Request';
 import { ProjectCardRequest } from '../../components/projectCard/ProjectCardRequest/ProjectCardRequest';
 import { LoaderSmall } from '../../components/Loader/LoaderSmall';
+import edit from '../../svg/edit-pen--icon.svg';
+import remove from '../../svg/delete-icon--red.png';
 
 type Props = {
   project: ProjectCardProps,
   onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   onFavorite: (value: string) => void,
   onProjectModalClose: () => void,
+  setEditProject: (event: React.MouseEvent, projectId: number) => void,
+  removeHandler: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
 };
 
 export const ProjectModal: React.FC<Props> = ({
@@ -36,6 +40,8 @@ export const ProjectModal: React.FC<Props> = ({
   onApply,
   onFavorite,
   onProjectModalClose,
+  setEditProject,
+  removeHandler,
 }) => {
   const {
     id,
@@ -102,10 +108,28 @@ export const ProjectModal: React.FC<Props> = ({
         </div>
 
         <div className="projectModal__actions">
-          {isLoader && (
-            <LoaderSmall />
-          )}
-          <IconButton svg={cross} onClick={onProjectModalClose} />
+          <>
+            {isLoader ? (
+              <LoaderSmall />
+            ) : (
+              <>
+                {currentUser && isOwner && (
+                  <>
+                    <IconButton
+                      svg={edit}
+                      onClick={(event) => setEditProject(event, id)}
+                    />
+
+                    <div className="projectModal__remove">
+                      <IconButton svg={remove} onClick={(event) => removeHandler(event, project)} />
+                    </div>
+                  </>
+                )}
+
+                <IconButton svg={cross} onClick={onProjectModalClose} />
+              </>
+            )}
+          </>
         </div>
       </div>
 

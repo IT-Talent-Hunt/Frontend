@@ -24,7 +24,7 @@ export const ProjectPage = () => {
   const [isNameDirty, setIsNameDirty] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isNameSuccess, setIsNameSuccess] = useState(false);
-  const [user] = useLocalStorage<User | any>('user', {});
+  const [user] = useLocalStorage<User | null>('user', null);
 
   const [selectedPositions, setSelectedPositions] = useState<Select[]>([]);
   const preparetedPositions = selectedPositions.map((position) => position.name);
@@ -88,10 +88,10 @@ export const ProjectPage = () => {
   const loadNewProject = async () => {
     const newProject = {
       name,
-      ownerId: user.id,
+      ownerId: user?.id,
       description,
       teamRequestDto: { //
-        userIds: [user.id],
+        userIds: [user?.id],
         requiredSpecialities: preparetedPositions,
       },
       socialLink: currentContact,
@@ -100,10 +100,6 @@ export const ProjectPage = () => {
 
     await dispatch(projectsActions.push(newProject));
     setIsUpLoad(true);
-
-    setTimeout(() => {
-      setIsUpLoad(false);
-    }, 3900);
   };
 
   const isValid = name.length > 0

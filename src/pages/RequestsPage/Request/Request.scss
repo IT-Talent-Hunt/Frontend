@@ -113,4 +113,22 @@
             transform: scale(.3);
         }
     }
+
+    &__deleted {
+        min-width: 88px;
+        min-height: 74.5px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &_icon {
+          transform: scale(2.5);
+        }
+
+        @include tablet() {
+          min-width: 91px;
+          min-height: 95px;
+        }
+    }
 }

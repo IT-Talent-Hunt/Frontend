@@ -15,6 +15,7 @@ import { ProfileTools } from '../ProfileTools/ProfileTools';
 import { IconButton } from '../IconButton/IconButton';
 import cross from '../../svg/cross2.png';
 import filter from '../../svg/icon-filter.png';
+import { useAppSelector } from '../../redux/hooks';
 
 type Props = {
   isSideBar: boolean
@@ -24,7 +25,9 @@ type Props = {
 export const Header: FC<Props> = ({ isSideBar, setIsSideBar }) => {
   const navigation = useNavigate();
   const location = useLocation();
-  const [user] = useLocalStorage<User | any>('user', {});
+
+  const { notifications } = useAppSelector(state => state.notifications);
+  const [user] = useLocalStorage<User | null>('user', null);
 
   const [isTools, setIsTools] = useState(false);
 
@@ -55,19 +58,17 @@ export const Header: FC<Props> = ({ isSideBar, setIsSideBar }) => {
           <SearchInput />
         )}
 
-        {user.email ? (
+        {user?.email ? (
           <div className={styles.controls}>
 
-            <button
-              type="button"
-              className={styles.create_button}
-              onClick={() => navigation('createProject')}
-            >
-              Create
-            </button>
+            <TransparentButton title="Create" onClick={() => navigation('createProject')} />
 
             <div className={styles.actions}>
               <div className={styles.shell}>
+                {!!notifications.length && (
+                  <p className={styles.notification}>{notifications.length}</p>
+                )}
+
                 <PageNavLink to="messages" img={bell} />
               </div>
 

@@ -14,11 +14,11 @@ type Props = {
   error: boolean | string,
   loader: boolean,
   onCardClick: (project: ProjectCardProps) => void,
-  setEditProject: (event: React.MouseEvent, projectId: number | undefined) => void,
+  setEditProject: (event: React.MouseEvent, projectId: number) => void,
   onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   onFavorite: (value: string) => void,
   pages: number,
-
+  removeHandler: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
 };
 
 export const ProjectsField: React.FC<Props> = ({
@@ -30,11 +30,8 @@ export const ProjectsField: React.FC<Props> = ({
   onApply,
   onFavorite,
   pages,
+  removeHandler,
 }) => {
-
-  if (!projects.length && !loader && !error) {
-    return <Empty />
-  }
 
   return (
     <div className="projectsField">
@@ -46,7 +43,7 @@ export const ProjectsField: React.FC<Props> = ({
             <Error message={error} />
           ) : (
             <>
-              {projects.length && !error && !loader && (
+              {projects.length && !error && !loader ? (
                 <div className="projectsField__container">
                   <ul className="projectsField__list">
                     {projects.map((project) => (
@@ -57,6 +54,7 @@ export const ProjectsField: React.FC<Props> = ({
                         setEditProject={setEditProject}
                         onApply={onApply}
                         onFavorite={onFavorite}
+                        removeHandler={removeHandler}
                       />
                     ))}
                   </ul>
@@ -65,6 +63,8 @@ export const ProjectsField: React.FC<Props> = ({
                     <Pagination pages={pages} />
                   )}
                 </div>
+              ): (
+                <Empty />
               )}
             </>
           )}

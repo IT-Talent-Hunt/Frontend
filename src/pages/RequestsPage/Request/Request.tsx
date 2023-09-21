@@ -5,8 +5,8 @@ import { ProjectCardProps } from '../../../Types/ProjectCardProps';
 import { Request } from '../../../Types/Request';
 import { ProfileProject } from '../../../components/ProfileProject/ProfileProject';
 import { ProjectCardMemberItem } from '../../../components/projectCard/ProjectCardMemberItem/ProjectCardMemberItem';
-import { EditProjectButton } from '../../../components/EditProject/EditProjectButton/EditProjectButton';
-import { EditReverseButton } from '../../../components/EditProject/EditReverseButton/EditReverseButton';
+import { EditProjectButton } from '../../EditPage/EditProject/EditProjectButton/EditProjectButton';
+import { EditReverseButton } from '../../EditPage/EditProject/EditReverseButton/EditReverseButton';
 import { truncateText } from '../../../helpers/truncateText';
 import './Request.scss';
 import { Icon } from '../../../components/Icon/Icon';
@@ -23,6 +23,8 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import * as importActions from '../../../redux/features/requests/import/import';
 import { useMatch } from 'react-router-dom';
 import iconRight from '../../../svg/arrow-right--light.png'
+import deleted from '../../../svg/deleted.png';
+import remove from '../../../svg/delete-icon--red.png';
 
 
 type Props = {
@@ -65,7 +67,15 @@ export const ImportRequest: React.FC<Props> = ({
 
   return (
     <div className="request">
-      <ProfileProject project={projectResponseDto} onClick={cardClick} />
+      {projectResponseDto !== null ? (
+        <ProfileProject project={projectResponseDto} onClick={cardClick} />
+      ) : (
+        <div className="request__deleted">
+          <div className="request__deleted_icon">
+            <Icon icon={deleted} />
+          </div>
+        </div>
+      )}
 
       <div className="request__wrapper">
         <div className="request__shell">
@@ -138,9 +148,10 @@ export const ImportRequest: React.FC<Props> = ({
               <div className="request__status">
                 <Icon
                   icon={
-                    request.status === 'ACCEPTED'
-                      ? accepted : request.status === 'PENDING'
-                        ? pending : rejected
+                    projectResponseDto === null
+                    ? remove : request.status === 'ACCEPTED'
+                    ? accepted : request.status === 'PENDING'
+                    ? pending : rejected
                   }
                 />
               </div>

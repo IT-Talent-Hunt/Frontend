@@ -4,7 +4,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RequestMessage } from '../../../Types/RequestMessage';
 import { getMessages } from './api';
 
-type MessagesTypes = RequestMessage;
+export type MessagesTypes = RequestMessage;
 
 type Messages = {
   messages: MessagesTypes[],
@@ -49,6 +49,7 @@ export const messagesSlice = createSlice({
     });
     builder.addCase(init.fulfilled, (state: Messages, action: PayloadAction<any>) => {
       state.messages = action.payload;
+      state.messagesLoader = false;
     });
   },
 });

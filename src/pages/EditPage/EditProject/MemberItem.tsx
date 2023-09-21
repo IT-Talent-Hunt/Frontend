@@ -1,5 +1,5 @@
 import { useLocalStorage } from 'usehooks-ts';
-import { User } from '../../Types/User';
+import { User } from '../../../Types/User';
 import { EditProjectButton } from './EditProjectButton/EditProjectButton';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const MemberItem: React.FC<Props> = ({ user, onKick }) => {
-  const [currentUser] = useLocalStorage<any>('user', {});
+  const [currentUser] = useLocalStorage<User | null>('user', null);
   const { speciality, firstName, lastName } = user;
 
   return (
@@ -19,7 +19,7 @@ export const MemberItem: React.FC<Props> = ({ user, onKick }) => {
       <EditProjectButton
         title="Kick"
         onClick={() => onKick(user)}
-        isDisabled={currentUser.id !== user.id}
+        isDisabled={currentUser?.id !== user.id}
       />
     </li>
   );

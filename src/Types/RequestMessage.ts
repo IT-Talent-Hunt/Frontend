@@ -5,7 +5,7 @@ export interface RequestMessage {
   id: number,
   creationDate: string,
   message: string,
-  projectResponseDto: ProjectCardProps,
+  requestId: number,
   read: boolean,
   userResponseDto: User,
 }

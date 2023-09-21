@@ -1,4 +1,8 @@
-import { getData, postData, putData } from '../../../helpers/helpers';
+import {
+  getData,
+  postData,
+  putData,
+} from '../../../helpers/helpers';
 import { ProjectCardProps } from '../../../Types/ProjectCardProps';
 
 export const getProjects = (link: string) => {

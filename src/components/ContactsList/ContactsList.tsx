@@ -27,18 +27,37 @@ export const ContactsList: React.FC<Props> = ({ list, isEdit = false, setUserCon
     }));
   };
 
+  const wroteUserContact = list.filter((contact) => contact.url.length > 0);
+
   return (
     <ul className="contactsList">
-      {list.map((contact) => (
-        <ContactItem
-          key={contact.platform}
-          contact={contact}
-          restList={restContacts}
-          setContact={updateContact}
-          setContacts={setUserContacts}
-          isEdit={isEdit}
-        />
-      ))}
+      {isEdit ? (
+        <>
+          {list.map((contact) => (
+            <ContactItem
+              key={contact.platform}
+              contact={contact}
+              restList={restContacts}
+              setContact={updateContact}
+              setContacts={setUserContacts}
+              isEdit={isEdit}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          {wroteUserContact.map((contact) => (
+            <ContactItem
+              key={contact.platform}
+              contact={contact}
+              restList={restContacts}
+              setContact={updateContact}
+              setContacts={setUserContacts}
+              isEdit={isEdit}
+            />
+          ))}
+        </>
+      )}
     </ul>
   );
 };

@@ -137,4 +137,19 @@
 .icons {
   display: flex;
   flex-direction: row;
+  position: relative;
+}
+
+.remove {
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+
+  @include tablet() {
+    bottom: -25px;
+  }
+
+  @include desktop() {
+    bottom: -30px;
+  }
 }

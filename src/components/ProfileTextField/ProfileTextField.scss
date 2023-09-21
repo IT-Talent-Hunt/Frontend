@@ -3,9 +3,10 @@
 .profielTextField {
   box-sizing: border-box;
   display: block;
-  padding: 3px;
+  padding: 5px;
   border-radius: 5px;
   border: 1px solid $color-grey--lite;
+  background-color: $color-grey--lite;
   width: 100%;
 
   overflow: auto;

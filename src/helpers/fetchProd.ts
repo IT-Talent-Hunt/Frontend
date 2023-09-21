@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 export const BASE_URL = 'https://skill-swap-hub.onrender.com';
-// export const BASE_URL = 'https://auris.serveo.net';
+// export const BASE_URL =   'https://onero.serveo.net';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 

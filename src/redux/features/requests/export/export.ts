@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign, @typescript-eslint/no-unused-vars */
-
-import { useNavigate } from 'react-router-dom';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Request } from '../../../../Types/Request';
 import { getExportRequests, sendRequest } from './api';
@@ -65,9 +63,7 @@ export const exportRequestsSlice = createSlice({
       state.exportLoader = true;
     });
 
-    builder.addCase(send.rejected, (state: exportRequestsType, action: PayloadAction<any>) => {
-      /* eslint-disable-next-line */
-      console.log(action);
+    builder.addCase(send.rejected, (state: exportRequestsType) => {
       state.exportError = true;
       state.exportLoader = false;
     });
@@ -75,13 +71,6 @@ export const exportRequestsSlice = createSlice({
     builder.addCase(send.fulfilled, (state: exportRequestsType) => {
       state.exportLoader = false;
       state.exportError = false;
-
-      window.location.pathname = '/requests';
-
-      // const navigate = useNavigate();
-
-      // navigate('/requests');
-      // Navigate
     });
   },
 });

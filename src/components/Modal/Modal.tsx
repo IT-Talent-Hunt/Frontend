@@ -1,9 +1,15 @@
-import { useEffect, useMemo } from 'react';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
+import React, {
+  ReactNode,
+  useEffect,
+  useMemo,
+} from 'react';
 import { createPortal } from 'react-dom';
 import './Modal.scss';
 
 type Props = {
-  children: any,
+  children: ReactNode,
   setModal?: (value: boolean) => void,
   modal?: boolean,
 };
@@ -28,7 +34,7 @@ export const Modal: React.FC<Props> = ({ children }) => {
   });
 
   return createPortal(
-    <div className="modal">
+    <div className="modal" onClick={(event) => event.stopPropagation()}>
       {children}
     </div>,
     modalElement,

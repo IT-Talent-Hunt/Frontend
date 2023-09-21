@@ -2,7 +2,7 @@
 @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable */
 import {
-  FC
+  FC, useContext, useState
 } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
@@ -20,7 +20,9 @@ import edit from '../../svg/edit-pen--icon.svg';
 import { User } from '../../Types/User';
 import { ProjectCardFavorite } from './ProjectCardFavorite/ProjectCardFavorite';
 import success from '../../svg/success-icon.svg';
+import remove from '../../svg/delete-icon--red.png';
 import { Icon } from '../Icon/Icon';
+import { ModalContext } from '../../Providers/ModalProvider';
 
 type Props = {
   project: ProjectCardProps,
@@ -28,6 +30,7 @@ type Props = {
   setEditProject: (event: React.MouseEvent, projectId: number) => void,
   onApply: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   onFavorite: (value: string) => void,
+  removeHandler: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
 };
 
 export const ProjectCard: FC<Props> = ({
@@ -36,6 +39,7 @@ export const ProjectCard: FC<Props> = ({
   setEditProject,
   onApply,
   onFavorite,
+  removeHandler,
 }) => {
   const {
     id,
@@ -79,6 +83,13 @@ export const ProjectCard: FC<Props> = ({
           )}
 
           <ProjectCardFavorite project={project} onFavorite={onFavorite}/>
+
+          {currentUser && isOwner && (
+            <div className={styles.remove}>
+              <IconButton svg={remove} onClick={(event) => removeHandler(event, project)} />
+            </div>
+          )}
+
         </div>
       </div>
       

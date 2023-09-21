@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const ProfileInputField: React.FC<Props> = ({ value, setValue, name }) => {
-  const MAX_DATA_LENGTH = 255;
+  const MAX_DATA_LENGTH = 500;
 
   return (
     <label className="profileInputField">

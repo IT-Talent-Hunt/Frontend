@@ -33,7 +33,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
   const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
 
   const [isServer, setIsServer] = useState('');
-  const [user, setUser] = useLocalStorage<User | any>('user', {});
+  const [user, setUser] = useLocalStorage<User | null>('user', null);
   const [token, setToken] = useLocalStorage<string>('tokenId', '');
   const [isLoader, setIsLoader] = useState(false);
 
@@ -143,7 +143,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       } else if (isServer === 'success') {
         navigate('/profileCreate');
       }
-    } else if (user.email) {
+    } else if (user?.email) {
       navigate('/main');
     }
   }, [isServer]);

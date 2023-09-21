@@ -3,7 +3,7 @@ import './TransparentButton.scss';
 
 type Props = {
   title: string,
-  onClick: (value: any) => void | any,
+  onClick: (value: React.MouseEvent) => void,
 };
 
 export const TransparentButton: React.FC<Props> = ({ title, onClick }) => {

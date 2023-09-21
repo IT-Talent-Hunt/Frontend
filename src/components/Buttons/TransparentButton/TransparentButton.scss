@@ -2,7 +2,7 @@
 
 .transparentButton {
   height: 30px;
-  font-size: 12px;
+  font-size: 10px;
   border: 1px solid #fff;
   border-radius: 8px;
 
@@ -11,20 +11,20 @@
 
   color: #fff;
   font-weight: 500;
-  padding: 4px 0;
+  padding: 4px;
 
 
   @include tablet() {
-    font-size: 16px;
+    font-size: 12px;
     height: 40px;
     max-width: 130px;
-    padding: 6px 0;
+    padding: 6px;
   }
 
   @include desktop() {
-    font-size: 18px;
+    font-size: 14px;
     height: 43px;
     max-width: 160px;
-    padding: 8px 0;
+    padding: 8px;
   }
 }

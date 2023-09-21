@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LoaderSmall } from '../../Loader/LoaderSmall';
+import { LoaderSmall } from '../../../../components/Loader/LoaderSmall';
 import './EditReverseButton.scss';
 
 type Props = {

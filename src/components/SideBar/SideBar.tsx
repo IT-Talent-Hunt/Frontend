@@ -45,7 +45,7 @@ export const SideBar: FC<Props> = ({
     setSearchParams(updateSeachParams(searchParams, { perPage: value }));
   };
 
-  const filterHanlders = (stateType: string, value: any) => {
+  const filterHanlders = (stateType: string, value: string) => {
     if (stateType === 'position') {
       setAllFilters((current) => [...current].filter((el) => !preMadePositions.includes(el)));
 

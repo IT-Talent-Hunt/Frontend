@@ -3,12 +3,11 @@ import { socialities } from '../../../helpers/Variables';
 import { Select } from '../../../Types/InputField';
 import { ProjectPositionItem } from './ProjectPositionItem/ProjectPositionItem';
 import cross from '../../../svg/cross2.png';
-
 import './ProjectPositions.scss';
 
 type Props = {
   selectedPositions: Select[],
-  setSelectedPositions: (value: any) => void,
+  setSelectedPositions: Function,
 };
 
 export const ProjectPositions: React.FC<Props> = ({ selectedPositions, setSelectedPositions }) => {

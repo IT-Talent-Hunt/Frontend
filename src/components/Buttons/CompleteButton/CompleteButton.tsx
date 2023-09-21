@@ -6,7 +6,7 @@ import './CompleteButton.scss';
 type Props = {
   title: string,
   isDisabled?: boolean,
-  onClick?: () => void,
+  onClick?: (value: React.MouseEvent) => void,
   isLoader?: boolean,
 };
 

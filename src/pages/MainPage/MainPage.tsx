@@ -34,10 +34,11 @@ import { generateSpecialitiesLink } from '../../helpers/helpers';
 
 type Props = {
   isSideBar: boolean,
-  setEditProject: (evennt: React.MouseEvent, projectId: number | undefined) => void,
+  setEditProject: (evennt: React.MouseEvent, projectId: number) => void,
   onCanceledFavorite: (value: string) => void,
   applyProject: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
   cardClick: (project: ProjectCardProps) => void,
+  removeHandler: (event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) => void,
 };
 
 export const MainPage: FC<Props> = ({
@@ -46,6 +47,7 @@ export const MainPage: FC<Props> = ({
   onCanceledFavorite,
   applyProject,
   cardClick,
+  removeHandler,
 }) => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('queryParam') || '';
@@ -59,26 +61,50 @@ export const MainPage: FC<Props> = ({
   const [filter, setFilter] = useState(FiltersEnumTypes.ALL);
   const [teamSize, setTeamSize] = useState('');
 
-  const { isModal, setIsModal } = useContext(ModalContext);
+  const { isModal } = useContext(ModalContext);
 
   const dispatch = useAppDispatch();
-  const { projects, loading, error, pages } = useAppSelector(state => state.projects);
-  const { favorites, favoritesLoading, favoritesError, favoritesPages } = useAppSelector(state => state.favorites);
+
+  const {
+    projects,
+    loading,
+    error,
+    pages
+  } = useAppSelector(state => state.projects);
+
+  const {
+    favorites,
+    favoritesLoading,
+    favoritesError,
+    favoritesPages,
+  } = useAppSelector(state => state.favorites);
 
 
   const getProjects = () => {
-    const url = generateSpecialitiesLink('projects/search' ,position, teamSize, status, filter, query, perPage, page);
+    const url = generateSpecialitiesLink(
+      'projects/search' ,position, teamSize,
+      status, filter, query, perPage, page
+    );
+
     dispatch(projectsActions.init(url));
   };
 
   const getSortedProjects = () => {
-    const url = generateSpecialitiesLink('projects/search', position, teamSize, status, filter, query, perPage, page);
+    const url = generateSpecialitiesLink(
+      'projects/search', position, teamSize,
+      status, filter, query, perPage, page
+    );
+
     dispatch(projectsActions.init(url));
   }
 
   const getFavoritesPojects = () => {
     if (filter === FiltersEnumTypes.FAVORITES) {
-      const url = generateSpecialitiesLink('liked-carts/by-user/projects/', position, teamSize, status, filter, query, perPage, page);
+      const url = generateSpecialitiesLink(
+        'liked-carts/by-user/projects/', position,
+        teamSize, status, filter, query, perPage, page,
+      );
+
       dispatch(favoritesActions.init(url));
     };
   };
@@ -90,12 +116,8 @@ export const MainPage: FC<Props> = ({
   useEffect(() => {
     if (currentUser?.id) {
       getFavoritesPojects();
-    }
+    };
   }, [filter === FiltersEnumTypes.FAVORITES, page, perPage]);
-
-  // useEffect(() => {
-  //   pageReset();
-  // }, [filter, position, status, teamSize])
 
   useEffect(() => {
     getSortedProjects();
@@ -105,7 +127,6 @@ export const MainPage: FC<Props> = ({
     return () => {
       dispatch(projectsActions.clear());
       dispatch(favoritesActions.clear());
-      setIsModal(false);
     }
   }, [])
 
@@ -155,6 +176,7 @@ export const MainPage: FC<Props> = ({
             onApply={applyProject}
             onFavorite={onCanceledFavorite}
             pages={pages}
+            removeHandler={removeHandler}
           />
         )}
 
@@ -168,6 +190,7 @@ export const MainPage: FC<Props> = ({
             onApply={applyProject}
             onFavorite={onCanceledFavorite}
             pages={pages}
+            removeHandler={removeHandler}
           />
         )}
 
@@ -181,6 +204,7 @@ export const MainPage: FC<Props> = ({
             onApply={applyProject}
             onFavorite={onCanceledFavorite}
             pages={favoritesPages}
+            removeHandler={removeHandler}
           />
         )}
       </div>

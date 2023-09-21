@@ -47,7 +47,7 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
 
   const [isSuccessUpdate, setIsSuccesUpdate] = useState('');
 
-  const userDataUpdate = async (userId: number, event: React.FormEvent) => {
+  const userDataUpdate = async (userId: number, event: React.MouseEvent) => {
     event.preventDefault();
 
     try {
@@ -83,19 +83,19 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
     try {
       setIsProjectsLoad(true);
 
-      const ownedProjectData: ProjectCardProps[] | any = await getData(
+      const ownedProjectData: any = await getData(
         `projects/by-user/${user.id}`,
       );
 
       setUserOwneProjects(ownedProjectData);
 
-      const arhivedProjects: ProjectCardProps[] | any = await getData(
+      const arhivedProjects: any = await getData(
         `projects/by-user/${user.id}/status?projectStatus=FINISHED`,
       );
 
       setUserArhivedProjects(arhivedProjects);
 
-      const onGoingProjects: ProjectCardProps[] | any = await getData(
+      const onGoingProjects: any = await getData(
         `projects/by-user/${user.id}/status?projectStatus=IN_PROGRESS`,
       );
 
@@ -110,6 +110,8 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
   useEffect(() => {
     loadUserProjectsData();
   }, [user]);
+
+  const isColor = user.profileImage?.includes('#');
 
   return (
     <div className="profile">
@@ -138,7 +140,10 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
       )}
 
       <div className="profile__data">
-        <div className="profile__profile">
+        <div
+          className="profile__profile"
+          style={{ backgroundColor: isColor ? `${user.profileImage}` : '' }}
+        >
           <div>
             <IconButton svg={profile} />
           </div>
@@ -165,7 +170,7 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
         </div>
       </div>
 
-      <form action="post" onSubmit={(event) => userDataUpdate(user.id!, event)}>
+      <form method="POST">
         <div
           className={!isEdit ? 'profile__field' : 'profile__field-reverse'}
         >
@@ -201,8 +206,16 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
 
         {isEdit ? (
           <div className="profile__buttons">
-            <CompleteButton title="Save" isLoader={isUpdateLoad} />
-            <CompleteReverseButton title="Cancel" />
+            <CompleteButton
+              title="Save"
+              isLoader={isUpdateLoad}
+              onClick={(event: React.MouseEvent) => userDataUpdate(user.id!, event)}
+            />
+
+            <CompleteReverseButton
+              title="Cancel"
+              onClick={() => setIsEdit(false)}
+            />
           </div>
         ) : (
           <>
@@ -223,7 +236,7 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
 
                       {userOwnedProjects.length ? (
                         <ul className="profile__field_list">
-                          {userOwnedProjects.map((project: any) => (
+                          {userOwnedProjects.map((project: ProjectCardProps) => (
                             <ProfileProject
                               key={project.id}
                               project={project}
@@ -241,7 +254,7 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
 
                       {userArhivedProjects.length ? (
                         <ul className="profile__field_list">
-                          {userArhivedProjects.map((project: any) => (
+                          {userArhivedProjects.map((project: ProjectCardProps) => (
                             <ProfileProject
                               key={project.id}
                               project={project}
@@ -259,7 +272,7 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
 
                       {userOnGoingProjects.length ? (
                         <ul className="profile__field_list">
-                          {userOnGoingProjects.map((project: any) => (
+                          {userOnGoingProjects.map((project: ProjectCardProps) => (
                             <ProfileProject
                               key={project.id}
                               project={project}

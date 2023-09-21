@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './BackTo.scss';
 
 type Props = {
-  onClick?: (value: any) => void,
+  onClick?: (value: boolean) => void,
 };
 
 export const BackTo: React.FC<Props> = ({ onClick }) => {

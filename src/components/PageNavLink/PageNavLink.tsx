@@ -6,7 +6,7 @@ type Props = {
   to?: string,
   text?: string,
   img?: string,
-  onClick?: (value: any) => void,
+  onClick?: () => void,
 };
 
 export const PageNavLink: React.FC<Props> = ({

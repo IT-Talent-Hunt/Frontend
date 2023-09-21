@@ -23,6 +23,7 @@ type Props = {
 
 export const RequestsPage: React.FC<Props> = ({ cardClick }) => {
   const dispatch = useAppDispatch();
+
   const {
     exportRequests,
     exportLoader,

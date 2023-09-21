@@ -4,6 +4,7 @@ import favoritesReducer from './features/favorites/favorites';
 import exportRequestsReducer from './features/requests/export/export';
 import importRequestsReducer from './features/requests/import/import';
 import messagesReducer from './features/Messages/messages';
+import notificationsReducer from './features/Notification/notification';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     exportRequests: exportRequestsReducer,
     importRequests: importRequestsReducer,
     messages: messagesReducer,
+    notifications: notificationsReducer,
   },
 });
 

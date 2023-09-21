@@ -2,30 +2,30 @@ import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import classNames from 'classnames';
-import { ProjectCardProps } from '../../Types/ProjectCardProps';
-import { textValidation } from '../../helpers/validation';
-import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
-import { ContactItem } from '../ContactsList/ContactItem/ContactItem';
-import { ProfileInputField } from '../ProfileInputField/ProfileInputField';
-import { ProjectContainer } from '../ProjectContainer/ProjectContainer';
-import { ShineMessage } from '../ShineMessage/ShineMessage';
+import { ProjectCardProps } from '../../../Types/ProjectCardProps';
+import { textValidation } from '../../../helpers/validation';
+import { CompleteButton } from '../../../components/Buttons/CompleteButton/CompleteButton';
+import { ContactItem } from '../../../components/ContactsList/ContactItem/ContactItem';
+import { ProfileInputField } from '../../../components/ProfileInputField/ProfileInputField';
+// import { ProjectContainer } from '../../../components/ProjectContainer/ProjectContainer';
+import { ShineMessage } from '../../../components/ShineMessage/ShineMessage';
 // import { useLocalStorage } from 'usehooks-ts';
 // import { User } from '../../Types/User';
-import { Contact } from '../../Types/Contact';
-import { existContacts, socialities, projectStatuses } from '../../helpers/Variables';
-import { InputField } from '../InputField/InputField';
-import { Error } from '../Error/Error';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { Contact } from '../../../Types/Contact';
+import { existContacts, socialities, projectStatuses } from '../../../helpers/Variables';
+import { InputField } from '../../../components/InputField/InputField';
+import { Error } from '../../../components/Error/Error';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 // import { Select } from '../../Types/InputField';
-import * as projectsActions from '../../redux/features/projects/projects';
+import * as projectsActions from '../../../redux/features/projects/projects';
 import { MemberItem } from './MemberItem';
-import { User } from '../../Types/User';
-import { Success } from '../Success/Success';
-import { InputSelect } from '../InputSelect/InputSelect';
+import { User } from '../../../Types/User';
+import { Success } from '../../../components/Success/Success';
+import { InputSelect } from '../../../components/InputSelect/InputSelect';
 import { EditProjectButton } from './EditProjectButton/EditProjectButton';
 import { EditReverseButton } from './EditReverseButton/EditReverseButton';
 import { PositionItem } from './PositionItem/PositionItem';
-import { ProjectCardStatus } from '../projectCard/ProjectCardStatus/ProjectCardStatus';
+import { ProjectCardStatus } from '../../../components/projectCard/ProjectCardStatus/ProjectCardStatus';
 
 type Props = {
   project: ProjectCardProps,
@@ -37,7 +37,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const [isNameDirty, setIsNameDirty] = useState(false);
   const [nameMessage, setNameMessage] = useState('');
   const [isNameSuccess, setIsNameSuccess] = useState(false);
-  const [currentUser] = useLocalStorage<User | any>('user', {});
+  const [currentUser] = useLocalStorage<User | null>('user', null);
 
   // const [selectedPositions, setSelectedPositions] = useState<Select[]>([]);
   // const preparetedPositions = selectedPositions.map((position) => position.name);
@@ -58,7 +58,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const [position, setPosition] = useState('');
 
   const membersIds = userMembers.map((member) => member.id);
-  const visibleMembers = userMembers.filter((member) => member.id !== currentUser.id);
+  const visibleMembers = userMembers.filter((member) => member.id !== currentUser?.id);
   const preparetedStatuses = projectStatuses.filter((status) => status !== projectStatus);
 
   const dispatch = useAppDispatch();
@@ -142,7 +142,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   };
 
   return (
-    <ProjectContainer>
+    <div className="editPage__wrapper">
       <>
         {isUpLoad && typeof error === 'boolean' && !loading && (
           <ShineMessage>
@@ -300,6 +300,6 @@ export const EditProject: React.FC<Props> = ({ project }) => {
           </div>
         </form>
       </>
-    </ProjectContainer>
+    </div>
   );
 };

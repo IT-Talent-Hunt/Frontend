@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import { CompleteButton } from '../../components/Buttons/CompleteButton/CompleteButton';
 import { ProfileInputField } from '../../components/ProfileInputField/ProfileInputField';
@@ -13,6 +14,7 @@ import * as exportRequestsActions from '../../redux/features/requests/export/exp
 
 import error from '../../svg/error-icon.svg';
 import { Icon } from '../../components/Icon/Icon';
+import { RemoveModal } from '../RemoveModal/RemoveModal';
 
 type Props = {
   onSend: (name: string, messgae: string) => void,
@@ -22,22 +24,29 @@ type Props = {
 
 export const LetterModal: React.FC<Props> = ({ onSend, onClose, project }) => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigate();
   const { exportLoader, exportError } = useAppSelector(state => state.exportRequests);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [user] = useLocalStorage<User | null>('user', null);
   const [letter, setLetter] = useState<string>('');
 
-  const onApply = (project: ProjectCardProps) => {
+  const onApply = async(project: ProjectCardProps) => {
     const request = {
       userId: user?.id,
       projectId: project.id,
       message: letter,
     }
 
-    dispatch(exportRequestsActions.send(request));
+    await dispatch(exportRequestsActions.send(request));
     setIsLoaded(true);
   };
+
+  useEffect(() => {
+    if (!exportError && !exportLoader && isLoaded) {
+      navigation('/requests');
+    };
+  }, [isLoaded])
 
   return (
     <div className="letter">
@@ -53,12 +62,10 @@ export const LetterModal: React.FC<Props> = ({ onSend, onClose, project }) => {
       <div className="letter__buttons">
         <CompleteButton
           title="Send"
-          // onClick={() => onSend(
-          //   `${user?.firstName} ${user?.lastName}`, letter,
-          // )}
           onClick={() => onApply(project)}
           isLoader={exportLoader}
         />
+
         <CompleteReverseButton title="Cancel" onClick={() => onClose(false)} />
       </div>
     </div>

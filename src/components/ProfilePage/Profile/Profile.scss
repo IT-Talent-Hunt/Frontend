@@ -65,7 +65,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #eee;
+    // background-color: #eee;
 
     display: flex;
     justify-content: center;
@@ -193,6 +193,7 @@
   &__buttons {
     display: flex;
     gap: 10px;
+    margin-top: 20px;
   }
 
   &__projects {

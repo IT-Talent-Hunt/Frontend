@@ -27,7 +27,7 @@ export const CreateComplete: React.FC<Props> = ({ projectName }) => {
         </p>
 
         <div className="createComplete__button">
-          <CompleteButton title="Log in" onClick={onSubmit} />
+          <CompleteButton title="Go back" onClick={onSubmit} />
         </div>
       </Container>
     </section>

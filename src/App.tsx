@@ -6,6 +6,7 @@ import {
   Navigate,
   Route,
   Routes,
+  useLocation,
   useMatch,
   useNavigate,
   useParams,
@@ -16,7 +17,7 @@ import { Header } from './components/Header/Header';
 import { MainPage } from './pages/MainPage/MainPage';
 import { ProjectPage } from './components/ProjectPage/ProjectPage';
 import { ProfilePage } from './components/ProfilePage/ProfilePage';
-import { EditProject } from './components/EditProject/EditProject';
+// import { EditProject } from './pages/EditPage/EditProject/EditProject';
 import { SignInPage } from './pages/SignInPage/SignInPage';
 import { PasswordRecovery } from './components/PasswordRecovery/PasswordRecovery';
 import { RecoveryComplete } from './components/RecoveryComplete/RecoveryComplete';
@@ -30,7 +31,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import { User } from './Types/User';
 import { SavedPage } from './pages/Saved/SavedPage';
 import { getData } from './helpers/helpers';
-import { Messages } from './components/Messages/Messages';
+import { Messages } from './pages/MessagesPage/MessagesPage';
 import SockJsClient from 'react-stomp';
 import { Modal } from './components/Modal/Modal';
 import { ProjectModal } from './Modals/ProjectModal/ProjectModal';
@@ -41,20 +42,30 @@ import { LoaderBig } from './components/Loader/LoaderBig';
 import { RequestsPage } from './pages/RequestsPage/RequestsPage';
 import { NotFound } from './components/NotFound/NotFound';
 import { BASE_URL } from './helpers/fetchProd';
+import * as notificationsActions from './redux/features/Notification/notification';
+import { Notification } from './components/Notification/Notification';
+import { MessagesTypes } from './redux/features/Messages/messages';
+import { RequestMessage } from './Types/RequestMessage';
+import { RemoveModal } from './Modals/RemoveModal/RemoveModal';
+import favorites from './redux/features/favorites/favorites';
+import { EditPage } from './pages/EditPage/EditPage';
 
 export const App: React.FC = () => {
   const navigation = useNavigate();
+  const location = useLocation();
   const [currentProject, setCurrentProject] = useState<ProjectCardProps | null>(null);
   const [onApplyProject, setOnApplyProject] = useState<ProjectCardProps | null>(null);
 
-  const { projects } = useAppSelector(state => state.projects);
-  const [user] = useLocalStorage<User | null>('user', null);
-  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
   const dispatch = useAppDispatch();
+  const { notifications } = useAppSelector(state => state.notifications);
+
+  const [user] = useLocalStorage<User | null>('user', null);
 
   const [isSideBar, setIsSideBar] = useState(false);
-  const [toEditProject, setToEditProject] = useState<ProjectCardProps | any>(projects[1]);
+  const [isRemove, setIsRemove] = useState<boolean>(false);
+
+  // const [toEditProject, setToEditProject] = useState<ProjectCardProps | null>(null);
+  const [toRemoveProject, setToRemoveProject] = useState<ProjectCardProps | null>(null);
 
   const { isModal, setIsModal } = useContext(ModalContext);
 
@@ -63,14 +74,6 @@ export const App: React.FC = () => {
   const [isCoverLetter, setIsCoverLetter] = useState<boolean>(false);
 
   const [cenceledMessage, setCenceledMessage] = useState<string>('');
-  const [successMessage, setSuccessMessage] = useState<string>('');
-
-  // const match = useMatch('/profile/:userId');
-  // const userId = match?.params.userId;
-
-  const [messages, setMessages] = useLocalStorage<any>('messages', []);
-  const [typedMessage, setTypedMessage] = useState('Kolya privet');
-  const [name, setName] = useState('DB');
 
   const clientRef = useRef<any>(null);
   const [isTokenValid, setIsTokenValid] = useLocalStorage('isTokenValid', true);
@@ -84,29 +87,12 @@ export const App: React.FC = () => {
     }
   };
 
-  // const getUser = async(userId: string) => {
-  //   if (userId) {
-  //     setIsModal(false);
-  //     await getData(`users/${userId}`)
-  //     .then((res: any) => setSelectedUser(res));
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getUser(userId!);
-  // }, [userId])
-
   const handleCardClick = useCallback((project: ProjectCardProps) => {
     setIsModal(true);
     setCurrentProject(project);
   }, []);
 
-  const onSuccessApplied = (projectName: string) => {
-    // setIsModal(true);
-    // setSuccessMessage(`You have successfuly applied to the "${projectName}" project.`)
-  }
-
-  const onCanceledApply = (projectName: string) => {
+  const onCanceledApply = () => {
     setIsModal(true);
     setIsApplyCanceled(true);
 
@@ -124,7 +110,7 @@ export const App: React.FC = () => {
     setIsApplyCanceled(false);
   }
 
-  const onCanceledFavorite = (projectName: string) => {
+  const onCanceledFavorite = () => {
     setIsModal(true);
     setIsFavoriteCanceled(true);
     // setCenceledMessage(`For a adding project "${projectName}", you mist sign in.`);
@@ -133,19 +119,25 @@ export const App: React.FC = () => {
     );
   }
 
-  const selectEditProject = (event: React.MouseEvent, projectId: number | any) => {
+  const selectEditProject = (event: React.MouseEvent, projectId: number) => {
     event.stopPropagation();
 
-    // console.log(projects);
+    // if (projectId) {
+    //   let editProject = null;
+  
+    //   if (projects.length) {
+    //     editProject = projects.find((project: ProjectCardProps) => project.id === projectId);
+    //   } else {
+    //     editProject = favorites.find((project: ProjectCardProps) => project.id === projectId);
+    //   }
 
-    if (projectId && projects) {
-      const editProject = projects.find((project: ProjectCardProps) => project.id === projectId);
+    //   if (editProject) {
+    //     setToEditProject(editProject);
+    //     navigation(`edit_project/${projectId}`);
+    //   }
+    // }
 
-      if (editProject) {
-        setToEditProject(editProject);
-        navigation('edit_project');
-      }
-    }
+    navigation(`edit/${projectId}`);
   };
 
   console.log(isModal);
@@ -159,15 +151,13 @@ export const App: React.FC = () => {
       const itPositionHas = project.teamResponseDto.requiredSpecialities.includes(user.speciality);
 
       if (itPositionHas) {
-        // dispatch(projectActions.apply({ teamId: project.teamResponseDto.id, userId: user.id! }));
-        // onSuccessApplied(project.name);
         setIsCoverLetter(true);
         setIsModal(true);
       } else {
-        onCanceledApply(project.name);
+        onCanceledApply();
       }
     } else {
-      onCanceledApply(project.name);
+      onCanceledApply();
     }
   }
 
@@ -176,7 +166,17 @@ export const App: React.FC = () => {
     setCurrentProject(null);
   }
 
-  console.log('messages', messages);
+  function removeHandler(event: React.MouseEvent<HTMLButtonElement>, project: ProjectCardProps) {
+    event.stopPropagation();
+  
+    setToRemoveProject(project);
+    setIsModal(true);
+    setIsRemove(true);
+  }
+
+  useEffect(() => {
+    setIsModal(false);
+  }, [location.pathname]);
 
   return (
       <div className="starter">
@@ -187,19 +187,35 @@ export const App: React.FC = () => {
               onApply={applyProject}
               onFavorite={onCanceledFavorite}
               onProjectModalClose={onProjectModalClose}
+              setEditProject={selectEditProject}
+              removeHandler={removeHandler}
             />
           </Modal>
+        )}
+
+        {isModal &&  isRemove && toRemoveProject && (
+          <Modal>
+            <RemoveModal
+              project={toRemoveProject}
+              onCancel={() => {
+                setToRemoveProject(null)
+                setIsRemove(false);
+              }}
+            />
+          </Modal>
+        )}
+
+        {!!notifications.length && (
+          <ul>
+            {notifications.map((notification) => (
+              <Notification notification={notification} />
+            ))}
+          </ul>
         )}
 
         {isModal && isCoverLetter && (
           <Modal>
             <LetterModal onSend={sendMessage} onClose={setIsCoverLetter} project={onApplyProject!} />
-          </Modal>
-        )}
-
-        {isModal && !isApplyCanceled && successMessage &&   (
-          <Modal>
-             <SuccessApplyModal message={successMessage} onClose={setSuccessMessage}/>
           </Modal>
         )}
 
@@ -237,6 +253,7 @@ export const App: React.FC = () => {
                   onCanceledFavorite={onCanceledFavorite}
                   applyProject={applyProject}
                   cardClick={handleCardClick}
+                  removeHandler={removeHandler}
                 />
               }
             />
@@ -258,7 +275,12 @@ export const App: React.FC = () => {
                 }
               />
             </Route>
-            <Route path="edit_project" element={<EditProject project={toEditProject!} />} />
+            {/* <Route path="edit_project" element={<EditProject project={toEditProject!} />} /> */}
+
+            <Route path="edit">
+              <Route path=":editId" element={<EditPage />} />
+            </Route>
+
             <Route path="signIn" element={<SignInPage />} />
             <Route path="recovery" element={<PasswordRecovery />} />
             <Route path="recoveryComplete" element={<RecoveryComplete />} />
@@ -281,6 +303,7 @@ export const App: React.FC = () => {
                   onApply={applyProject}
                   onFavorite={onCanceledFavorite}
                   applyProject={applyProject}
+                  removeHandler={removeHandler}
                 />
               }
             />
@@ -297,8 +320,7 @@ export const App: React.FC = () => {
               console.log('Disconnected');
             }}
             onMessage={(msg: any) => {
-              setMessages((current: any): any => [...current, msg]);
-              console.log(messages, msg);
+              dispatch(notificationsActions.add(msg));
             }}
             ref={(client: any) => {
               clientRef.current = client;

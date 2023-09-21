@@ -110,8 +110,44 @@
   }
 }
 
+.notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  right: 5px;
+  top: 5px;
+
+  background-color: red;
+  width: 7px;
+  height: 7px;
+  font-size: 6px;
+  font-weight: 700;
+
+  border-radius: 50%;
+  color: #fff;
+
+  @include tablet() {
+    top: 7px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    font-size: 7px;
+  }
+
+  @include desktop() {
+    top: 8px;
+    right: 9px;
+    width: 9px;
+    height: 9px;
+    font-size: 8px;
+  }
+}
+
 .shell {
   transform: scale(1.3);
+  position: relative;
 }
 
 .tools {
