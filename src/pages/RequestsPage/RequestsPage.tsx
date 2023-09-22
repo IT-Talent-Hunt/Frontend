@@ -6,7 +6,6 @@ import { User } from '../../Types/User';
 import * as exportRequestsActions from '../../redux/features/requests/export/export';
 import * as importRequestsActions from '../../redux/features/requests/import/import';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { LoaderBig } from '../../components/Loader/LoaderBig';
 import { ProjectContainer } from '../../components/ProjectContainer/ProjectContainer';
 import importIcon from '../../svg/import.png';
 import exportIcon from '../../svg/export.png';
@@ -16,6 +15,7 @@ import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { ImportRequest } from './Request/Request';
 import { Empty } from '../../components/Empty/Empty';
 import { Error } from '../../components/Error/Error';
+import { LoaderSmall } from '../../components/Loader/LoaderSmall';
 
 type Props = {
   cardClick: (value: ProjectCardProps) => void,
@@ -64,7 +64,7 @@ export const RequestsPage: React.FC<Props> = ({ cardClick }) => {
 
             {importLoader ? (
               <div className="requests__loader">
-                <LoaderBig />
+                <LoaderSmall />
               </div>
             ) : (
               <>
@@ -101,7 +101,7 @@ export const RequestsPage: React.FC<Props> = ({ cardClick }) => {
 
             {exportLoader ? (
               <div className="requests__loader">
-                <LoaderBig />
+                <LoaderSmall />
               </div>
             ) : (
               <>

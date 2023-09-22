@@ -42,6 +42,7 @@ export const exportRequestsSlice = createSlice({
     },
     clear: (state: exportRequestsType) => {
       state.exportRequests = [];
+      state.exportLoader = true;
     },
   },
   extraReducers: (builder) => {

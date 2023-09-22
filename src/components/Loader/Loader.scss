@@ -1,3 +1,5 @@
+@import '../../helpers/helpers.scss';
+
 .Loader {
   display: flex;
   width: 100%;
@@ -7,12 +9,26 @@
 
   &__content {
     border-radius: 50%;
-    width: 2em;
-    height: 2em;
+    width: 1.2em;
+    height: 1.2em;
     margin: 1em auto;
-    border: 0.3em solid #ddd;
+    border: 0.15em solid #ddd;
     border-left-color: #000;
     animation: load8 1.2s infinite linear;
+
+    @include tablet() {
+      width: 1.5em;
+      height: 1.5em;
+      border: 0.2em solid #ddd;
+      border-left-color: #000;
+    }
+
+    @include desktop() {
+      width: 2em;
+      height: 2em;
+      border: 0.3em solid #ddd;
+      border-left-color: #000;
+    }
 
     &--small {
       border-radius: 50%;

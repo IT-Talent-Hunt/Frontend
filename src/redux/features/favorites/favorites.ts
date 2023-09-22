@@ -7,6 +7,7 @@ import { addFavorite, getFavorites, removeFavorite } from './api';
 type FavoritesTypes = {
   favorites: ProjectCardProps[],
   favoritesLoading: boolean,
+  favoritesLength: number,
   favoritesPages: number,
   favoritesError: boolean | string,
 };
@@ -14,6 +15,7 @@ type FavoritesTypes = {
 const initialState: FavoritesTypes = {
   favorites: [],
   favoritesLoading: false,
+  favoritesLength: 0,
   favoritesPages: 0,
   favoritesError: false,
 };
@@ -60,6 +62,7 @@ export const favoritesSlice = createSlice({
     builder.addCase(init.fulfilled, (state: FavoritesTypes, action: PayloadAction<any>) => {
       state.favorites = action.payload.projectResponseDtos;
       state.favoritesPages = action.payload.totalPage;
+      state.favoritesLength = action.payload.totalElements;
       state.favoritesLoading = false;
     });
   },

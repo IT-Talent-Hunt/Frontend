@@ -101,3 +101,38 @@ export function generateSpecialitiesLink(
   console.log(link);
   return link;
 }
+
+export function formatVisibleDate(inputDate: string): string {
+  const formatedDate = formatDate(inputDate);
+
+  const parts = formatedDate.split('.');
+  const day = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1;
+  const year = parseInt(parts[2], 10);
+
+  const inputDateObj = new Date(year, month, day);
+
+  const currentDate = new Date();
+
+  const timeDifference = currentDate.getTime() - inputDateObj.getTime();
+
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+  if (daysDifference === 0) {
+    return "Today";
+  } else if (daysDifference === 1) {
+    return "Yesterday";
+  } else if (daysDifference <= 7) {
+    return `${daysDifference} day${daysDifference > 1 ? 's' : ''} ago`;
+  } else if (daysDifference <= 14) {
+    return "Last week";
+  } else if (daysDifference <= 21) {
+    return "Two weeks ago";
+  } else if (daysDifference <= 28) {
+    return "Three weeks ago";
+  } else if (daysDifference <= 45) {
+    return "Last month";
+  } else {
+    return inputDate;
+  }
+}

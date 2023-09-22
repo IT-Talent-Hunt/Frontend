@@ -70,10 +70,10 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
         });
       }
 
-      /* eslint-disable-next-line */
-      console.log('a', answear);
-
       setIsServer(answear);
+
+      /* eslint-disable-next-line */
+      console.log('a', isServer);
 
       if (answear.message !== undefined) {
         setIsServer(answear.message.split(': ')[0].trim());

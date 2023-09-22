@@ -146,7 +146,7 @@ export const EditProject: React.FC<Props> = ({ project }) => {
       <>
         {isUpLoad && typeof error === 'boolean' && !loading && (
           <ShineMessage>
-            <Success message="The requested updates to the user's information have been applied without any issues. The user's data has been successfully modified in the system.\nThank you for using our services!" />
+            <Success message="The requested updates to the user's information have been applied without any issues. The user's data has been successfully modified in the system. Thank you for using our services!" />
           </ShineMessage>
         )}
         <form method="GET" onSubmit={(event) => event.preventDefault()}>

@@ -2,7 +2,7 @@
 
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RequestMessage } from '../../../Types/RequestMessage';
-import { getMessages } from './api';
+import { getMessages, markAsRead } from './api';
 
 export type MessagesTypes = RequestMessage;
 
@@ -14,12 +14,16 @@ type Messages = {
 
 const initialState: Messages = {
   messages: [],
-  messagesLoader: false,
+  messagesLoader: true,
   messagesError: false,
 };
 
 export const init = createAsyncThunk('messages/fetch', (userId: number) => {
   return getMessages(userId);
+});
+
+export const readedHandler = createAsyncThunk('messages/mark-as-read', (messageId: number) => {
+  return markAsRead(messageId);
 });
 
 export const messagesSlice = createSlice({
@@ -36,6 +40,7 @@ export const messagesSlice = createSlice({
     },
     clear: (state: Messages) => {
       state.messages = [];
+      state.messagesLoader = true;
     },
   },
   extraReducers: (builder) => {

@@ -69,7 +69,8 @@ export const MainPage: FC<Props> = ({
     projects,
     loading,
     error,
-    pages
+    pages,
+    length,
   } = useAppSelector(state => state.projects);
 
   const {
@@ -77,6 +78,7 @@ export const MainPage: FC<Props> = ({
     favoritesLoading,
     favoritesError,
     favoritesPages,
+    favoritesLength,
   } = useAppSelector(state => state.favorites);
 
 
@@ -153,8 +155,8 @@ export const MainPage: FC<Props> = ({
           <GridHeader
             n={filter === FiltersEnumTypes.ALL
               || filter === FiltersEnumTypes.NEW
-                ? projects.length
-                : favorites.length
+                ? length
+                : favoritesLength
             }
             position={position}
             filter={filter}

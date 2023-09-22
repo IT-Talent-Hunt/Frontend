@@ -8,6 +8,7 @@ import { getProjects, addProject, editProject, applyToProject } from './api';
 type ProjectsType = {
   projects: ProjectCardProps[],
   pages: number,
+  length: number,
   loading: boolean,
   error: string | boolean,
 };
@@ -15,6 +16,7 @@ type ProjectsType = {
 const initialState: ProjectsType = {
   projects: [],
   pages: 0,
+  length: 0,
   loading: false,
   error: false,
 };
@@ -68,6 +70,7 @@ export const projectsSlice = createSlice({
       (state: ProjectsType, action: any) => {
         state.projects = action.payload.projectResponseDtos;
         state.pages = action.payload.totalPage;
+        state.length = action.payload.totalElements
         state.loading = false;
         state.error = false;
       });

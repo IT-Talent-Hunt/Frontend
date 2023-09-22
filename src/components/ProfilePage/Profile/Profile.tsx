@@ -15,11 +15,11 @@ import pen from '../../../svg/edit-pen--icon.svg';
 import profile from '../../../svg/profile-black.png';
 import { User } from '../../../Types/User';
 import { ProfileProject } from '../../ProfileProject/ProfileProject';
-import { LoaderBig } from '../../Loader/LoaderBig';
 import { CompleteReverseButton } from '../../Buttons/CompleteReverseButton/CompleteReverseButton';
 import { CompleteButton } from '../../Buttons/CompleteButton/CompleteButton';
 import { Empty } from '../../Empty/Empty';
 import './Profile.scss';
+import { LoaderSmall } from '../../Loader/LoaderSmall';
 
 type Props = {
   user: User,
@@ -221,7 +221,7 @@ export const Profile: React.FC<Props> = ({ user, onCardClick }) => {
           <>
             {isProjectsLoad ? (
               <div className="profile__bottomField--loader">
-                <LoaderBig />
+                <LoaderSmall />
               </div>
             ) : (
               <>

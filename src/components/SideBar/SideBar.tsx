@@ -37,6 +37,8 @@ export const SideBar: FC<Props> = ({
 
   const [allFilters, setAllFilters] = useState<string[]>([]);
 
+  const query = searchParams.get('queryParam');
+
   const pageReset = () => {
     setSearchParams(updateSeachParams(searchParams, { page: null }));
   };
@@ -129,6 +131,10 @@ export const SideBar: FC<Props> = ({
       ];
     });
   }, [perPage]);
+
+  useEffect(() => {
+    pageReset();
+  }, [perPage, teamSize, query]);
 
   return (
     <div className={styles.main}>

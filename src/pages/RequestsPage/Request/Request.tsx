@@ -100,62 +100,47 @@ export const ImportRequest: React.FC<Props> = ({
               {formatedMessage}
             </div>
 
-            {!isExport ? (
+            
+            {isStatusLoader ? (
+              <div className="request__field">
+                <LoaderSmall />
+              </div>
+            ) : (
               <>
-                {isStatusLoader ? (
+                {isStatusError ? (
                   <div className="request__field">
-                    <LoaderSmall />
+                    <IconButton svg={error} onClick={() => setIsStatusError(false)} />
                   </div>
                 ) : (
                   <>
-                    {isStatusError ? (
-                      <div className="request__field">
-                        <IconButton svg={error} onClick={() => setIsStatusError(false)} />
+                    {request.status === 'PENDING' && !isExport && (
+                      <div className="request__buttons">
+                        <EditProjectButton
+                          title="Accept"
+                          onClick={() => onAction(request.id, 'ACCEPTED')}
+                        />
+
+                        <EditReverseButton
+                          title="Reject"
+                          onClick={() => onAction(request.id, 'REJECTED')}
+                        />
                       </div>
-                    ) : (
-                      <>
-                        {request.status === 'PENDING' && (
-                          <div className="request__buttons">
-                            <EditProjectButton
-                              title="Accept"
-                              onClick={() => onAction(request.id, 'ACCEPTED')}
-                            />
-
-                            <EditReverseButton
-                              title="Reject"
-                              onClick={() => onAction(request.id, 'REJECTED')}
-                            />
-                          </div>
-                        )}
-
-                        {request.status === 'ACCEPTED' && (
-                          <div className="request__field">
-                            <Icon icon={accepted} />
-                          </div>
-                        )}
-
-                        {request.status === 'REJECTED' && (
-                          <div className="request__field">
-                            <Icon icon={rejected} />
-                          </div>
-                        )}
-                      </>
                     )}
                   </>
                 )}
               </>
-            ) : (
-              <div className="request__status">
-                <Icon
-                  icon={
-                    projectResponseDto === null
-                    ? remove : request.status === 'ACCEPTED'
-                    ? accepted : request.status === 'PENDING'
-                    ? pending : rejected
-                  }
-                />
-              </div>
             )}
+  
+            <div className="request__status">
+              <Icon
+                icon={
+                  projectResponseDto === null
+                  ? remove : request.status === 'ACCEPTED'
+                  ? accepted : request.status === 'PENDING'
+                  ? pending : rejected
+                }
+              />
+            </div>
           </div>
         </div>
       </div>
