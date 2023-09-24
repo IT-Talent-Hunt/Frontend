@@ -13,8 +13,13 @@ export const MemberItem: React.FC<Props> = ({ user, onKick }) => {
 
   return (
     <li className="project__member">
-      <div className="project__member_title">{speciality}</div>
-      <div className="project__member_title">{`${firstName} ${lastName}`}</div>
+      <div className="project__member_title">
+        {speciality}
+      </div>
+
+      <div className="project__member_title">
+        {`${firstName} ${lastName}`}
+      </div>
 
       <EditProjectButton
         title="Kick"

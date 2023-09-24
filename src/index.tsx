@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 
@@ -10,13 +9,11 @@ import { ModalProvider } from './Providers/ModalProvider';
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <HashRouter>
-        <ModalProvider>
-          <App />
-        </ModalProvider>
-      </HashRouter>
-    </React.StrictMode>
+    <HashRouter>
+      <ModalProvider>
+        <App />
+      </ModalProvider>
+    </HashRouter>
   </Provider>,
   document.getElementById('root'),
 );

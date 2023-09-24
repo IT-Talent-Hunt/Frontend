@@ -21,17 +21,17 @@ export const MessageItem: React.FC<Props> = ({ propsMessage }) => {
   const dispatch = useAppDispatch();
 
   const {
-    id,
     message,
     requestId,
     creationDate,
     read,
   } = propsMessage;
 
-  const displayedDate = formatVisibleDate(creationDate);
+  const displayedDate: string = formatVisibleDate(creationDate);
 
-  function onMessagesClick(messageId: number) {
-    dispatch(messagesActions.readedHandler(messageId));
+  function onMessagesClick(messageP: MessagesTypes) {
+    dispatch(messagesActions.readedHandler(messageP.id));
+    dispatch(messagesActions.take(messageP));
     navigation(`/requests/${requestId}`);
   }
 
@@ -44,7 +44,7 @@ export const MessageItem: React.FC<Props> = ({ propsMessage }) => {
     >
       <button
         type="button"
-        onClick={() => onMessagesClick(id)}
+        onClick={() => onMessagesClick(propsMessage)}
         className="messageItem__button"
       >
 

@@ -1,5 +1,4 @@
 import './ProjectCardDescriptions.scss';
-
 import { truncateText } from '../../../helpers/truncateText';
 
 type Props = {

@@ -1,5 +1,5 @@
-import './ContactLink.scss';
 import { getContactLink } from '../../helpers/helpers';
+import './ContactLink.scss';
 
 type Props = {
   url: string,
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const ContactLink: React.FC<Props> = ({ url, platform, placeholder }) => {
-  const urlContact = getContactLink(platform, url);
+  const urlContact: string = getContactLink(platform, url);
 
   return (
     <>
@@ -19,12 +19,16 @@ export const ContactLink: React.FC<Props> = ({ url, platform, placeholder }) => 
           rel="noreferrer"
           className="contactLink"
         >
-          <span>{platform === 'Telegram' ? `@${url}` : url}</span>
+          <span>
+            {platform === 'Telegram' ? `@${url}` : url}
+          </span>
         </a>
       ) : (
         <>
           {placeholder && (
-            <span className="contactItem_link">{placeholder}</span>
+            <span className="contactItem_link">
+              {placeholder}
+            </span>
           )}
         </>
       )}

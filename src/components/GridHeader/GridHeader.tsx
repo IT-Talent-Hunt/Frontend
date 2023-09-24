@@ -15,9 +15,6 @@ export const GridHeader: FC<Props> = ({
   filter,
   setFilter,
 }) => {
-  // const [filter, setFilter] = useState('all');
-  // const filters = ['All', 'New', 'Favorites'];
-
   return (
     <div className={styles.header}>
       <h5 className={styles.heading}>

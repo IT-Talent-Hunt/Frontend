@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { socialities } from '../../../helpers/Variables';
+import { useCallback, useMemo, useState } from 'react';
+import { socialities } from '../../../helpers/variables';
 import { Select } from '../../../Types/InputField';
 import { ProjectPositionItem } from './ProjectPositionItem/ProjectPositionItem';
 import cross from '../../../svg/cross2.png';
@@ -19,23 +19,23 @@ export const ProjectPositions: React.FC<Props> = ({ selectedPositions, setSelect
     setQuery(value);
   };
 
-  const onSelectedPositionsAdd = (item: Select) => {
+  const onSelectedPositionsAdd = useCallback((item: Select) => {
     if (selectedPositions.indexOf(item) === -1) {
       setQuery('');
       setSelectedPositions((current: Select[]): Select[] => [...current, item]);
     }
-  };
+  }, []);
 
-  const onSelectedPositionsFilter = (item: Select) => {
+  const onSelectedPositionsFilter = useCallback((item: Select) => {
     setSelectedPositions((current: Select[]) => [...current].filter((el) => el.name !== item.name));
-  };
+  }, []);
 
-  const visiblePosition = [...socialities].filter((position) => {
+  const visiblePosition = useMemo(() => [...socialities].filter((position) => {
     const lowerPositionName = position.name.toLowerCase();
     const lowerQuery = query.toLowerCase();
 
     return lowerPositionName.includes(lowerQuery);
-  });
+  }), [query]);
 
   return (
     <div className="projectPositions">
@@ -46,7 +46,9 @@ export const ProjectPositions: React.FC<Props> = ({ selectedPositions, setSelect
               key={position.id}
               className="projectPositions__selected_item"
             >
-              <span className="projectPositions__selected_item-name">{position.name}</span>
+              <span className="projectPositions__selected_item-name">
+                {position.name}
+              </span>
 
               <button
                 type="button"
@@ -75,7 +77,9 @@ export const ProjectPositions: React.FC<Props> = ({ selectedPositions, setSelect
       {query && (
         <ul className="projectPositions__list">
           {!visiblePosition.length && (
-            <span className="projectPositions__nothing">Nothing found</span>
+            <span className="projectPositions__nothing">
+              Nothing found
+            </span>
           )}
 
           {visiblePosition.map((sociality) => (

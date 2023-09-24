@@ -1,20 +1,17 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .main {
+  width: min-content;
+  height: fit-content;
+  padding: 14px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px 10px rgba($color: #000, $alpha: .1);
+  border-radius: 8px;
+
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-radius: 8px;
-
-  // min-width: 320px;
-  // width: calc(25vw - 64px);
-  width: min-content;
-  height: fit-content;
-
-  padding: 14px;
-
-  background-color: #fff;
-  box-shadow: 0px 0px 10px 10px rgba($color: #000, $alpha: .1);
 
   @include tablet() {
     gap: 18px;
@@ -59,11 +56,8 @@
   &__container {
     display: flex;
     flex-direction: column;
-    // justify-content: space-between;
     align-items: center;
-
     padding-bottom: 5px;
-
     border-bottom: 1px solid #CDCDCD;
   }
 }

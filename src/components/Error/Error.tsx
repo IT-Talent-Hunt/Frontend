@@ -9,7 +9,9 @@ export const Error: React.FC<Props> = ({ message }) => {
     <div className="error">
       <p className="error-img" />
 
-      <span className="error__message">{message}</span>
+      <span className="error__message">
+        {message}
+      </span>
     </div>
   );
 };

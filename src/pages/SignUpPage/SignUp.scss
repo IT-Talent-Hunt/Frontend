@@ -1,16 +1,17 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .signUp {
   width: 100%;
+  height: calc(100vh - 60px);
+  background: #fff;
+
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
   gap: 50px;
   align-items: center;
   position: relative;
-  background: #fff;
-
-  height: calc(100vh - 60px);
 
   @include tablet() {
     flex-direction: row;
@@ -67,7 +68,6 @@
     &-sub {
       color: #fff;
       margin-top: 10px;
-    
       font-size: 10px;
 
       @include tablet() {

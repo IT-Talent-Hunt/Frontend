@@ -1,14 +1,12 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // height: 8vh;
   width: 100%;
-
   padding: 12px 16px;
-
   background-color: #000;
 
   position: relative;
@@ -47,32 +45,10 @@
   }
 }
 
-.logo {
-  position: relative;
-
-  height: 40px;
-  width: 40px;
-
-  border-radius: 10%;
-
-  background-color: #ADB5BD;
-
-  &::before {
-    content: "L";
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-  }
-}
-
 .controls {
   display: flex;
   align-items: center;
   gap: 10px;
-  // display: none;
 }
 
 .actions {
@@ -85,13 +61,8 @@
   width: 50px;
   height: 25px;
   font-size: 8px;
-
-  // color: #000;
   font-weight: 500;
-
   border-radius: 10px;
-
-  // background-color: #fff;
   background-color: transparent;
   border: 1px solid #fff;
   color: #fff;
@@ -165,7 +136,6 @@
     right: -20px;
     top: 45px;
   }
-
 }
 
 .wrapper {

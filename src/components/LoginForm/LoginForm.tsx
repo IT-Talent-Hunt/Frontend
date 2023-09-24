@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React, {
-  FC, FormEvent, useEffect, useState,
+  FC, FormEvent, useCallback, useEffect, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
@@ -17,33 +19,33 @@ type Props = {
 };
 
 export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
-  const [email, setEmail] = useState('');
-  const [isEmailDirty, setIsEmailDirty] = useState(false);
-  const [emailMessage, setEmailMessage] = useState('');
-  const [isEmailSucces, setIsEmailSucces] = useState(false);
+  const navigate = useNavigate();
 
-  const [password, setPassword] = useState('');
-  const [isPasswordlDirty, setIsPasswordlDirty] = useState(false);
-  const [passwordMessage, setPasswordMessgae] = useState('');
-  const [isPasswordSucces, setIsPasswordSucces] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [isEmailDirty, setIsEmailDirty] = useState<boolean>(false);
+  const [emailMessage, setEmailMessage] = useState<string>('');
+  const [isEmailSucces, setIsEmailSucces] = useState<boolean>(false);
 
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isConfirmPasswordDirty, setIsConfirmPasswordDirty] = useState(false);
-  const [isConfirmPasswordSucces, setIsConfirmPasswordSucces] = useState(false);
-  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
+  const [password, setPassword] = useState<string>('');
+  const [isPasswordlDirty, setIsPasswordlDirty] = useState<boolean>(false);
+  const [passwordMessage, setPasswordMessgae] = useState<string>('');
+  const [isPasswordSucces, setIsPasswordSucces] = useState<boolean>(false);
 
-  const [isServer, setIsServer] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isConfirmPasswordDirty, setIsConfirmPasswordDirty] = useState<boolean>(false);
+  const [isConfirmPasswordSucces, setIsConfirmPasswordSucces] = useState<boolean>(false);
+  const [confirmPasswordMessage, setConfirmPasswordMessage] = useState<string>('');
+
+  const [isServer, setIsServer] = useState<string>('');
   const [user, setUser] = useLocalStorage<User | null>('user', null);
   const [token, setToken] = useLocalStorage<string>('tokenId', '');
-  const [isLoader, setIsLoader] = useState(false);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
 
-  const isValidForms = !!isEmailSucces
+  const isValidForms: boolean = !!isEmailSucces
   && isSigningUp ? !!isConfirmPasswordSucces && !!isPasswordSucces : !!isPasswordSucces;
 
-  const isButtonDisabled = !!email.length
+  const isButtonDisabled: boolean = !!email.length
   && isSigningUp ? !!confirmPassword.length && !!password.length : !!password.length;
-
-  const navigate = useNavigate();
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLSpanElement>) => {
     if (evt.key === 'Enter') {
@@ -72,23 +74,14 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
 
       setIsServer(answear);
 
-      /* eslint-disable-next-line */
-      console.log('a', isServer);
-
       if (answear.message !== undefined) {
         setIsServer(answear.message.split(': ')[0].trim());
       } else {
         setUser(answear.userResponseDto);
         setToken(answear.token);
         setIsServer('success');
-        /* eslint-disable-next-line */
-         console.log('t', token);
-
       }
     } catch (error) {
-      /* eslint-disable-next-line */
-      console.warn('ERROR abowed: ', error);
-
       if (isSigningUp) {
         setIsEmailSucces(false);
         setIsEmailDirty(true);
@@ -116,23 +109,10 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       setIsConfirmPasswordSucces,
     );
 
-    if (isSigningUp) {
-      // isValidForms = isEmailSucces
-      // && isPasswordSucces && isConfirmPasswordSucces;
-
-      // isButtonDisabled = !!email.length && !!password.length && !!confirmPassword.length;
-    }
-
     if (isValidForms) {
       getLoginData();
-      // if (isSigningUp) {
-      //   getLoginData();
-      // }
     }
   };
-
-  /* eslint-disable-next-line */
-  console.log('server', isValidForms, isSigningUp);
 
   useEffect(() => {
     if (isSigningUp) {
@@ -211,8 +191,14 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
 
   return (
     <section className={styles.login}>
-      <form onSubmit={handleSubmit} className={styles.form} method="get">
-        <h1 className={styles.header}>{`Sign ${isSigningUp ? 'up' : 'in'}`}</h1>
+      <form
+        onSubmit={handleSubmit}
+        className={styles.form}
+        method="POST"
+      >
+        <h1 className={styles.header}>
+          {`Sign ${isSigningUp ? 'up' : 'in'}`}
+        </h1>
 
         <InputField
           input={inputEmail}
@@ -250,7 +236,7 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
       </form>
 
       <p className={styles.p}>
-        {isSigningUp ? (
+        {!isSigningUp ? (
           <span>Don&apos;t have an account yet?&nbsp;</span>
         ) : (
           <span>Have an account?&nbsp;</span>
@@ -270,10 +256,10 @@ export const LoginForm: FC<Props> = ({ isSigningUp, setIsSigningUp }) => {
           tabIndex={0}
         >
 
-          {isSigningUp ? (
-            <span>Sign in </span>
-          ) : (
+          {!isSigningUp ? (
             <span>Register now</span>
+          ) : (
+            <span>Sign in</span>
           )}
         </span>
       </p>

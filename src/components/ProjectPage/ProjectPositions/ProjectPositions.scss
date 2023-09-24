@@ -1,4 +1,5 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .projectPositions {
   background-color: $color-grey--lite;
@@ -65,7 +66,6 @@
       font-size: 8px;
       font-weight: 600;
       background-color: $color-green;
-      // background-color: #29ec29b3;
       color: #fff;
 
       @include tablet() {
@@ -121,18 +121,19 @@
     position: absolute;
     right: 0;
     left: 0;
-    bottom: -35px;
+    top: 37px;
 
     @include tablet() {
       padding: 7px;
       min-height: 40px;
-      bottom: -47px;
+      top: 45px;
+
     }
   
     @include desktop() {
       padding: 10px;
       min-height: 45px;
-      bottom: -57px;
+      top: 55px;
       gap: 5px;
     }
 
@@ -167,6 +168,8 @@
   }
 
   &__nothing {
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $color-purple;
   }
 }

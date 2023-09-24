@@ -12,7 +12,10 @@ export const Logo = () => {
         search: location.search,
       }}
     >
-      <div className="logo" style={{ backgroundImage: `url('${logo}')` }} />
+      <div
+        className="logo"
+        style={{ backgroundImage: `url('${logo}')` }}
+      />
     </NavLink>
   );
 };

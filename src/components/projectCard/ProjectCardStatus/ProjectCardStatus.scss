@@ -1,35 +1,36 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .projectStatus {
-    padding: 3px 6px;
-    min-width: 60px;
-    background-color: #fff;
-    text-align: center;
+  padding: 3px 6px;
+  min-width: 60px;
+  background-color: #fff;
+  text-align: center;
 
-    color: #495057;
-    font-size: 8px;
-  
-    border: 1px solid #ADB5BD;
-    border-radius: 50px;
+  color: #495057;
+  font-size: 8px;
 
-    @include tablet() {
-      padding: 5px 10px;
-      font-size: 12px;
-      min-width: 85px;
-    }
+  border: 1px solid #ADB5BD;
+  border-radius: 50px;
 
-    @include desktop() {
-      font-size: 14px;
-      min-width: 100px;
-    }
+  @include tablet() {
+    padding: 5px 10px;
+    font-size: 12px;
+    min-width: 85px;
+  }
 
-    &--green {
-      border-color: $color-green;
-      color: $color-green;
-    }
+  @include desktop() {
+    font-size: 14px;
+    min-width: 100px;
+  }
 
-    &--orange {
-      border-color: $color-orange;
-      color: $color-orange;
-    }
+  &--green {
+    border-color: $color-green;
+    color: $color-green;
+  }
+
+  &--orange {
+    border-color: $color-orange;
+    color: $color-orange;
+  }
 }

@@ -1,15 +1,16 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .recoveryComplete {
-    font-size: 12px;
+  font-size: 12px;
 
-    @include tablet() {
-      font-size: 14px;
-    }
+  @include tablet() {
+    font-size: 14px;
+  }
 
-    @include desktop() {
-      font-size: 16px;
-    }
+  @include desktop() {
+    font-size: 16px;
+  }
 
   &__title {
     &-sub {

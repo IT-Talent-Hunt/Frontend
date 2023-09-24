@@ -1,13 +1,15 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .projectRequest {
+  width: max-content;
+  padding: 0 5px;
+  border-radius: 2px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 5px;
-  width: max-content;
-  padding: 0 5px;
-  border-radius: 2px;
 
   &:hover {
     background-color: $color-grey--lite;

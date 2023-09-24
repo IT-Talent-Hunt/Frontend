@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars,
-@typescript-eslint/no-non-null-asserted-optional-chain */
-/* eslint-disable */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import {
-  FC, useContext, useState
+  FC, useMemo,
 } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
@@ -12,17 +10,15 @@ import { ProjectCardOwner } from './ProjectCardOwner/ProjectCardOwner';
 import { IconButton } from '../IconButton/IconButton';
 import { ProjectCardMembers } from './ProjectCardMembers/ProjectCardMembers';
 import { ProjectCardDescriptions } from './ProjectCardDescriptions/ProjectCardDescriptions';
-// import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { ProjectCardDate } from './ProjectCardDate/ProjectCardDate';
 import { ProjectCardButton } from './ProjectCardButton/ProjectCardButton';
-import { formatDate } from '../../helpers/helpers';
+import { formatVisibleDate } from '../../helpers/helpers';
 import edit from '../../svg/edit-pen--icon.svg';
 import { User } from '../../Types/User';
 import { ProjectCardFavorite } from './ProjectCardFavorite/ProjectCardFavorite';
 import success from '../../svg/success-icon.svg';
 import remove from '../../svg/delete-icon--red.png';
 import { Icon } from '../Icon/Icon';
-import { ModalContext } from '../../Providers/ModalProvider';
 
 type Props = {
   project: ProjectCardProps,
@@ -50,17 +46,18 @@ export const ProjectCard: FC<Props> = ({
     description,
     creationDate,
   } = project;
-  const { userResponseDtos, maxMembers, requiredSpecialities } = teamResponseDto;
+  const { userResponseDtos, maxMembers } = teamResponseDto;
 
   const [currentUser] = useLocalStorage<User | null>('user', null);
 
-  const isOwner = currentUser?.id === ownerId;
-  const isApplied = userResponseDtos.some((member) => member.id === currentUser?.id);
-  // const noSpecialityHas = requiredSpecialities.includes(currentUser?.speciality!);
+  const isOwner = useMemo(() => currentUser?.id === ownerId, [project]);
+  const isApplied = useMemo(() => userResponseDtos
+    .some((member) => member.id === currentUser?.id), [project]);
 
-  const formatedData = formatDate(creationDate);
+  const formatedData = useMemo(() => formatVisibleDate(creationDate), [project]);
 
-  const projectOwner = teamResponseDto.userResponseDtos.find((user) => user.id === ownerId);
+  const projectOwner = useMemo(() => teamResponseDto.userResponseDtos
+    .find((user) => user.id === ownerId), [project]);
 
   return (
     <div
@@ -82,22 +79,28 @@ export const ProjectCard: FC<Props> = ({
             />
           )}
 
-          <ProjectCardFavorite project={project} onFavorite={onFavorite}/>
+          <ProjectCardFavorite project={project} onFavorite={onFavorite} />
 
           {currentUser && isOwner && (
             <div className={styles.remove}>
-              <IconButton svg={remove} onClick={(event) => removeHandler(event, project)} />
+              <IconButton
+                svg={remove}
+                onClick={(event) => removeHandler(event, project)}
+              />
             </div>
           )}
 
         </div>
       </div>
-      
+
       {projectOwner && (
         <ProjectCardOwner owner={projectOwner} />
       )}
 
-      <ProjectCardMembers members={userResponseDtos.length} maxMembers={maxMembers} />
+      <ProjectCardMembers
+        members={userResponseDtos.length}
+        maxMembers={maxMembers}
+      />
 
       <ProjectCardDescriptions description={description} />
 

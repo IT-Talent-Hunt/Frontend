@@ -10,7 +10,11 @@ export const FilterByList: React.FC<Props> = ({ list, onFilter }) => {
   return (
     <ul className="filterByList">
       {list.map((filter) => (
-        <FilterByItem key={filter} filter={filter} onFilter={onFilter} />
+        <FilterByItem
+          key={filter}
+          filter={filter}
+          onFilter={onFilter}
+        />
       ))}
     </ul>
   );

@@ -9,11 +9,18 @@ type Props = {
 export const PositionItem: React.FC<Props> = ({ position, onRemove }) => {
   return (
     <div className="positionItem">
-      <span className="positionItem__position">{position}</span>
+      <span className="positionItem__position">
+        {position}
+      </span>
 
-      <span className="positionItem__state">Recruitment</span>
+      <span className="positionItem__state">
+        Recruitment
+      </span>
 
-      <EditReverseButton title="Delete" onClick={() => onRemove(position)} />
+      <EditReverseButton
+        title="Delete"
+        onClick={() => onRemove(position)}
+      />
     </div>
   );
 };

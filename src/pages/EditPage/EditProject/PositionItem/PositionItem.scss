@@ -1,4 +1,5 @@
-@import '../../../../helpers/helpers.scss';
+@import '../../../../helpers/styles/mixins.scss';
+@import '../../../../helpers/styles/variables.scss';
 
 .positionItem {
   display: flex;
@@ -30,7 +31,6 @@
 
   &__state {
     text-align: center;
-    // color: #ccc;
     color: $color-orange;
     font-weight: 600;
   }

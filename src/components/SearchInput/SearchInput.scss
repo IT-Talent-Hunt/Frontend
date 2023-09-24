@@ -1,20 +1,21 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .search {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+
+  @include tablet() {
+    max-width: 300px;
+  }
+
+  &__label {
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2px;
-
-    @include tablet() {
-      max-width: 300px;
-    }
-
-    &__label {
-      width: 100%;
-      overflow: hidden;
-    }
+    overflow: hidden;
+  }
 
   &__input {
     color: #000;
@@ -24,7 +25,6 @@
     background-color: #fff;
     padding: 0 10px;
     border-radius: 5px;
-    // transform: translateX(300px);
     transition: 1s;
 
     @include tablet() {
@@ -35,7 +35,7 @@
     @include desktop() {
       height: 40px;
       border-radius: 10px;
-    font-size: 16px;
+      font-size: 16px;
     }
 
     &-move {

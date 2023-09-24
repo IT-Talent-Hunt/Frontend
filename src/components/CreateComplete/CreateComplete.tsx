@@ -1,8 +1,8 @@
-// import React from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CreateComplete.scss';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { Container } from '../Container/Container';
+import './CreateComplete.scss';
 
 type Props = {
   projectName: string,
@@ -11,9 +11,9 @@ type Props = {
 export const CreateComplete: React.FC<Props> = ({ projectName }) => {
   const navigation = useNavigate();
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     navigation('/signIn');
-  };
+  }, []);
 
   return (
     <section className="createComplete">

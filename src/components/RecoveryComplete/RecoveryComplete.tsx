@@ -1,15 +1,15 @@
-import React from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './RecoveryComplete.scss';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { Container } from '../Container/Container';
+import './RecoveryComplete.scss';
 
 export const RecoveryComplete = () => {
   const navigation = useNavigate();
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     navigation('/signIn');
-  };
+  }, []);
 
   return (
     <section className="recoveryComplete">

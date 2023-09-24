@@ -1,32 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useSearchParams } from 'react-router-dom';
-import { updateSeachParams } from '../../helpers/UpdateSearchParams';
+import { updateSeachParams } from '../../helpers/updateSearchParams';
 import crossBlack from '../../svg/cross--icon-black.png';
 import crossWhite from '../../svg/cross--icon-white.png';
-// import loop from '../../svg/search-loop--icon.svg';
 import loopBlack from '../../svg/loop--black.png';
 import loopWhite from '../../svg/loop--white.png';
-import './SearchInput.scss';
 import { IconButton } from '../IconButton/IconButton';
-
-function debounce(callBack: Function, delay: number) {
-  let timer = 0;
-
-  return (...args: any) => {
-    window.clearTimeout(timer);
-
-    timer = window.setTimeout(() => {
-      callBack(...args);
-    }, delay);
-  };
-}
+import { debounce } from '../../helpers/helpers';
+import './SearchInput.scss';
 
 export const SearchInput = () => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState<string>('');
   const [appliedQuery, setAppliedQuery] = useState<string | null>(null);
 
-  const [isMove, setIsMove] = useState(false);
+  const [isMove, setIsMove] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const appliedDebouncedQuery = useCallback(debounce(setAppliedQuery, 1000), []);
@@ -57,11 +45,18 @@ export const SearchInput = () => {
   };
 
   return (
-    <form method="GET" className="search" onSubmit={(event) => updateSearchParams(event)}>
+    <form
+      method="POST"
+      className="search"
+      onSubmit={(event) => updateSearchParams(event)}
+    >
       <label htmlFor="search" className="search__label">
         <input
           id="search"
-          className={classNames('search__input', { 'search__input-move': isMove })}
+          className={classNames(
+            'search__input',
+            { 'search__input-move': isMove },
+          )}
           placeholder="Project name..."
           value={query}
           onChange={(event) => updateQuery(event)}

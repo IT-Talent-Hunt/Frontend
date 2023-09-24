@@ -1,6 +1,6 @@
-import './ProjectCardMembers.scss';
 import { Icon } from '../../Icon/Icon';
 import users from '../../../svg/users.png';
+import './ProjectCardMembers.scss';
 
 type Props = {
   members: number,
@@ -11,9 +11,8 @@ type Props = {
 export const ProjectCardMembers: React.FC<Props> = ({ members, maxMembers, isProfile = false }) => {
   return (
     <div className="projectMembers">
-      {/* <div className="projectMembers__icon" /> */}
-
       <Icon icon={users} />
+
       {`${members}/${maxMembers} ${isProfile ? '' : 'members'}`}
     </div>
   );

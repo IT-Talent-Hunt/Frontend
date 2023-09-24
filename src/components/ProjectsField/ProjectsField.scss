@@ -1,4 +1,5 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .projectsField {
   &__list {
@@ -13,9 +14,7 @@
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
       grid-gap: 10px;
-      
-      // Add additional styling if needed
-      // For example, to center the items within each cell
+
       align-items: center;
       justify-items: center;
     }
@@ -30,6 +29,5 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 100px;
-    // height: 700px;
   }
 }

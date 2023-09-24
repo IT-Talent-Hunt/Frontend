@@ -1,0 +1,21 @@
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
+
+.profilePage {
+  display: block;
+  padding: 10px;
+  background: linear-gradient(#7b69ed, #fcffd7);
+  min-height: calc(100vh - 50px);
+  height: 100%;
+
+  display: flex;
+  align-items: flex-start;
+
+  @include tablet() {
+    padding: 30px;
+  }
+
+  @include desktop() {
+    padding: 40px;
+  }
+}

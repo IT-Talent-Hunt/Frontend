@@ -22,9 +22,6 @@ export const init = createAsyncThunk('requests/export', (userId: number) => {
 export const send = createAsyncThunk('requests/export/send', (body: any) => {
   const response = sendRequest(body);
 
-  /* eslint-disable-next-line */
-  console.log(response);
-
   return response;
 });
 
@@ -42,7 +39,6 @@ export const exportRequestsSlice = createSlice({
     },
     clear: (state: exportRequestsType) => {
       state.exportRequests = [];
-      state.exportLoader = true;
     },
   },
   extraReducers: (builder) => {

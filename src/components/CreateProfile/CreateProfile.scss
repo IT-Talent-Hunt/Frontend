@@ -1,7 +1,9 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .profileCreate {
   position: relative;
+
   &__title {
     font-size: 16px;
 
@@ -33,7 +35,6 @@
   &__shell {
     max-width: 400px;
     margin: 0 auto;
-    // position: relative;
 
     display: flex;
     flex-direction: column;

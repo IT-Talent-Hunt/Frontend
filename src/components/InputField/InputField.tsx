@@ -32,7 +32,7 @@ export const InputField: React.FC<Props> = ({
     text,
   } = input;
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const handleInput = (
     setState: (valueData: string) => void,
@@ -55,9 +55,9 @@ export const InputField: React.FC<Props> = ({
           type={!isPasswordVisible && type === 'password' ? 'password' : 'text'}
           id={text}
           name={name}
-          // required
           minLength={type === 'password' ? 8 : 0}
           value={value}
+          autoComplete="example@gmail.com"
           onChange={(evt) => handleInput(setValue, setIsValueDirty, evt)}
           onBlur={(event) => onBlur(event)}
           className={classNames(styles.input,

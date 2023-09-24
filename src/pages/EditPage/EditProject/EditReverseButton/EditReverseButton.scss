@@ -1,9 +1,9 @@
-@import '../../../../helpers/helpers.scss';
+@import '../../../../helpers/styles/mixins.scss';
+@import '../../../../helpers/styles/variables.scss';
 
 .editReverseButton {
   height: 25px;
   min-width: 50px;
-  // margin-top: 20px;
 
   background-color: transparent;
   border-radius: 4px;

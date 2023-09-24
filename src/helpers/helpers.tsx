@@ -1,5 +1,7 @@
+/* eslint-disable no-else-return */
+
 import { FiltersEnumTypes } from '../Types/FilterEnumTypes';
-import { professionsMap, statusesMap } from './Variables';
+import { professionsMap, statusesMap } from './variables';
 import { client } from './fetchProd';
 
 export const getData = (url: string) => {
@@ -21,6 +23,18 @@ export const putData = (url: string, data: any) => {
 export const deleteData = (url: string) => {
   return client.delete(url);
 };
+
+export function debounce(callBack: Function, delay: number) {
+  let timer = 0;
+
+  return (...args: any) => {
+    window.clearTimeout(timer);
+
+    timer = window.setTimeout(() => {
+      callBack(...args);
+    }, delay);
+  };
+}
 
 export function formatDate(inputDate: string) {
   const date = new Date(inputDate);
@@ -81,24 +95,25 @@ export function generateSpecialitiesLink(
     link += `${(position || teamSize) ? '&' : '?'}status=${statusCode}`;
   }
 
-  if (filter === FiltersEnumTypes.NEW) {
-    link += `${(position || teamSize || status) ? '&' : '?'}sortBy=creationDate:DESC`;
+  if (filter !== FiltersEnumTypes.FAVORITES) {
+    link += `${(position || teamSize || status) ? '&' : '?'}sortBy=creationDate:${
+      filter === FiltersEnumTypes.ALL
+        || filter === FiltersEnumTypes.FAVORITES
+        ? 'ASC' : 'DESC'}`;
   }
 
   if (query) {
-    link += `${(position || teamSize || status || filter === FiltersEnumTypes.NEW) ? '&' : '?'}name=${query}`;
+    link += `${(position || teamSize || status || filter !== FiltersEnumTypes.FAVORITES) ? '&' : '?'}name=${query}`;
   }
 
   if (perPage) {
-    link += `${(position || teamSize || status || query || filter === FiltersEnumTypes.NEW) ? '&' : '?'}count=${perPage}`;
+    link += `${(position || teamSize || status || query || filter !== FiltersEnumTypes.FAVORITES) ? '&' : '?'}count=${perPage}`;
   }
 
   if (page) {
     link += `${(position || teamSize || status || query || perPage) ? '&' : '?'}page=${+page - 1}`;
   }
 
-  /* eslint-disable */
-  console.log(link);
   return link;
 }
 
@@ -119,19 +134,19 @@ export function formatVisibleDate(inputDate: string): string {
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
   if (daysDifference === 0) {
-    return "Today";
+    return 'Today';
   } else if (daysDifference === 1) {
-    return "Yesterday";
+    return 'Yesterday';
   } else if (daysDifference <= 7) {
     return `${daysDifference} day${daysDifference > 1 ? 's' : ''} ago`;
   } else if (daysDifference <= 14) {
-    return "Last week";
+    return 'Last week';
   } else if (daysDifference <= 21) {
-    return "Two weeks ago";
+    return 'Two weeks ago';
   } else if (daysDifference <= 28) {
-    return "Three weeks ago";
+    return 'Three weeks ago';
   } else if (daysDifference <= 45) {
-    return "Last month";
+    return 'Last month';
   } else {
     return inputDate;
   }

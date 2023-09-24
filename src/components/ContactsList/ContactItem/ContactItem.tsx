@@ -23,8 +23,7 @@ export const ContactItem: React.FC<Props> = ({
   setContacts,
   isEdit,
 }) => {
-  const [isRest, setIsRest] = useState(false);
-
+  const [isRest, setIsRest] = useState<boolean>(false);
   const { url, platform } = contact;
 
   const onContactValueHandle = (setValue: Function, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +82,9 @@ export const ContactItem: React.FC<Props> = ({
                 className="contactItem__rest_button"
               >
                 <li key={rest.platform} className="contactItem__rest_item">
-                  <span className="contactItem__rest_item-text">{rest.platform}</span>
+                  <span className="contactItem__rest_item-text">
+                    {rest.platform}
+                  </span>
                 </li>
               </button>
             ))}
@@ -107,7 +108,11 @@ export const ContactItem: React.FC<Props> = ({
           />
         </label>
       ) : (
-        <ContactLink platform={platform} url={url} placeholder={placeholder} />
+        <ContactLink
+          platform={platform}
+          url={url}
+          placeholder={placeholder}
+        />
       )}
     </li>
   );

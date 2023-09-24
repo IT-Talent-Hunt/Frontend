@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain, no-mixed-operators */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
 import { useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
@@ -46,9 +46,6 @@ export const RequestsPage: React.FC<Props> = ({ cardClick }) => {
       dispatch(importRequestsActions.clear());
     };
   }, []);
-
-  /* eslint-disable-next-line */
-  console.log(exportRequests, importRequests, importLoader);
 
   return (
     <section className="requests">

@@ -9,7 +9,7 @@ import styles from './sideBar.module.scss';
 import { CheckBoxList } from '../CheckBoxList/CheckBoxList';
 import { RadioBtnList } from '../RadioBtnList/RadioBtnList';
 import { FilterByList } from '../FilterByList/FilterByList';
-import { updateSeachParams } from '../../helpers/UpdateSearchParams';
+import { updateSeachParams } from '../../helpers/updateSearchParams';
 
 type Props = {
   position: string,
@@ -30,10 +30,14 @@ export const SideBar: FC<Props> = ({
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const perPage = searchParams.get('perPage') || '4';
-  const preMadePositions = ['Front-end developer', 'Back-end developer', 'Full-stack developer', 'DevOps', 'QA', 'Project Manager', 'UI/UX Designer'];
-  const preMadeStatuses = ['Recruitment', 'In progress', 'Finished'];
-  const teamSizes = ['2', '3', '4', '5', '6+'];
-  const displayProjectsArr = ['4', '8', '16', '24', '32'];
+  const preMadePositions: string[] = [
+    'Front-end developer', 'Back-end developer',
+    'Full-stack developer', 'DevOps',
+    'QA', 'Project Manager', 'UI/UX Designer',
+  ];
+  const preMadeStatuses: string[] = ['Recruitment', 'In progress', 'Finished'];
+  const teamSizes: string[] = ['2', '3', '4', '5', '6+'];
+  const displayProjectsArr: string[] = ['4', '8', '16', '24', '32'];
 
   const [allFilters, setAllFilters] = useState<string[]>([]);
 
@@ -68,7 +72,7 @@ export const SideBar: FC<Props> = ({
     }
   };
 
-  const onFilterHandler = (val: string) => {
+  const onFilterHandler = useCallback((val: string) => {
     let valueStatus = '';
 
     if (preMadePositions.includes(val)) {
@@ -88,9 +92,9 @@ export const SideBar: FC<Props> = ({
     }
 
     setAllFilters((current) => [...current].filter((filter) => filter !== val));
-  };
+  }, [position, status]);
 
-  const handleCheckbox = useCallback((evt: React.ChangeEvent<HTMLInputElement>, stateType: 'position' | 'status' | 'technologies') => {
+  const handleCheckbox = useCallback((evt: React.ChangeEvent<HTMLInputElement>, stateType: 'position' | 'status') => {
     const val = evt.target.name;
 
     pageReset();
@@ -148,13 +152,20 @@ export const SideBar: FC<Props> = ({
         >
           <h4 className={styles.heading}>Filters</h4>
 
-          <button type="button" onClick={handleClearAll} className={styles.clearAll}>
+          <button
+            type="button"
+            onClick={handleClearAll}
+            className={styles.clearAll}
+          >
             Clear all
           </button>
         </div>
 
         {allFilters && (
-          <FilterByList list={allFilters} onFilter={onFilterHandler} />
+          <FilterByList
+            list={allFilters}
+            onFilter={onFilterHandler}
+          />
         )}
       </div>
 

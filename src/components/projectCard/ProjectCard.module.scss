@@ -1,21 +1,13 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .card {
-  // width: 0.5fr;
-  // height: 233px;
-  width: 100%;
-  // min-height: 233px;
-  
+  width: 100%;  
+  height: 100%;
   padding: 16px;
-
   background-color: #fff;
   border-radius: 10px;
-  position: relative;
 
-  @include tablet() {
-
-  }
-  height: 100%;
   position: relative;
 }
 
@@ -23,7 +15,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 12px;
 
   &__container {
@@ -52,7 +43,6 @@
 
   width: 23px;
   height: 20px;
-
   background-repeat: no-repeat;
   background-size: contain;
 
@@ -73,7 +63,6 @@
   align-items: center;
 
   margin-top: 20px;
-
 }
 
 .btn {
@@ -102,24 +91,7 @@
 
 .button {
   width: 150px;
-  // height: 20px;
-
-  // position: relative;
-  // top: -3px;
-
-  // >* {
-  //   margin: 0;
-  //   height: 30px;
-  //   font-size: 14px;
-  //   font-weight: 600;
-  // }
-
-  // height: 30px;
-
-  // position: relative;
-  // top: -20px;
-
-
+  
   >* {
     margin: 0;
     height: 30px;

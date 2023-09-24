@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { Logo } from '../../components/Logo/Logo';
 import './SignUp.scss';
 
 export const SignUp = () => {
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState<boolean>(true);
 
   return (
     <section className="signUp">

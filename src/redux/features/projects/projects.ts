@@ -1,9 +1,13 @@
 /* eslint-disable no-param-reassign, @typescript-eslint/no-unused-vars */
-/* eslint-disable */
 
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { ProjectCardProps } from '../../../Types/ProjectCardProps';
-import { getProjects, addProject, editProject, applyToProject } from './api';
+import {
+  getProjects,
+  addProject,
+  editProject,
+  applyToProject,
+} from './api';
 
 type ProjectsType = {
   projects: ProjectCardProps[],
@@ -29,17 +33,16 @@ export const push = createAsyncThunk('project/push', (newProject: ProjectCardPro
   return addProject(newProject);
 });
 
-export const edit = createAsyncThunk('project/edit', 
-async( data: { projectId: number, teamId: number, newData: ProjectCardProps | any,}
-) => {
-  const response: any = await editProject(data.projectId, data.teamId, data.newData)
+export const edit = createAsyncThunk('project/edit',
+  async (data: { projectId: number, teamId: number, newData: ProjectCardProps | any}) => {
+    const response: any = await editProject(data.projectId, data.teamId, data.newData);
 
-  return response.data;
-});
+    return response.data;
+  });
 
 export const apply = createAsyncThunk('project/apply', (data: any) => {
   return applyToProject(data);
-})
+});
 
 export const projectsSlice = createSlice({
   name: 'projects',
@@ -70,7 +73,7 @@ export const projectsSlice = createSlice({
       (state: ProjectsType, action: any) => {
         state.projects = action.payload.projectResponseDtos;
         state.pages = action.payload.totalPage;
-        state.length = action.payload.totalElements
+        state.length = action.payload.totalElements;
         state.loading = false;
         state.error = false;
       });
@@ -107,7 +110,6 @@ export const projectsSlice = createSlice({
         state.loading = false;
         state.error = false;
       });
-      
   },
 });
 

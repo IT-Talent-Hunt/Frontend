@@ -1,19 +1,16 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .button {
-  cursor: pointer;
+  width: 25px;
+  height: 25px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  // min-width: 40px;
-  width: 25px;
-  height: 25px;
-
   background-color: transparent;
-  // color: #000;
-  // border-radius: 50%;
+  cursor: pointer;
 
   @include tablet() {
     width: 35px;

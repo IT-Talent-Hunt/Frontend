@@ -1,0 +1,47 @@
+@import '../../../helpers/styles/variables.scss';
+@import '../../../helpers/styles/mixins.scss';
+
+.cenceledApply {
+  max-width: 80%;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+
+  @include tablet() {
+    padding: 15px;
+  }
+
+  @include desktop() {
+    padding: 20px;
+  }
+
+  &__title {
+    font-size: 16px;
+    text-align: center;
+
+    @include tablet() {
+      font-size: 18px;
+    }
+
+    @include desktop() {
+      font-size: 20px;
+    }
+
+    &_sub {
+      font-size: 10px;
+      margin: 10px 0;
+      max-width: 250px;
+
+      @include tablet() {
+        font-size: 12px;
+        margin: 15px 0;
+        max-width: 250px;
+      }
+  
+      @include desktop() {
+        font-size: 14px;
+        max-width: 400px;
+      }
+    }
+  }
+}

@@ -6,8 +6,8 @@ type Props = {
 
 export const ProjectCardDate: React.FC<Props> = ({ date }) => {
   return (
-    <div className="projectDare">
-      <div className="projectDare__icon" />
+    <div className="projectDate">
+      <div className="projectDate__icon" />
       {date}
     </div>
   );

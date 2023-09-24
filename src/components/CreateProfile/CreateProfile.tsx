@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable */
 
 import React, { useState } from 'react';
@@ -11,11 +12,13 @@ import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { textValidation } from '../../helpers/validation';
 import { User } from '../../Types/User';
 import { patchData } from '../../helpers/helpers';
-import { socialities } from '../../helpers/Variables';
+import { socialities } from '../../helpers/variables';
 import error from '../../svg/error-icon.svg';
 import { Icon } from '../Icon/Icon';
 
 export const CreateProfile = () => {
+  const navigation = useNavigate();
+
   const [user, setUser] = useLocalStorage<User | null>('user', null);
 
   const [name, setName] = useState(user?.firstName ? user.firstName : '');
@@ -33,16 +36,11 @@ export const CreateProfile = () => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
-  const navigation = useNavigate();
-
-  // const visiblePosition = socialities
-  //   .find((sociality) => sociality.name === user.specialities[0].specialityName);
-
   const isValid = isNameDirty === false
-  && isSurNameDirty === false
-  && name.length > 0
-  && surName.length > 0
-  && position.length > 0;
+    && isSurNameDirty === false
+    && name.length > 0
+    && surName.length > 0
+    && position.length > 0;
 
   const nameFied = {
     id: 0,
@@ -83,16 +81,14 @@ export const CreateProfile = () => {
         lastName: surName,
         speciality: position,
       };
-  
-      const returnedUser: any =  await patchData(`users/${userId}`, chagedUserKeys)
-      setUser(returnedUser);
 
-       
-    if (isValid) {
-      navigation('/profile');
-    }
+      await patchData(`users/${userId}`, chagedUserKeys)
+        .then((res: any) => setUser(res))
 
-    } catch (error) {
+      if (isValid) {
+        navigation('/profile');
+      }
+    } catch {
       setIsError(true);
     } finally {
       setIsLoader(false);
@@ -106,9 +102,13 @@ export const CreateProfile = () => {
   const onSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess);
-    textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess);
-    // selectValidation(position, 'position', setIsPositionDirty, setPositionMessage, setIsPositionSuccess);
+    textValidation(name, 'name', setIsNameDirty,
+      setNameMessage, setIsNameSuccess,
+    );
+
+    textValidation(surName, 'surname', setIsSurNameDirty,
+      setSurNameMessage, setIsSurNameSuccess,
+    );
 
     upLoadUserData(user?.id!);
   };
@@ -116,7 +116,7 @@ export const CreateProfile = () => {
   return (
     <section className="profileCreate">
       <Container>
-        <form method="GET" onSubmit={onSubmitHandler} className="profileCreate__shell">
+        <form method="POST" onSubmit={onSubmitHandler} className="profileCreate__shell">
           <h1 className="profileCreate__title">Profile</h1>
 
           {isError && (
@@ -129,14 +129,21 @@ export const CreateProfile = () => {
 
           <InputField
             input={nameFied}
-            onBlur={() => textValidation(name, 'name', setIsNameDirty, setNameMessage, setIsNameSuccess, setName)}
+            onBlur={() => textValidation(
+              name, 'name', setIsNameDirty,
+              setNameMessage, setIsNameSuccess, setName
+            )}
             setValue={setName}
             setIsValueDirty={setIsNameDirty}
           />
 
           <InputField
             input={surNameField}
-            onBlur={() => textValidation(surName, 'surname', setIsSurNameDirty, setSurNameMessage, setIsSurNameSuccess, setSurName)}
+            onBlur={() => textValidation(
+              surName, 'surname',
+              setIsSurNameDirty, setSurNameMessage,
+              setIsSurNameSuccess, setSurName
+            )}
             setValue={setSurName}
             setIsValueDirty={setIsSurNameDirty}
           />
@@ -146,7 +153,11 @@ export const CreateProfile = () => {
             setValue={setPosition}
           />
 
-          <CompleteButton title="Sign up" isDisabled={isValid} isLoader={isLoader} />
+          <CompleteButton
+            title="Sign up"
+            isDisabled={isValid}
+            isLoader={isLoader}
+          />
         </form>
       </Container>
     </section>

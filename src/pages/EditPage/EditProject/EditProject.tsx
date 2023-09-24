@@ -1,22 +1,22 @@
-import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import classNames from 'classnames';
 import { ProjectCardProps } from '../../../Types/ProjectCardProps';
 import { textValidation } from '../../../helpers/validation';
 import { CompleteButton } from '../../../components/Buttons/CompleteButton/CompleteButton';
 import { ContactItem } from '../../../components/ContactsList/ContactItem/ContactItem';
-import { ProfileInputField } from '../../../components/ProfileInputField/ProfileInputField';
-// import { ProjectContainer } from '../../../components/ProjectContainer/ProjectContainer';
+import { ProfileInputField } from '../../ProfilePage/ProfileInputField/ProfileInputField';
 import { ShineMessage } from '../../../components/ShineMessage/ShineMessage';
-// import { useLocalStorage } from 'usehooks-ts';
-// import { User } from '../../Types/User';
 import { Contact } from '../../../Types/Contact';
-import { existContacts, socialities, projectStatuses } from '../../../helpers/Variables';
+import { existContacts, socialities, projectStatuses } from '../../../helpers/variables';
 import { InputField } from '../../../components/InputField/InputField';
 import { Error } from '../../../components/Error/Error';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-// import { Select } from '../../Types/InputField';
 import * as projectsActions from '../../../redux/features/projects/projects';
 import { MemberItem } from './MemberItem';
 import { User } from '../../../Types/User';
@@ -32,15 +32,11 @@ type Props = {
 };
 
 export const EditProject: React.FC<Props> = ({ project }) => {
-  // const navigation = useNavigate();
-  const [name, setName] = useState(project.name);
-  const [isNameDirty, setIsNameDirty] = useState(false);
-  const [nameMessage, setNameMessage] = useState('');
-  const [isNameSuccess, setIsNameSuccess] = useState(false);
+  const [name, setName] = useState<string>(project.name);
+  const [isNameDirty, setIsNameDirty] = useState<boolean>(false);
+  const [nameMessage, setNameMessage] = useState<string>('');
+  const [isNameSuccess, setIsNameSuccess] = useState<boolean>(false);
   const [currentUser] = useLocalStorage<User | null>('user', null);
-
-  // const [selectedPositions, setSelectedPositions] = useState<Select[]>([]);
-  // const preparetedPositions = selectedPositions.map((position) => position.name);
 
   const [description, setDescription] = useState<string>(project.description);
   const [contacts, setContacts] = useState<Contact[]>(existContacts);
@@ -55,11 +51,11 @@ export const EditProject: React.FC<Props> = ({ project }) => {
   const [isAddPosition, setIsAddPosition] = useState<boolean>(false);
   const [isProjectStatuses, setIsProjectStatuses] = useState<boolean>(false);
 
-  const [position, setPosition] = useState('');
+  const [position, setPosition] = useState<string>('');
 
   const membersIds = userMembers.map((member) => member.id);
-  const visibleMembers = userMembers.filter((member) => member.id !== currentUser?.id);
-  const preparetedStatuses = projectStatuses.filter((status) => status !== projectStatus);
+  const visibleMembers: User[] = userMembers.filter((member) => member.id !== currentUser?.id);
+  const preparetedStatuses: string[] = projectStatuses.filter((status) => status !== projectStatus);
 
   const dispatch = useAppDispatch();
   const { error, loading } = useAppSelector(state => state.projects);
@@ -75,8 +71,8 @@ export const EditProject: React.FC<Props> = ({ project }) => {
     text: 'Project name',
   };
 
-  const restList = [...contacts]
-    .filter((contact) => contact.platform !== currentContact.platform);
+  const restList = useMemo(() => [...contacts]
+    .filter((contact) => contact.platform !== currentContact.platform), [currentContact]);
 
   const editProjetcData = () => {
     const editedProject = {
@@ -102,36 +98,38 @@ export const EditProject: React.FC<Props> = ({ project }) => {
 
     setTimeout(() => {
       setIsUpLoad(false);
-      // navigation('/main');
     }, 4100);
   };
 
-  /* eslint-disable-next-line */
-  console.log(project);
-
-  const onUserKick = (user: User) => {
+  const onUserKick = useCallback((user: User) => {
     setUserMemeers((current) => [...current].filter((member: User) => member.id !== user.id));
     setProjectPositions((current) => [...current, user.speciality]);
-  };
+  }, []);
 
-  const onPositionAdd = () => {
+  const onPositionAdd = useCallback(() => {
     setProjectPositions((current) => [...current, position]);
     setIsAddPosition(false);
-  };
+  }, [position]);
 
   const onPositionCancel = () => {
     setPosition('');
     setIsAddPosition(false);
   };
 
-  const onPositionRevome = (removePosition: string) => {
+  const onPositionRevome = useCallback((removePosition: string) => {
     setProjectPositions((current) => [...current].filter((pos) => pos !== removePosition));
-  };
+  }, []);
 
-  const onStatusChange = (newStatus: string) => {
+  const onStatusChange = useCallback((newStatus: string) => {
     setProjectStatus(newStatus);
     setIsProjectStatuses(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setIsUpLoad(false);
+    };
+  }, []);
 
   const selectPositionField = {
     id: 2,
@@ -182,12 +180,6 @@ export const EditProject: React.FC<Props> = ({ project }) => {
               />
             </div>
           </div>
-
-          {/* {project.teamResponseDto.userResponseDtos.map((u) => (
-            <p key={}>
-              <span>{u.specialities}</span>
-            </p>
-          ))} */}
 
           <div className="project__field">
             <h4 className="project__title">
@@ -278,7 +270,9 @@ export const EditProject: React.FC<Props> = ({ project }) => {
             </h4>
 
             <div>
-              <h6 className="project__title-sub">Link for communication</h6>
+              <h6 className="project__title-sub">
+                Link for communication
+              </h6>
 
               <ContactItem
                 key={currentContact.platform}

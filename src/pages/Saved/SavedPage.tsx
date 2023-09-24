@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { ProjectCardProps } from '../../Types/ProjectCardProps';
 import { ProjectsField } from '../../components/ProjectsField/ProjectsFiled';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -35,9 +33,9 @@ export const SavedPage: React.FC<Props> = ({
   useEffect(() => {
     dispatch(favoritesActions.init('liked-carts/by-user/projects/'));
 
-      return () => {
-        dispatch(favoritesActions.clear());
-      }
+    return () => {
+      dispatch(favoritesActions.clear());
+    };
   }, []);
 
   return (

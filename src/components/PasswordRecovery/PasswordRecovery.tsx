@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import './PasswordRecovery.scss';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BackTo } from '../BackTo/BackTo';
 import { emailValidate } from '../../helpers/validation';
 import { InputField } from '../InputField/InputField';
 import { CompleteButton } from '../Buttons/CompleteButton/CompleteButton';
 import { Container } from '../Container/Container';
+import './PasswordRecovery.scss';
 
 export const PasswordRecovery = () => {
-  const [email, setEmail] = useState('');
-  const [isEmailDirty, setIsEmailDirty] = useState(false);
-  const [emailMessage, setEmailMessage] = useState('');
-  const [isEmailSuccess, setIsEmailSuccess] = useState(false);
-
   const navigation = useNavigate();
+
+  const [email, setEmail] = useState<string>('');
+  const [isEmailDirty, setIsEmailDirty] = useState<boolean>(false);
+  const [emailMessage, setEmailMessage] = useState<string>('');
+  const [isEmailSuccess, setIsEmailSuccess] = useState<boolean>(false);
 
   const emailFied = {
     id: 0,
@@ -26,11 +26,9 @@ export const PasswordRecovery = () => {
     text: 'Email',
   };
 
-  const onBlurHandler = () => {
+  const onBlurHandler = useCallback(() => {
     emailValidate(email, setIsEmailDirty, setEmailMessage, setIsEmailSuccess);
-  };
-
-  // const isValid = !!isEmailSuccess;
+  }, [email]);
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();

@@ -1,5 +1,5 @@
-import './PaginationItem.scss';
 import classNames from 'classnames';
+import './PaginationItem.scss';
 
 type Props = {
   page: number,

@@ -6,5 +6,4 @@ export const getExportRequests = (userId: number) => {
 
 export const sendRequest = (body: any) => {
   return postData('requests', body);
-  // return putData(`teams/${teamId}/${userId}`, null);
 };

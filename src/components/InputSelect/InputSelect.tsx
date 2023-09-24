@@ -1,15 +1,13 @@
-/* eslint-disable */
-
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from '../InputField/InputField.module.scss';
-import { InputFieldType, SelectFieldType } from '../../Types/InputField';
+import { SelectFieldType } from '../../Types/InputField';
 import { List } from '../List/List';
 import './InputSelect.scss';
 import arrow from '../../svg/arrow-bottom.svg';
 
 type Props = {
-  input : SelectFieldType,
+  input: SelectFieldType,
   setValue: (value: string) => void,
   isSignedUp?: boolean
 };
@@ -18,24 +16,23 @@ export const InputSelect: React.FC<Props> = ({
   input,
   setValue,
 }) => {
-  const [isSeleted, setIsSelected] = useState(false);
-  const [hoveres, setHovered] = useState('Choose');
+  const [isSeleted, setIsSelected] = useState<boolean>(false);
+  const [hoveres, setHovered] = useState<string>('Choose');
 
   const {
-    type,
     value,
     text,
     selections,
   } = input;
 
-  const onPositionSelect = (selectName: string) => {
+  const onPositionSelect = useCallback((selectName: string) => {
     setValue(selectName);
     setIsSelected(false);
-  };
+  }, []);
 
-  const onSelectHover = (selectName: string) => {
+  const onSelectHover = useCallback((selectName: string) => {
     setHovered(selectName);
-  };
+  }, []);
 
   return (
     <label
@@ -52,26 +49,15 @@ export const InputSelect: React.FC<Props> = ({
             }}
             className="inputSelect__button"
           >
-            {/* <input
-              type={type}
-              id={type}
-              name={name}
-              defaultValue={value}
-              onBlur={onBlur}
-              className={classNames(
-                styles.input,
-                "inputSelect__input",
-                { [styles.input__error]: isDirty && !isSuccess },
-                { [styles.input__success]: !isDirty && isSuccess })}
-              placeholder={hoveres}
-              disabled={!!true}
-            /> */}
-
-            <div className={classNames(styles.input, "inputSelect__input")}>
+            <div className={classNames(styles.input, 'inputSelect__input')}>
               {value ? (
-                <h1 className="inputSelect__placeholder inputSelect__placeholder-value">{value}</h1>
+                <h1 className="inputSelect__placeholder inputSelect__placeholder-value">
+                  {value}
+                </h1>
               ) : (
-                <h1 className="inputSelect__placeholder">{hoveres}</h1>
+                <h1 className="inputSelect__placeholder">
+                  {hoveres}
+                </h1>
               )}
             </div>
           </button>
@@ -81,7 +67,10 @@ export const InputSelect: React.FC<Props> = ({
           type="button"
         >
           <div
-            className={classNames('inputSelect__arrow', [{ 'inputSelect__arrow-move': isSeleted }])}
+            className={classNames(
+              'inputSelect__arrow',
+              [{ 'inputSelect__arrow-move': isSeleted }],
+            )}
             style={{ backgroundImage: `url('${arrow}')` }}
           />
         </button>

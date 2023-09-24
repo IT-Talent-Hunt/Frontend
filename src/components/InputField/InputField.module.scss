@@ -1,4 +1,5 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .input {
   width: 100%;
@@ -117,15 +118,15 @@
 
 .link {
   &_recovery {
-      position: absolute;
-      right: 0;
-      bottom: -29px;
-      font-size: 12px;
+    position: absolute;
+    right: 0;
+    bottom: -29px;
+    font-size: 12px;
   
-      @include tablet() {
-        font-size: 14px;
-      }
+    @include tablet() {
+      font-size: 14px;
     }
+  }
 }
 
 .img {

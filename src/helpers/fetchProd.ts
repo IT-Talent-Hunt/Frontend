@@ -1,7 +1,5 @@
-/* eslint-disable */
-
 export const BASE_URL = 'https://skill-swap-hub.onrender.com';
-// export const BASE_URL =   'https://facilis.serveo.net';
+// export const BASE_URL = 'https://lima.serveo.net';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 
@@ -39,10 +37,6 @@ function request<T>(
 
         throw new Error(`${response.status} - ${response.statusText}`);
       }
-
-      /* eslint-disable-next-line */
-      console.log(response.status, response);
-
 
       return response.json();
     });

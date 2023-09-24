@@ -10,15 +10,12 @@
 .newProject__container {
   display: flex;
   flex-direction: column;
-
   align-items: center;
 
   width: 646px;
   min-height: 846px;
   padding: 32px 24px;
-
   background-color: #F7F7F7;
-  
 }
 
 .newProject__BtnBack {
@@ -47,22 +44,13 @@
   justify-content: space-between;
 
   &__button {
-    min-width: 289px;
+    min-width: 290px;
     padding: 16px 64px;
-  
     margin-bottom: 18px;
-  
     font-size: 20px;
     border: 1px solid transparent;
-  
     transition: all ease-in-out 0.2s;
-  
-    // &:hover {
-    //   background-color: #fff;
-    //   color: #495057;
-    //   border: 1px solid #495057;
-    // }
-    
+      
     &:focus {
       transform: scale(0.95);
     }
@@ -102,16 +90,11 @@
   &__input {
     width: 598px;
     height: 51px;
-  
     padding: 15px 16px;
-  
     margin-bottom: 16px;
-  
     background-color: #fff;
-  
     font-size: 18px;
 
-  
     &::placeholder {
       color: #ADB5BD;
     }
@@ -167,4 +150,3 @@
     align-items: center;
   }
 }
-

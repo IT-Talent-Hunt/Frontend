@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import * as messagesActions from '../../redux/features/Messages/messages';
@@ -13,28 +13,27 @@ import messagesIcon from '../../svg/notification.png';
 import { Icon } from '../../components/Icon/Icon';
 import { Empty } from '../../components/Empty/Empty';
 
-export const Messages = () => {
+type Props = {
+  newMessages: messagesActions.MessagesTypes[],
+};
+
+export const Messages: React.FC<Props> = ({ newMessages }) => {
   const dispatch = useAppDispatch();
   const { messages, messagesError, messagesLoader } = useAppSelector(state => state.messages);
 
   const [user] = useLocalStorage<User | null>('user', null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    dispatch(messagesActions.init(user?.id!));
-
-    return () => {
-      dispatch(messagesActions.clear());
-    };
+  const loadMessages = useCallback(async () => {
+    await dispatch(messagesActions.init(user?.id!));
+    setIsLoaded(true);
   }, []);
 
-  /* eslint-disable-next-line */
-  console.log(messages);
+  useEffect(() => {
+    loadMessages();
+  }, []);
 
   const arhiveMessage = messages.filter((m) => m.read === true);
-  const newMessages = messages.filter((m) => m.read === false);
-
-  /* eslint-disable-next-line */
-  console.log(arhiveMessage, newMessages);
 
   return (
     <section className="messagesPage">
@@ -55,7 +54,7 @@ export const Messages = () => {
                     <h3 className="messagesPage__title">New messages</h3>
                   </div>
 
-                  {newMessages.length ? (
+                  {newMessages.length && isLoaded ? (
                     <ul className="messagesPage__list">
                       {newMessages.map((message) => (
                         <MessageItem key={message.id} propsMessage={message} />

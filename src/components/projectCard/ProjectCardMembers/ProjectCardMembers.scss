@@ -1,13 +1,11 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .projectMembers {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 4px;
-  
-  // margin-top: 10px;
-  
   font-size: 10px;
 
   @include tablet() {

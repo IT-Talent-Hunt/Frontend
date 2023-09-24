@@ -1,33 +1,24 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .main {
   width: 100%;
-  display: flex;
-  // justify-content: center;
-  gap: 20px;
-  // background-color: #F6F6F6;
-
-  // min-height: 100vh;
-
-  // padding: 32px 64px;
   padding: 10px;
-  // min-height: 100vh;
+  display: flex;
+  gap: 20px;
   position: relative;
-
-
 }
 
 .bar {
   width: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-
-
   z-index: 1;
   opacity: 0;
   transform: translateX(-100%);
   transition: .5s;
+
+  position: absolute;
+  top: 0;
+  right: 0;
 
   @include desktop() {
     width: max-content;
@@ -61,25 +52,6 @@
     height: max-content;
   }
 }
-
-// .grid__wrapper {
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 10px;
-//   position: relative;
-
-//   @include tablet() {
-//     display: grid;
-//     grid-template-columns: repeat($grid-columns, 1fr);
-//     grid-template-rows: repeat($grid-rows, 1fr);
-//     grid-gap: $grid-gap;
-    
-//     // Add additional styling if needed
-//     // For example, to center the items within each cell
-//     align-items: center;
-//     justify-items: center;
-//   }
-// }
 
 .wrapper {
   display: flex;

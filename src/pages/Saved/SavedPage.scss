@@ -1,4 +1,5 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .saved {
   min-height: 100vh;
@@ -19,7 +20,7 @@
     font-size: 20px;
 
     @include tablet() {
-        font-size: 25px;
+      font-size: 25px;
     }
   }
 }

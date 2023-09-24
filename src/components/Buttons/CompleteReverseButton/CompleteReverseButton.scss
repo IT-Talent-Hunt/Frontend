@@ -1,16 +1,15 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .completeReverseButton {
   height: 35px;
   width: 100%;
-  // margin-top: 20px;
 
   background-color: transparent;
   border-radius: 10px;
   color: $color-purple;
   font-size: 14px;
   border: 1px solid $color-purple;
-
   transition: all ease-in-out 0.2s;
 
   @include tablet() {

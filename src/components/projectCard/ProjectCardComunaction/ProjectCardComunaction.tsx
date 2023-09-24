@@ -1,6 +1,6 @@
-import './ProjectCardComunaction.scss';
 import { Communication } from '../../../Types/ProjectCardProps';
 import { ContactLink } from '../../ContactLink/ContactLink';
+import './ProjectCardComunaction.scss';
 
 type Props = {
   comunication: Communication,

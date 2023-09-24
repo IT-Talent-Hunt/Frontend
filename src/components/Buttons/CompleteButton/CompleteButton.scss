@@ -1,15 +1,16 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .completeButton {
   height: 35px;
   width: 100%;
-  // margin-top: 20px;
 
   background-color: $color-purple;
   border-radius: 10px;
   color: #fff;
   font-size: 14px;
   border: 1px solid transparent;
+  transition: all ease-in-out 0.2s;
 
   @include tablet() {
     font-size: 16px;
@@ -20,8 +21,6 @@
     font-size: 18px;
     height: 43px;
   }
-
-  transition: all ease-in-out 0.2s;
 
   &:hover {
     background-color: #fff;

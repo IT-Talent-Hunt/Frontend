@@ -1,9 +1,10 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable */
 
+import { useCallback, useState } from 'react';
+import { useMatch } from 'react-router-dom';
 import { ProjectCardProps } from '../../../Types/ProjectCardProps';
 import { Request } from '../../../Types/Request';
-import { ProfileProject } from '../../../components/ProfileProject/ProfileProject';
+import { ProfileProject } from '../../ProfilePage/ProfileProject/ProfileProject';
 import { ProjectCardMemberItem } from '../../../components/projectCard/ProjectCardMemberItem/ProjectCardMemberItem';
 import { EditProjectButton } from '../../EditPage/EditProject/EditProjectButton/EditProjectButton';
 import { EditReverseButton } from '../../EditPage/EditProject/EditReverseButton/EditReverseButton';
@@ -13,19 +14,15 @@ import { Icon } from '../../../components/Icon/Icon';
 import pending from '../../../svg/pending.png';
 import accepted from '../../../svg/accepted.png';
 import rejected from '../../../svg/rejected.png';
-import { useEffect, useState } from 'react';
-import { patchData } from '../../../helpers/helpers';
 import { LoaderSmall } from '../../../components/Loader/LoaderSmall';
 import error from '../../../svg/error-icon.svg';
 import { IconButton } from '../../../components/IconButton/IconButton';
 import { requestStatusHandler } from '../../../redux/features/requests/import/api';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch } from '../../../redux/hooks';
 import * as importActions from '../../../redux/features/requests/import/import';
-import { useMatch } from 'react-router-dom';
-import iconRight from '../../../svg/arrow-right--light.png'
+import iconRight from '../../../svg/arrow-right--light.png';
 import deleted from '../../../svg/deleted.png';
 import remove from '../../../svg/delete-icon--red.png';
-
 
 type Props = {
   request: Request,
@@ -40,7 +37,7 @@ export const ImportRequest: React.FC<Props> = ({
 }) => {
   const { userResponseDto, projectResponseDto } = request;
 
-  const formatedMessage = truncateText(request.message, 255);
+  const formatedMessage: string = truncateText(request.message, 255);
 
   const [isStatusLoader, setIsStatusLoader] = useState<boolean>(false);
   const [isStatusError, setIsStatusError] = useState<boolean>(false);
@@ -49,21 +46,19 @@ export const ImportRequest: React.FC<Props> = ({
   const match = useMatch('requests/:requestId');
   const selectedRequestId = match?.params.requestId;
 
-
-  const onAction = async (requestId: number, status: any) => {
+  const onAction = useCallback(async (requestId: number, status: any) => {
     setIsStatusLoader(true);
 
     try {
-      const res = await requestStatusHandler(requestId, status);
+      await requestStatusHandler(requestId, status);
 
-      dispatch(importActions.change({ requestId: requestId, status: status }));
-    } catch (error) {
+      dispatch(importActions.change({ requestId, status }));
+    } catch {
       setIsStatusError(true);
-      console.log(error);
     } finally {
       setIsStatusLoader(false);
     }
-  };
+  }, []);
 
   return (
     <div className="request">
@@ -100,7 +95,6 @@ export const ImportRequest: React.FC<Props> = ({
               {formatedMessage}
             </div>
 
-            
             {isStatusLoader ? (
               <div className="request__field">
                 <LoaderSmall />
@@ -130,14 +124,14 @@ export const ImportRequest: React.FC<Props> = ({
                 )}
               </>
             )}
-  
+
             <div className="request__status">
               <Icon
                 icon={
                   projectResponseDto === null
-                  ? remove : request.status === 'ACCEPTED'
-                  ? accepted : request.status === 'PENDING'
-                  ? pending : rejected
+                    ? remove : request.status === 'ACCEPTED'
+                      ? accepted : request.status === 'PENDING'
+                        ? pending : rejected
                 }
               />
             </div>

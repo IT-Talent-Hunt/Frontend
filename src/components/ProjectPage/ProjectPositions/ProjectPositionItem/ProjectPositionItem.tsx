@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const ProjectPositionItem: React.FC<Props> = ({ item, onPosition, selectedPositions }) => {
-  const isDisabled = selectedPositions.includes(item);
+  const isDisabled: boolean = selectedPositions.includes(item);
 
   return (
     <li

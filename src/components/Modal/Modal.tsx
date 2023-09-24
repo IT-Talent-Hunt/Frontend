@@ -1,4 +1,5 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/click-events-have-key-events,
+jsx-a11y/no-static-element-interactions */
 
 import React, {
   ReactNode,
@@ -17,13 +18,7 @@ type Props = {
 const modalRoot = document.getElementById('modal');
 
 export const Modal: React.FC<Props> = ({ children }) => {
-  /* eslint-disable jsx-a11y/no-static-element-interactions */
   const modalElement = useMemo(() => document.createElement('div'), []);
-
-  useEffect(() => {
-    /* eslint-disable-next-line */
-    console.log(document.documentElement.getClientRects());
-  });
 
   useEffect(() => {
     modalRoot?.appendChild(modalElement);
@@ -31,7 +26,7 @@ export const Modal: React.FC<Props> = ({ children }) => {
     return () => {
       modalRoot?.removeChild(modalElement);
     };
-  });
+  }, []);
 
   return createPortal(
     <div className="modal" onClick={(event) => event.stopPropagation()}>

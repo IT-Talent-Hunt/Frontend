@@ -26,7 +26,11 @@ export const Notification: React.FC<Props> = ({ notification }) => {
         { notification__back: isMoveBack },
       )}
     >
-      <button type="button" className="notification__icon-cross" onClick={() => setIsMoveBack(true)}>
+      <button
+        type="button"
+        className="notification__icon-cross"
+        onClick={() => setIsMoveBack(true)}
+      >
         <Icon icon={cross} />
       </button>
 
@@ -35,7 +39,9 @@ export const Notification: React.FC<Props> = ({ notification }) => {
       </div>
 
       <div className="notification__wrapper">
-        <h4 className="notification__title">Notification</h4>
+        <h4 className="notification__title">
+          Notification
+        </h4>
 
         <div className="notification__message">{notification.message}</div>
       </div>

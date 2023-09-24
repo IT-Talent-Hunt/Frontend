@@ -41,7 +41,6 @@ export const importRequestsSlice = createSlice({
     },
     clear: (state: importRequestsType) => {
       state.importRequests = [];
-      state.importLoader = true;
     },
     change: (
       state: importRequestsType,

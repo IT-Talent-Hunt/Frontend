@@ -1,17 +1,16 @@
-@import '../../../helpers/helpers.scss';
+@import '../../../helpers/styles/mixins.scss';
+@import '../../../helpers/styles/variables.scss';
 
 .transparentButton {
+  width: 100%;
+  max-width: 100px;
   height: 30px;
+  padding: 4px;
   font-size: 10px;
   border: 1px solid #fff;
   border-radius: 8px;
-
-  width: 100%;
-  max-width: 100px;
-
   color: #fff;
   font-weight: 500;
-  padding: 4px;
 
 
   @include tablet() {

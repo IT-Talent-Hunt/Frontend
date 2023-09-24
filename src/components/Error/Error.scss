@@ -1,45 +1,45 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .error {
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-    color:  #FF4949;
-    font-weight: 500;
-    max-width: 700px;
+  width: 100%;
+  max-width: 700px;
+  padding: 10px 0;
+  margin: 0 auto;
+  text-align: center;
+  color:  #FF4949;
+  font-weight: 500;
+
+  &-img {
+    width: 50px;
+    height: 50px;
     margin: 0 auto;
+    background-image: url('../../svg/error-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
 
-    &-img {
-      margin: 0 auto;
-      background-image: url('../../svg/error-icon.svg');
-      background-size: contain;
-      background-repeat: no-repeat;
-      width: 50px;
-      height: 50px;
-
-      @include tablet() {
-        width: 70px;
-        height: 70px;
-      }
-
-      @include tablet() {
-        width: 80px;
-        height: 80px;
-      }
+    @include tablet() {
+      width: 70px;
+      height: 70px;
     }
 
-    &__message {
-        margin: 0 auto;
-        margin-top: 20px;
-
-        font-size: 14px;
-
-        @include tablet() {
-          font-size: 16px;
-        }
-    
-        @include tablet() {
-          font-size: 18px;
-        }
+    @include tablet() {
+      width: 80px;
+      height: 80px;
     }
   }
+
+  &__message {
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: 14px;
+
+    @include tablet() {
+      font-size: 16px;
+    }
+  
+    @include tablet() {
+      font-size: 18px;
+    }
+  }
+}

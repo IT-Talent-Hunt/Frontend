@@ -1,12 +1,12 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .project {
-  display: block;
-  padding: 10px;
-  background: linear-gradient(#7b69ed, #fcffd7);
   min-height: calc(100vh - 50px);
   height: 100%;
-  // min-height: 100vh;
+  padding: 10px;
+  display: block;
+  background: linear-gradient(#7b69ed, #fcffd7);
   display: flex;
   align-items: center;
 
@@ -21,7 +21,6 @@
 
   &__container {
     width: 100%;
-    // height: 600px; //
     max-width: 400px;
     margin: 0 auto;
     padding: 15px 20px;
@@ -41,7 +40,6 @@
   &__field {
     margin-top: 10px;
     position: relative;
-
 
     @include desktop() {
       margin-top: 15px;
@@ -93,18 +91,12 @@
     }
   }
 
-  &__contact {
-    // margin-top: 100px;
-  }
-
   &__addPosition {
     display: flex;
     justify-content: space-between;
     gap: 5px;
-    // align-items: baseline;
 
     &_buttons {
-      // width: 100%;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -147,11 +139,11 @@
 
   &__members {
     padding: 10px 0;
+    border-bottom: 1px solid #eee;
+
     display: flex;
     flex-direction: column;
     gap: 5px;
-
-    border-bottom: 1px solid #eee;
   }
 
   &__member {
@@ -174,12 +166,6 @@
 
   &__positions {
     padding: 10px 0;
-    // padding-bottom: 10px;
-    // display: flex;
-    // flex-direction: column;
-    // gap: 5px;
-
-    // border-bottom: 1px solid #eee;
   }
 
   &__button {
@@ -191,21 +177,26 @@
   }
 
   &__statuses {
-    // padding: 7px;
     max-width: 150px;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    // gap: 5px;
-
     background-color: #fff;
     box-shadow: 0 4px 3px  rgba($color: #000, $alpha: .2);
     z-index: 1;
 
+    display: flex;
+    flex-direction: column;
+
     position: absolute;
-    top: 60px;
+    top: 45px;
     left: -7px;
 
+    @include tablet() {
+      top: 55px;
+    }
+
+    @include desktop() {
+      top: 60px;
+    }
 
     &_item {
       padding: 5px 7px;

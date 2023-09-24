@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 
+import { useCallback } from 'react';
 import { Contact } from '../../Types/Contact';
 import { ContactItem } from './ContactItem/ContactItem';
-import { existContacts } from '../../helpers/Variables';
+import { existContacts } from '../../helpers/variables';
 import './ContactsList.scss';
 
 type Props = {
@@ -12,12 +13,12 @@ type Props = {
 };
 
 export const ContactsList: React.FC<Props> = ({ list, isEdit = false, setUserContacts }) => {
-  const usedTypesContacts = list.map((contact) => contact.platform);
+  const usedTypesContacts: string[] = list.map((contact) => contact.platform);
 
   const restContacts: Contact[] = existContacts
     .filter((contact) => !usedTypesContacts.includes(contact.platform));
 
-  const updateContact = (contact: Contact, prevContactPlatform: string) => {
+  const updateContact = useCallback((contact: Contact, prevContactPlatform: string) => {
     setUserContacts(list.map((element: Contact) => {
       if (element.platform === prevContactPlatform) {
         element = contact;
@@ -25,9 +26,10 @@ export const ContactsList: React.FC<Props> = ({ list, isEdit = false, setUserCon
 
       return element;
     }));
-  };
+  }, []);
 
-  const wroteUserContact = list.filter((contact) => contact.url.length > 0);
+  const wroteUserContact: Contact[] = list
+    .filter((contact) => contact.url.length > 0);
 
   return (
     <ul className="contactsList">

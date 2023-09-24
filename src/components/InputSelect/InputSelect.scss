@@ -1,17 +1,16 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .inputSelect {
-  // position: relative;
   &__list {
-    // padding: 10px;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 3px  #eee;
     border-radius: 10px;
 
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: #fff;
-    box-shadow: 0 4px 3px  #eee;
 
     position: absolute;
     bottom: -165px;
@@ -61,25 +60,21 @@
     background-size: contain;
 
     position: absolute;
-
     top: 25px;
     right: 15px;
 
     transition: .5s;
     transform: rotateX(0deg);
 
-
     @include tablet() {
       width: 11px;
       height: 11px;
-
       top: 32px;
     }
 
     @include desktop() {
       width: 13px;
       height: 13px;
-
       top: 40px;
     }
 
@@ -91,7 +86,6 @@
       @include tablet() {
         top: 28px;
       }
-
 
       @include desktop() {
         top: 33px;
@@ -108,7 +102,6 @@
     font-size: 10px;
     font-weight: 300;
     color: #ADB5BD;
-
 
     @include tablet() {
       font-size: 12px;

@@ -1,4 +1,5 @@
-@import '../../helpers/helpers.scss';
+@import '../../helpers/styles/mixins.scss';
+@import '../../helpers/styles/variables.scss';
 
 .heading {
   font-weight: 600;
@@ -30,7 +31,6 @@
     @include tablet() {
       gap: 4px;
     }
-
   }
   
   &__item {

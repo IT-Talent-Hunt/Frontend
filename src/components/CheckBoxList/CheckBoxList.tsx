@@ -5,9 +5,9 @@ type Props = {
   list: string[];
   callbackFn: (
     evt: React.ChangeEvent<HTMLInputElement>,
-    stateType: 'position' | 'status' | 'technologies'
+    stateType: 'position' | 'status'
   ) => void;
-  stateType: 'position' | 'status' | 'technologies';
+  stateType: 'position' | 'status';
   heading: string;
   state: string[];
 };
