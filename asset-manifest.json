@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Frontend/static/css/main.80dedc82.chunk.css",
-    "main.js": "/Frontend/static/js/main.951c3b2f.chunk.js",
-    "main.js.map": "/Frontend/static/js/main.951c3b2f.chunk.js.map",
+    "main.css": "/Frontend/static/css/main.99b62b49.chunk.css",
+    "main.js": "/Frontend/static/js/main.0005fbdb.chunk.js",
+    "main.js.map": "/Frontend/static/js/main.0005fbdb.chunk.js.map",
     "runtime-main.js": "/Frontend/static/js/runtime-main.47bb7098.js",
     "runtime-main.js.map": "/Frontend/static/js/runtime-main.47bb7098.js.map",
     "static/js/2.5dedec07.chunk.js": "/Frontend/static/js/2.5dedec07.chunk.js",
     "static/js/2.5dedec07.chunk.js.map": "/Frontend/static/js/2.5dedec07.chunk.js.map",
     "index.html": "/Frontend/index.html",
-    "static/css/main.80dedc82.chunk.css.map": "/Frontend/static/css/main.80dedc82.chunk.css.map",
+    "static/css/main.99b62b49.chunk.css.map": "/Frontend/static/css/main.99b62b49.chunk.css.map",
     "static/js/2.5dedec07.chunk.js.LICENSE.txt": "/Frontend/static/js/2.5dedec07.chunk.js.LICENSE.txt",
     "static/media/arrow-bottom.0881b593.svg": "/Frontend/static/media/arrow-bottom.0881b593.svg",
     "static/media/BackTo.scss": "/Frontend/static/media/arrow-left.dfa142d2.svg",
@@ -30,7 +30,7 @@
   "entrypoints": [
     "static/js/runtime-main.47bb7098.js",
     "static/js/2.5dedec07.chunk.js",
-    "static/css/main.80dedc82.chunk.css",
-    "static/js/main.951c3b2f.chunk.js"
+    "static/css/main.99b62b49.chunk.css",
+    "static/js/main.0005fbdb.chunk.js"
   ]
 }
